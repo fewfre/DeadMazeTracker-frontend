@@ -1,13 +1,12 @@
 <script lang="ts">
     import { nyanCatEnabled } from '../../../stores/nyancat';
-    import NavDropdown from './dropdowns/common/NavDropdown.svelte';
     import SettingsMenu from './dropdowns/SettingsMenu.svelte';
     import NavAuthDropdown from './dropdowns/AuthDropdown.svelte';
     import NavLangSelectDropdown from './dropdowns/LangSelectDropdown.svelte';
     import TimerBox from '../../common/TimerBox.svelte';
-    import { getDateWithUTCOffset, padStart } from '../../../utils/helpers';
     import SeeAlsoDropdown from './dropdowns/SeeAlsoDropdown.svelte';
     import { antonioInHeader } from '../../../stores/bool-localstorage-stores';
+    import AntonioSummaryHeaderButton from '../../features/antonio/AntonioSummaryHeaderButton.svelte';
 
 	// Image by Tasted#8196 on Discord - https://i.imgur.com/8eQG2qB.png
 	const mainIconSrc = $derived(!$nyanCatEnabled ? "images/8eQG2qB.png" : "images/nyancat.gif");
@@ -28,10 +27,7 @@
 		<div id="app-nav-section">
 			<NavAuthDropdown />
 			{#if $antonioInHeader}
-				<button id="antonio_btn" data-tab="antonio" class="antonio_btn_header">TODO_ANTONIO</button>
-				<!-- <?php if($setting_antonio_top_right) { ?>
-					<button id="antonio_btn" data-tab="antonio" class="antonio_btn_header"><?php include("trackers/antonio/include_summary.php"); ?></button>
-				<?php } ?> -->
+				<AntonioSummaryHeaderButton />
 			{/if}
 			<NavLangSelectDropdown />
 			<SeeAlsoDropdown />
@@ -52,7 +48,6 @@ header {
 	display: grid;
 	grid-template-columns: auto 1fr;
 }
-#nav:empty { display:none; }
 
 #app-logo {
 	grid-row: span 2;
@@ -82,15 +77,5 @@ header {
 	align-items: center;
 	gap: 4px;
 	line-height: 1;
-}
-
-#main-timer-cont {
-	display:flex;
-}
-#main-timer-cont>div {
-	flex: 1;
-}
-#main-timer-cont .right {
-	text-align: right;
 }
 </style>

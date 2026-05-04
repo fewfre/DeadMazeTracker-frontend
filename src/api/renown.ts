@@ -34,7 +34,7 @@ export interface RenownDogVoteResponse {}
 //////////////////////////////
 //#region API Calls
 //////////////////////////////
-export namespace antonioApi {
+export namespace renownApi {
 	const baseUrl = `${envVars.API_BASE}trackers/renown`;
 	
 	export async function list(): Promise<ListRenownDogResponse> {

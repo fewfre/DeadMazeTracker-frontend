@@ -46,7 +46,7 @@ export namespace passagesApi {
 		return (await fetch(`${baseUrl}/zone-table-json.php`, { method: 'GET' })).json();
 	}
 	export function useList() {
-		return useSWR("list-passages", { fetcher: list });
+		return useSWR<ListPassagesResponse>("list-passages", { fetcher: list });
 	}
 	
 	export async function vote(req: PassageVoteRequest) : Promise<PassageVoteResponse> {

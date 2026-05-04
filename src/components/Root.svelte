@@ -3,12 +3,14 @@
     import { nyancatBodyClass, nyanCatEnabled } from "../stores/nyancat";
     import LoginModal from "./features/login/LoginModal.svelte";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
+    import AntonioSummary from "./features/antonio/AntonioSummary.svelte";
     import SiteFooter from "./structure/SiteFooter.svelte";
     import CBoxChat from "./structure/chat/CBoxChat.svelte";
     import CookieBanner from "./structure/header/CookieBanner.svelte";
     import SiteHeader from "./structure/header/SiteHeader.svelte";
-    import Tab from "./structure/tabs/Tab.svelte";
+    import TabItem from "./structure/tabs/TabItem.svelte";
     import Tabs from "./structure/tabs/Tabs.svelte";
+    import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -36,12 +38,22 @@
 	<div id="main_two_column_layout">
 		<div id="main_two_column_layout_flex_column">
 		<Tabs>
-			<Tab index=1 title='tab 1'><PassagesLanding /></Tab>
-			<Tab index=2 title='tab 2'>I am the content for tab 2</Tab>
-			<Tab index=3 title='tab 3'>I am the content for tab 3</Tab>
-			{#if !$antonioInHeader}
-				<Tab index=4 title='tab 4'>I am the content for tab 4</Tab>
-			{/if}
+			<TabItem index={1} hash='passages'>
+				{#snippet titleSnippet()}<img src="images/tabicon-sp-crate.png" height="20" alt="" />&nbsp;Passages{/snippet}
+				<PassagesLanding />
+			</TabItem>
+			<TabItem index={2} hash='sidequest'>
+				{#snippet titleSnippet()}<img src='images/tabicon-compass.png' height="20" alt="" />&nbsp;Side Quests{/snippet}
+				I am the content for tab 2
+			</TabItem>
+			<TabItem index={3} hash='renown'>
+				{#snippet titleSnippet()}<img src='images/tabicon-survivor-notes.png' height="20" alt="" />&nbsp;Renown (<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;Dog){/snippet}
+				I am the content for tab 3
+			</TabItem>
+			<TabItem index={4} hash='antonio'>
+				{#snippet titleSnippet()}{#if !$antonioInHeader}<AntonioSummary />{/if}{/snippet}
+				<AntonioLanding />
+			</TabItem>
 		</Tabs>
 		</div>
 		

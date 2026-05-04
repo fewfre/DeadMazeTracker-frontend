@@ -18,7 +18,7 @@
 		flagged?:boolean;
 		
 		title: string;
-		subtitle: string;
+		subtitle?: string;
 		voteButtons: Snippet;
 		
 		actions?: ActionProps[];

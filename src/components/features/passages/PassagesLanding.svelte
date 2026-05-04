@@ -93,15 +93,13 @@
 <section>
 	<!-- <div style="overflow-x:hidden;"> -->
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Locations Table - <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Locations Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	<!-- </div> -->
 	
 	<div id="zoneNotifications"></div>
 	
-	<div id="zoneCont">
-		<PassagesTable {passagesPromise} />
-	</div>
+	<PassagesTable {passagesPromise} />
 </section>
 
 <style>
