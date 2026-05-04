@@ -4,7 +4,7 @@
 
 	type ActionProps =
 	| { type: 'flag', onclick:()=>void }
-	| { type: 'map', link:string }
+	| { type: 'map', link:string; }
 	| { type: 'youtube', videoId:string }
 	| { type: 'info', tooltip:string }
 	| { type: 'blank' }
@@ -20,16 +20,22 @@
 		title: string;
 		subtitle?: string;
 		voteButtons: Snippet;
+		addonLeft?: Snippet;
 		
 		actions?: ActionProps[];
 	}
 	let {
 		active, best, grayOut, lightlyGrayOut, broken, flagged,
-		title, subtitle, voteButtons, actions = [],
+		title, subtitle, voteButtons, addonLeft, actions = [],
 	} : Props = $props();
 </script>
 
 <div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged }]}>
+	{#if addonLeft}
+		<div class='addon-left'>
+			{@render addonLeft()}
+		</div>
+	{/if}
 	<div class='vote-contents vote-title-and-votes'>
 		<div class='vote-title'>
 			{title}
@@ -77,6 +83,7 @@
 	min-width:170px;
 	width:170px;
 	max-width: 170px;
+	min-height: 50px;
 	
 	margin:2px 3px 2px 3px;
 	color:#222;
@@ -107,6 +114,9 @@
 	/* flex-direction: column;
 	justify-content: end; */
 	max-width:calc(100% - 19px);/* 100% - action tray width + border */
+	padding: 2px 0;
+}
+.addon-left {
 	padding: 2px 0;
 }
 .vote-box .vote-title-and-votes {

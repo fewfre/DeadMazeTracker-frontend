@@ -3,10 +3,11 @@
 	import { setTabsContext, type TabsContextType } from './tabs-context';
 
 	interface Props {
+		onChange?: (index: number, hash?: string) => void;
 		children: Snippet;
 	}
 
-	let { children }: Props = $props();
+	let { children, onChange }: Props = $props();
 
 	let activeIndex = $state(1);
 	let tabs = $state(new Map<number, { titleSnippet: Snippet | undefined; content: () => Snippet | undefined; hash?: string }>());
@@ -44,6 +45,7 @@
 		activeIndex = index;
 		const tab = tabs.get(index);
 		updateHash(tab?.hash);
+		onChange?.(index, tab?.hash);
 	};
 
 	onMount(() => {

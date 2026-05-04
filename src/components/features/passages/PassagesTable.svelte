@@ -1,24 +1,25 @@
 <script lang="ts">
-    import type { ListPassagesResponse } from "../../../api/passages";
+    import { passagesApi } from "../../../api/passages";
     import { passagesTrackerStore } from "../../../stores/trackers/passages-tracker-localstorage-store";
-    import AlertBox from "../../common/AlertBox.svelte";
     import ImageModal from "../../common/modal/ImageModal.svelte";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
 	const { passageVoteFlags } = passagesTrackerStore;
 	
-	interface Props {
-		passagesPromise: Promise<ListPassagesResponse>;
-	}
-	let { passagesPromise } : Props = $props();
+	const { data } = passagesApi.useList();
+	
+	// interface Props {
+	// 	passagesPromise: Promise<ListPassagesResponse>;
+	// }
+	// let { passagesPromise } : Props = $props();
 	
 	let mapModalImage:string|null = $state(null);
 </script>
 
-{#await passagesPromise}
+{#if !$data}
 	<p>Loading...</p>
-{:then { zones }}
+{:else}
 	<table id="zone-table">
 		<thead>
 			<tr>
@@ -27,7 +28,7 @@
 			</tr>
 		</thead>
 		<tbody>
-		{#each zones as zone}
+		{#each $data.zones as zone}
 			<tr id='zone{zone.id}' class='zone-info' data-id='{zone.id}'>
 				<td><img src='{zone.icon}' width='35' alt='{zone.name}' /></td>
 				<td>
@@ -45,8 +46,7 @@
 				<td>
 					<div class='passages vote-box-list'>
 					{#each zone.passages as passage}
-						{@const votesUp = parseInt(passage.votesUp.toString())}
-						{@const votesDown = parseInt(passage.votesDown.toString())}
+						{@const { votesUp, votesDown } = passage}
 						
 						{@const goodPassage = votesUp - votesDown > 0}
 						{@const tooltip = [
@@ -80,11 +80,7 @@
 		</tbody>
 	</table>
 	<ImageModal bind:modalImage={mapModalImage} />
-{:catch error}
-<AlertBox type="danger">
-	<p>Error loading passages: {error.message}</p>
-</AlertBox>
-{/await}
+{/if}
 
 <style>
 #zone-table { border-collapse:collapse; }

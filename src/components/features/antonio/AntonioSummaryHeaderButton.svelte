@@ -12,9 +12,12 @@
 		};
 
 		window.addEventListener("hashchange", handleHashChange);
+		// We need to also listen for this custom event since hashchange doesn't fire since the tabs use replaceState since we don't want the history cluttered with tab changes
+		window.addEventListener("trackerAppTabsChanged", handleHashChange);
 
 		return () => {
 			window.removeEventListener("hashchange", handleHashChange);
+			window.removeEventListener("trackerAppTabsChanged", handleHashChange);
 		};
 	});
 	

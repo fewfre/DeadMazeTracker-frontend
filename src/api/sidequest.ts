@@ -1,10 +1,12 @@
 //////////////////////////////
 //#region Types
 
+import { useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
+import { sideQuestMock } from "./mock-data/sidequest-mock";
 
 //////////////////////////////
-interface QuestInfo {
+export interface QuestInfo {
   id: number;
   npcName: string;
   npcPortrait: string;
@@ -15,7 +17,7 @@ interface QuestInfo {
   otherServer: string | null;
 }
 
-interface ZoneInfo {
+export interface QuestZoneInfo {
   id: number;
   icon: string;
   name: string;
@@ -24,15 +26,17 @@ interface ZoneInfo {
   quests: QuestInfo[];
 }
 
-export interface ListSideQuestRequest {}
-export interface ListSideQuestResponse {
-  restartTracker: {
+export interface SideQuestRestartTrackerInfo {
     id: number;
     votesUp: number;
     votesDown: number;
     resetCount: number;
-  };
-  zones: ZoneInfo[];
+}
+
+export interface ListSideQuestRequest { server:string; }
+export interface ListSideQuestResponse {
+  restartTracker: SideQuestRestartTrackerInfo;
+  zones: QuestZoneInfo[];
 }
 
 export interface SideQuestVoteRequest {
@@ -55,8 +59,12 @@ export interface SideQuestVoteRestartResponse {}
 export namespace sideQuestApi {
 	const baseUrl = `${envVars.API_BASE}trackers/sidequest`;
 	
-	export async function list(): Promise<ListSideQuestResponse> {
-		return (await fetch(`${baseUrl}/quest-table-json.php`, { method: 'GET' })).json();
+	export async function list(req:ListSideQuestRequest): Promise<ListSideQuestResponse> {
+		if(envVars.USE_MOCK_DATA) return sideQuestMock.listSideQuestResponse;
+		return (await fetch(`${baseUrl}/quest-table-json.php?server=${req.server}`, { method: 'GET' })).json();
+	}
+	export function useList(req:ListSideQuestRequest) {
+		return useSWR<ListSideQuestResponse>("list-side-quests-"+req.server, { fetcher: list });
 	}
 	
 	export async function vote(req: SideQuestVoteRequest) : Promise<SideQuestVoteResponse> {

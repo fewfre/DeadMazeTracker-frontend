@@ -1,14 +1,19 @@
-<script>
+<script lang="ts">
+    import { onMount } from "svelte";
     import { antonioApi } from "../../../api/antonio";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import AntonioTable from "./AntonioTable.svelte";
+    import AlertBox from "../../common/AlertBox.svelte";
 
-	const { data, revalidate } = antonioApi.useList();
+	const { error:listAntonioError, mutate } = antonioApi.useList();
 	
 	const onRefreshClick = () => {
-		revalidate();
+		mutate(undefined);
 	};
+	
+	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
+	onMount(() => { onRefreshClick(); });
 </script>
 <section>
 	<TimerBox label="Time Until Reset" format='hms' offset={-4} />
@@ -23,6 +28,10 @@
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
 		Resource List <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
+	
+	{#if $listAntonioError}
+		<AlertBox type="danger">{$listAntonioError?.message}</AlertBox>
+	{/if}
 	
 	<AntonioTable />
 </section>

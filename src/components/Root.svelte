@@ -11,6 +11,7 @@
     import TabItem from "./structure/tabs/TabItem.svelte";
     import Tabs from "./structure/tabs/Tabs.svelte";
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
+    import SideQuestLanding from "./features/sidequest/SideQuestLanding.svelte";
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -37,14 +38,14 @@
 	
 	<div id="main_two_column_layout">
 		<div id="main_two_column_layout_flex_column">
-		<Tabs>
+		<Tabs onChange={(index, hash) => { window.dispatchEvent(new Event('trackerAppTabsChanged')) }}>
 			<TabItem index={1} hash='passages'>
 				{#snippet titleSnippet()}<img src="images/tabicon-sp-crate.png" height="20" alt="" />&nbsp;Passages{/snippet}
 				<PassagesLanding />
 			</TabItem>
 			<TabItem index={2} hash='sidequest'>
 				{#snippet titleSnippet()}<img src='images/tabicon-compass.png' height="20" alt="" />&nbsp;Side Quests{/snippet}
-				I am the content for tab 2
+				<SideQuestLanding />
 			</TabItem>
 			<TabItem index={3} hash='renown'>
 				{#snippet titleSnippet()}<img src='images/tabicon-survivor-notes.png' height="20" alt="" />&nbsp;Renown (<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;Dog){/snippet}

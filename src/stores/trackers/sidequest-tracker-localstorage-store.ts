@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store';
 import { getDateWithUTCOffset } from '../../utils/helpers';
 
-export namespace passagesTrackerStore {
-	const PASSAGES_TRACKER_LS_KEY = "passages-tracker";
+export namespace sideQuestTrackerStore {
+	const SIDE_QUEST_TRACKER_LS_KEY = "side-quest-tracker";
 
 	/**
 	 * Get daily tracker timestamp in format: DD-MM-YYYY
@@ -20,7 +20,7 @@ export namespace passagesTrackerStore {
 	function getLocalStorageObject(): PersonalDailyData {
 		try {
 			const currentTimestamp = getDailyTrackerTimestamp();
-			const stored = localStorage.getItem(PASSAGES_TRACKER_LS_KEY);
+			const stored = localStorage.getItem(SIDE_QUEST_TRACKER_LS_KEY);
 
 			// If no stored data or day has changed, reset
 			if (!stored) {
@@ -54,17 +54,17 @@ export namespace passagesTrackerStore {
 		}
 	}
 
-	export const passageVoteFlags = writable(getLocalStorageObject());
+	export const sideQuestVoteFlags = writable(getLocalStorageObject());
 
-	passageVoteFlags.subscribe(value => {
-		localStorage.setItem(PASSAGES_TRACKER_LS_KEY, JSON.stringify(value));
+	sideQuestVoteFlags.subscribe(value => {
+		localStorage.setItem(SIDE_QUEST_TRACKER_LS_KEY, JSON.stringify(value));
 	});
 
 	/**
-	 * Toggle a personal vote flag for a specific passage (by index)
+	 * Toggle a personal vote flag for a specific side quest (by index)
 	 */
 	export function toggleFlag(id: number, value?: boolean) {
-		passageVoteFlags.update(data => {
+		sideQuestVoteFlags.update(data => {
 			const newVotes = [...data.votes];
 			newVotes[id] = value !== undefined ? value : !newVotes[id];
 			return { ...data, votes: newVotes };
@@ -75,14 +75,14 @@ export namespace passagesTrackerStore {
 	 * Reset all personal daily votes
 	 */
 	export function resetTracker() {
-		passageVoteFlags.set({
+		sideQuestVoteFlags.set({
 			votes: [],
 			timestamp: getDailyTrackerTimestamp()
 		});
 	}
 
 	/**
-	 * Check if a flag was marked for a specific passage
+	 * Check if a flag was marked for a specific side quest
 	 */
 	export function hasFlag(store:PersonalDailyData, id: number): boolean {
 		return store.votes[id] ?? false;

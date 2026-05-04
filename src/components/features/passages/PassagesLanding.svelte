@@ -1,17 +1,21 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { passagesApi } from "../../../api/passages";
     import { bossTrackerStore } from "../../../stores/trackers/boss-tracker-localstorage-store";
     import { passagesTrackerStore } from "../../../stores/trackers/passages-tracker-localstorage-store";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import PassagesTable from "./PassagesTable.svelte";
+    import AlertBox from "../../common/AlertBox.svelte";
 	
-	const { data, revalidate } = passagesApi.useList();
-	const passagesPromise = passagesApi.list();
+	const { error:listPassagesError, mutate } = passagesApi.useList();
 	
 	const onRefreshClick = () => {
-		revalidate();
+		mutate(undefined);
 	};
+	
+	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
+	onMount(() => { onRefreshClick(); });
 </script>
 
 <section>
@@ -99,7 +103,11 @@
 	
 	<div id="zoneNotifications"></div>
 	
-	<PassagesTable {passagesPromise} />
+	{#if $listPassagesError}
+		<AlertBox type="danger">{$listPassagesError?.message}</AlertBox>
+	{/if}
+	
+	<PassagesTable />
 </section>
 
 <style>

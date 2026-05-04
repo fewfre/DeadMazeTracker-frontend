@@ -1,7 +1,9 @@
 //////////////////////////////
 //#region Types
 
+import { useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
+import { renownMock } from "./mock-data/renown-mock";
 
 //////////////////////////////
 export interface FriendshipLocationInfo {
@@ -16,13 +18,14 @@ export interface FriendshipLocationInfo {
 }
 export interface FriendshipInfo {
   id: number;
-  icon: string;
   name: string;
+  portrait: string;
+  points: number;
   locations: FriendshipLocationInfo[];
 }
 
 export interface ListRenownDogRequest {}
-export type ListRenownDogResponse = FriendshipInfo[];
+export type ListRenownDogResponse = { friends: FriendshipInfo[] };
 
 export interface RenownDogVoteRequest {
   id : string | number;
@@ -38,7 +41,11 @@ export namespace renownApi {
 	const baseUrl = `${envVars.API_BASE}trackers/renown`;
 	
 	export async function list(): Promise<ListRenownDogResponse> {
+		if(envVars.USE_MOCK_DATA) return renownMock.listRenownDogResponse;
 		return (await fetch(`${baseUrl}/friendship-table-json.php`, { method: 'GET' })).json();
+	}
+	export function useList() {
+		return useSWR<ListRenownDogResponse>("list-friends", { fetcher: list });
 	}
 	
 	export async function vote(req: RenownDogVoteRequest) : Promise<RenownDogVoteResponse> {
