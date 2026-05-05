@@ -84,7 +84,6 @@
 	{#if alert}
 		<AlertBox type={alert.type}>{alert.message}</AlertBox>
 	{/if}
-	<div id="export_import_alert"></div>
 	<label for="export_import_export">Export:</label>
 	<button id="export_import_export" onclick={() => copyToClipboard( exportData() )}>Copy to Clipboard</button>
 	&bull;

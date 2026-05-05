@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
     import VoteButtons from "./VoteButtons.svelte";
+    import MediaModal from "./modal/MediaModal.svelte";
 
 	type ActionProps =
 	| { type: 'flag', onclick:()=>void }
@@ -28,6 +29,8 @@
 		active, best, grayOut, lightlyGrayOut, broken, flagged,
 		title, subtitle, voteButtons, addonLeft, actions = [],
 	} : Props = $props();
+	
+	let media : { type:"image" | "iframe"; url:string; } | null = $state()
 </script>
 
 <div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged }]}>
@@ -54,11 +57,15 @@
 					<button class='action personal-daily' onclick={action.onclick}>⚐</button>
 				{:else if action.type==='map'}
 					<a class='action action-map-icon' href={action.link}
-						data-featherlight={action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image"} data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'>
+						onclick={(e) => { e.preventDefault(); media = { type:action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image", url:e.currentTarget['href'] }; }}
+					>
 						<img src='https://vignette.wikia.nocookie.net/deadmaze/images/3/30/Map_icon.png/revision/latest/scale-to-width-down/15' alt="Map icon" />
 					</a>
 				{:else if action.type==='youtube'}
-					<a class='action' href={`https://www.youtube.com/embed/${action.videoId}?rel=0&autoplay=1`} data-featherlight='iframe' data-featherlight-iframe-frameborder='0' data-featherlight-iframe-allow='autoplay; encrypted-media' data-featherlight-iframe-allowfullscreen='true' data-featherlight-iframe-style='display:block;border:none;height:85vh;width:85vw;max-width:1024px;max-height:560px;'>
+					<a class='action' href={`https://www.youtube.com/embed/${action.videoId}?rel=0&autoplay=1`}
+					onclick={(e) => { e.preventDefault(); media = { type:'iframe', url:e.currentTarget['href'] }; }}
+					
+					data-featherlight-iframe-frameborder='0' data-featherlight-iframe-allow='autoplay; encrypted-media' data-featherlight-iframe-allowfullscreen='true' data-featherlight-iframe-style='display:block;border:none;height:85vh;width:85vw;max-width:1024px;max-height:560px;'>
 						<!--<div>Icons made by <a href="https://www.flaticon.com/authors/simpleicon" title="SimpleIcon">SimpleIcon</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>-->
 						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px" viewBox="0 0 90 90" style="margin:auto; enable-background:new 0 0 90 90;" xml:space="preserve">
 						<g><path fill="red" d="M90,26.958C90,19.525,83.979,13.5,76.55,13.5h-63.1C6.021,13.5,0,19.525,0,26.958v36.084C0,70.475,6.021,76.5,13.45,76.5h63.1C83.979,76.5,90,70.475,90,63.042V26.958z M36,60.225V26.33l25.702,16.947L36,60.225z"/></g>
@@ -76,6 +83,7 @@
 		</div>
 	{/if}
 </div>
+<MediaModal bind:media={media} />
 
 <style>
 .vote-box {

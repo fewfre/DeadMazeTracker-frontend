@@ -7,7 +7,7 @@ export namespace renownMock {
 				"id": 2,
 				"name": "Dog (250&700)",
 				"portrait": "https://vignette.wikia.nocookie.net/deadmaze/images/7/74/Dog_sitting.png",
-				"points": 0,
+				"points": "(x/700 @ 35/day)",
 				"locations": [
 					{
 						"id": 5,
@@ -85,7 +85,7 @@ export namespace renownMock {
 				"id": 3,
 				"name": "Dog (1050)",
 				"portrait": "https://vignette.wikia.nocookie.net/deadmaze/images/d/d6/Dog_attack_idle.png",
-				"points": 0,
+				"points": '(x/1050 @ 35/day)',
 				"locations": [
 					{
 						"id": 12,

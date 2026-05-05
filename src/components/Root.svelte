@@ -12,6 +12,7 @@
     import Tabs from "./structure/tabs/Tabs.svelte";
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
     import SideQuestLanding from "./features/sidequest/SideQuestLanding.svelte";
+    import RenownLanding from "./features/renown/RenownLanding.svelte";
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -49,7 +50,7 @@
 			</TabItem>
 			<TabItem index={3} hash='renown'>
 				{#snippet titleSnippet()}<img src='images/tabicon-survivor-notes.png' height="20" alt="" />&nbsp;Renown (<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;Dog){/snippet}
-				I am the content for tab 3
+				<RenownLanding />
 			</TabItem>
 			<TabItem index={4} hash='antonio'>
 				{#snippet titleSnippet()}{#if !$antonioInHeader}<AntonioSummary />{/if}{/snippet}

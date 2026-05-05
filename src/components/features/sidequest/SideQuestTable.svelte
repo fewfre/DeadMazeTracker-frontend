@@ -30,7 +30,6 @@
 					<div class='quests vote-box-list'>
 					{#each zone.quests as quest}
 						{@const { votesUp, votesDown } = quest}
-						
 						{@const goodPassage = votesUp - votesDown > 0}
 			<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$quest["id"]]) || $highestQuests[$quest["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$quest["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$quest["id"]]["server"] ));
 			$passageOnOtherServer = !$passageOnOtherServer ? "" : "<span class='action disabled other-server'><img src='images/flags/{$passageOnOtherServer}.png' height='15' /></span>"; -->

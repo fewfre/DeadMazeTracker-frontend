@@ -20,7 +20,7 @@ export interface FriendshipInfo {
   id: number;
   name: string;
   portrait: string;
-  points: number;
+  points: string;
   locations: FriendshipLocationInfo[];
 }
 
