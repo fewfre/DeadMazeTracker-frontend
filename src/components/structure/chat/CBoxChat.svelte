@@ -2,12 +2,13 @@
 	import { onMount } from 'svelte';
     import ChatFiltersModal from './ChatFiltersModal.svelte';
     import ChatRulesModal from './ChatRulesModal.svelte';
+    import { forceChatBelow } from '../../../stores/bool-localstorage-stores';
 	
-	let showRulesModal = false;
-	let showFiltersModal = false;
+	let showRulesModal = $state(false);
+	let showFiltersModal = $state(false);
 
-	let activeTabIndex = 0;
-	let chatSrc = 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF';
+	let activeTabIndex = $state(0);
+	let chatSrc = $state('https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF');
 
 	const tabs = [
 		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF', label: 'General' },
@@ -35,8 +36,6 @@
 	/////////////////////////////////////
 	// Chat height / resize logic
 	/////////////////////////////////////
-	let forceChatBelow = false;
-	
 	function _getTopOfChat() {
 		const chatAside = document.getElementById('chat_aside');
 		if (!chatAside) return 0;
@@ -58,7 +57,7 @@
 
 		chatAside.style.width = ''; // Use default size
 
-		if (forceChatBelow || chatAside.getBoundingClientRect().top > 200) {
+		if ($forceChatBelow || chatAside.getBoundingClientRect().top > 200) {
 			chatPos.style.position = 'static';
 			chat.setAttribute('height', '550');
 			chatAside.style.width = '100%';
@@ -69,6 +68,11 @@
 			chatPos.style.position = 'fixed';
 		}
 	}
+	
+	$effect(() => {
+		$forceChatBelow; // This needed so that the effect fires whenever this store changes
+		_resizeChat();
+	});
 
 	onMount(() => {
 		_resizeChat();
@@ -85,7 +89,7 @@
 </script>
 
 <aside id="chat_aside">
-<div id="chat_pos" style="position: fixed; width: inherit;">
+<div id="chat_pos">
 	<div id="chat-tabs">
 		{#each tabs as tab, i}
 			<a href={tab.href} class="chat-tab-link" class:active={activeTabIndex === i} onclick={(e) => { e.preventDefault(); handleTabClick(i); }}>

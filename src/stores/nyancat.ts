@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-export const nyancatBodyClass = 'nyancat';
+export const nyanCatBodyClass = 'nyancat';
 
 export const nyanCatEnabled = writable(false);
 

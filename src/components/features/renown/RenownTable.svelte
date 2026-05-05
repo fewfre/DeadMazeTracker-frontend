@@ -58,7 +58,7 @@
 #friend-table>tbody>tr { padding:2px 0; border:2px solid #EEE; }
 #friend-table>tbody>tr>td:nth-of-type(1) { padding-left:5px; padding-right:5px; }
 #friend-table>tbody>tr>td:nth-of-type(2) { padding-right:5px; border-right:1px solid #EEE; position: relative; }
-#friend-table > tbody > tr:nth-of-type(odd) { background: #005500; }
+#friend-table > tbody > tr:nth-of-type(odd) { background: var(--striped-table-row-bg--secondary, #005500); }
 
 #friend-table .npc-portrait {
 	float: left;

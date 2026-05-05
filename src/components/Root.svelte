@@ -1,7 +1,6 @@
 <script lang="ts">
-    import { antonioInHeader, disableBlur, disableMaxWidth } from "../stores/bool-localstorage-stores";
-    import { nyancatBodyClass, nyanCatEnabled } from "../stores/nyancat";
-    import LoginModal from "./features/login/LoginModal.svelte";
+    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth, forceChatBelow } from "../stores/bool-localstorage-stores";
+    import { nyanCatBodyClass, nyanCatEnabled } from "../stores/nyancat";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
     import AntonioSummary from "./features/antonio/AntonioSummary.svelte";
     import SiteFooter from "./structure/SiteFooter.svelte";
@@ -13,6 +12,8 @@
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
     import SideQuestLanding from "./features/sidequest/SideQuestLanding.svelte";
     import RenownLanding from "./features/renown/RenownLanding.svelte";
+    import { browserPoniesDisplayOnSiteBackground, browserPoniesUseTransparentSite } from "../stores/browser-ponies";
+    import NyanCatCursor from "./structure/NyanCatCursor.svelte";
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -23,18 +24,26 @@
 		}
 	}
 	
-	const nyanCatBodyClass = createBodyClassToggle(nyancatBodyClass);
 	const disableMaxWidthBodyClass = createBodyClassToggle("no-max-width");
 	const disableBlurClass = createBodyClassToggle("no-blur");
+	const nyanCatBodyClassToggle = createBodyClassToggle(nyanCatBodyClass);
+	const mlpInBackgroundClass = createBodyClassToggle("mlp-in-background");
+	const mlpMakeSiteSeeThroughClass = createBodyClassToggle("mlp-make-site-see-through");
 </script>
 
-<svelte:body use:nyanCatBodyClass={$nyanCatEnabled} use:disableMaxWidthBodyClass={$disableMaxWidth} use:disableBlurClass={$disableBlur} />
+<svelte:body
+	use:disableMaxWidthBodyClass={$disableMaxWidth}
+	use:disableBlurClass={$disableBlur}
+	use:nyanCatBodyClassToggle={$nyanCatEnabled}
+	use:mlpInBackgroundClass={$browserPoniesDisplayOnSiteBackground}
+	use:mlpMakeSiteSeeThroughClass={$browserPoniesUseTransparentSite}
+/>
 
 <div class="bodyWrapper">
 	{#if $nyanCatEnabled}
-		<div class="nyancat_cursor"></div>
+		<NyanCatCursor />
 	{/if}
-
+	
 	<SiteHeader />
 	
 	<div id="main_two_column_layout">
@@ -59,7 +68,9 @@
 		</Tabs>
 		</div>
 		
-		<CBoxChat />
+		{#if !$disableChat}
+			<CBoxChat />
+		{/if}
 	</div>
 </div>
 <SiteFooter />
@@ -85,6 +96,15 @@
 }
 /* https://css-tricks.com/snippets/css/sticky-footer/ */
 .bodyWrapper:after { content:""; display:block; }
+:global(.mlp-in-background) .bodyWrapper {
+	position:relative;
+	z-index:100000000;
+	background-color:rgba(0,32,12,0.6);
+}
+:global(.mlp-make-site-see-through) .bodyWrapper > :global(*:not(header)) {
+	opacity: 0.1 !important;
+}
+
 :global(footer), .bodyWrapper:after {
 	height: 45px; /* ':after' must be the same height as 'footer' */
 }

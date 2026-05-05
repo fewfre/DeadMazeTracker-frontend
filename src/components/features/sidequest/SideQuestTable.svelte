@@ -69,7 +69,7 @@
 #quest-table>tbody>tr { padding:2px 0; border:2px solid #EEE; }
 #quest-table>tbody>tr>td:nth-of-type(1) { padding-left:5px; }
 #quest-table>tbody>tr>td:nth-of-type(2) { padding-right:5px; border-right:1px solid #EEE; position: relative; }
-#quest-table > tbody > tr:nth-of-type(odd) { background: #005500; }
+#quest-table > tbody > tr:nth-of-type(odd) { background: var(--striped-table-row-bg--secondary, #005500); }
 
 .vote-box-list { display: flex; flex-wrap: wrap; }
 

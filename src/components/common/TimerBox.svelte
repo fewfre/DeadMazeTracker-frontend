@@ -33,12 +33,12 @@
 	let time2String = $state(getTime2String());
 	
 	onMount(() => {
-		const interval = setInterval(() => {
+		const intervalId = setInterval(() => {
 			timeString = getTimeString();
 			time2String = getTime2String();
 		}, 1000);
 		
-		return () => clearInterval(interval);
+		return () => clearInterval(intervalId);
 	});
 </script>
 

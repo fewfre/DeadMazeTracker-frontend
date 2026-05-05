@@ -20,7 +20,7 @@
 		{:else}
 			<h1>
 				NYAN NYAN NYAN
-				<audio id="nyancat_audio" controls loop preload="none" style="border: 1px solid white; position: absolute; margin-left: 10px;"> <source src="images/nyancat.ogg" type="audio/ogg" /> </audio>
+				<audio id="nyancat_audio" controls loop preload="none" volume={0.5} style="border: 1px solid white; position: absolute; margin-left: 10px;"> <source src="images/nyancat.ogg" type="audio/ogg" /> </audio>
 			</h1>
 		{/if}
 		

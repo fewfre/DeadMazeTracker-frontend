@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { BrowserPonies, browserPoniesEnabled, browserPoniesUseTransparentSite, toggleBrowserPonies, toggleBrowserPoniesSiteTransparency } from '../../../../stores/browser-ponies';
+    import { BrowserPonies, browserPoniesEnabled, browserPoniesUseTransparentSite, initBrowserPonies, spawnPonies } from '../../../../stores/browser-ponies';
     import { nyanCatEnabled, toggleNyanCat } from '../../../../stores/nyancat';
     import NavDropdown from './common/NavDropdown.svelte';
     import SwitchVisual from '../../../common/SwitchVisual.svelte';
@@ -20,15 +20,16 @@
 		<li><button onclick={()=>disableMaxWidth.update(v => !v)}><SwitchVisual on={$disableMaxWidth} /> Disable Page Max Width</button></li>
 		<li><button onclick={()=>antonioInHeader.update(v => !v)}><SwitchVisual on={$antonioInHeader} /> Antonio in Header</button></li>
 		<!-- <li><a id="option_export_import_data">Export/Import Data</a></li> -->
-		<li><button id="setting_nyancat" onclick={toggleNyanCat}><SwitchVisual on={$nyanCatEnabled} /> Nyan <span class="nyancat-show">Cat</span></button></li>
+		<li><button id="setting_nyancat" onclick={toggleNyanCat}><SwitchVisual on={$nyanCatEnabled} /> Nyan {#if $nyanCatEnabled}Cat{/if}</button></li>
 		{#if $nyanCatEnabled}
 			<li><a href="http://nyan.cat">^WTF is this?^</a></li>
 		{/if}
 		
 		{#if !$browserPoniesEnabled && !$nyanCatEnabled}
-			<li><button onclick={toggleBrowserPonies}>Friendship is Magic</button></li>
+			<li><button onclick={initBrowserPonies}>Friendship is Magic</button></li>
 		{/if}
 		{#if $browserPoniesEnabled && !$nyanCatEnabled}
+			<li><button onclick={spawnPonies}>Click For More Ponies!</button></li>
 			<li>
 				<div class="list-action-styling">
 					<button class="button" onclick={()=>{ BrowserPonies.start();void(0) }} title="Start">▶</button>
@@ -41,9 +42,9 @@
 			</li>
 			<li>
 				{#if !$browserPoniesUseTransparentSite}
-					<button onclick={toggleBrowserPoniesSiteTransparency}>I can't see the ponies :(</button>
+					<button onclick={() => browserPoniesUseTransparentSite.update(b=>!b)}>I can't see the ponies :(</button>
 				{:else}
-					<button onclick={toggleBrowserPoniesSiteTransparency}>Now I can't see the page; undo!</button>
+					<button onclick={() => browserPoniesUseTransparentSite.update(b=>!b)}>Now I can't see the page; undo!</button>
 				{/if}
 			</li>
 			<li>

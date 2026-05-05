@@ -37,3 +37,20 @@ export function copyToClipboard(value:string) {
 		}
 	});
 }
+
+export async function loadScript(url:string) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+
+        script.onload = () => {
+            resolve(`Script loaded: ${url}`);
+        };
+
+        script.onerror = () => {
+            reject(new Error(`Failed to load script: ${url}`));
+        };
+
+        document.head.appendChild(script);
+    });
+}

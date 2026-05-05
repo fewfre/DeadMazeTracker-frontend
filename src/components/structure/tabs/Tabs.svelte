@@ -159,18 +159,18 @@
 	text-decoration: none;
 	color: #CCC;
 	
-	background: #005600;
+	background: var(--tab-bg-color, #005600);
 	border: 1px solid white;
 	border-bottom: 0;
 	border-radius: 5px 5px 0 0;
 }
 .tab-button:empty { display:none; }
 .tab-button:hover {
-	background: darkgreen;
+	background: var(--tab-bg-color--hover, darkgreen);
 }
 .tab-button.active {
 	cursor:default;
-	background: green;
+	background: var(--tab-bg-color--active, green);
 }
 .tab-button.active, .tab-button:hover {
 	font-size: 130%;
