@@ -6,6 +6,7 @@
     import TimerBox from "../../common/TimerBox.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
+    import AlertBox from "../../common/AlertBox.svelte";
 	
 	const { data, error:listFriendshipsError, mutate } = renownApi.useList();
 	const onRefreshClick = () => { mutate(undefined); };
@@ -53,6 +54,10 @@
 		Renown Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	</div>
+	
+	{#if $listFriendshipsError}
+		<AlertBox type="danger">{$listFriendshipsError?.message}</AlertBox>
+	{/if}
 	
 	{#if !$data}
 		<p>Loading...</p>

@@ -66,7 +66,7 @@ export namespace sideQuestApi {
 		return (await fetch(`${baseUrl}/quest-table-json.php?server=${req.server}`, { method: 'GET' })).json();
 	}
 	export function useList(req:ListSideQuestRequest) {
-		return useSWR<ListSideQuestResponse>(`${swrKeys.list}-${req.server}`, { fetcher: list });
+		return useSWR<ListSideQuestResponse>(`${swrKeys.list}-${req.server}`, { fetcher: ()=>list(req) });
 	}
 	export function refreshList(server:string) { mutate(`${swrKeys.list}-${server}`, undefined) }
 	

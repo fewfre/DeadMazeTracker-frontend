@@ -53,7 +53,7 @@ export namespace antonioApi {
 	
 	export async function getSummary(): Promise<AntonioSummaryResponse> {
 		if(envVars.USE_MOCK_DATA) return antonioMock.summaryResponse;
-		return (await fetch(`${baseUrl}/summary.php`, { method: 'GET' })).json();
+		return (await fetch(`${baseUrl}/summary-json.php`, { method: 'GET' })).json();
 	}
 	export function useGetSummary() {
 		return useSWR<AntonioSummaryResponse>(swrKeys.summary, { fetcher: getSummary, refreshInterval: 60_000 });
