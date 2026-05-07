@@ -1,10 +1,9 @@
-//////////////////////////////
-//#region Types
-
-import { useSWR } from "sswr";
+import { mutate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { antonioMock } from "./mock-data/antonio-mock";
 
+//////////////////////////////
+//#region Types
 //////////////////////////////
 export interface AntonioResourceInfo {
   id: number;
@@ -36,6 +35,10 @@ export type AntonioSummaryResponse = { valid:false } | {
 //////////////////////////////
 //#region API Calls
 //////////////////////////////
+const swrKeys = {
+	list: "list-antonio",
+	summary: "antonio-summary"
+};
 export namespace antonioApi {
 	const baseUrl = `${envVars.API_BASE}trackers/antonio`;
 	
@@ -44,16 +47,18 @@ export namespace antonioApi {
 		return (await fetch(`${baseUrl}/table-json.php`, { method: 'GET' })).json();
 	}
 	export function useList() {
-		return useSWR<ListAntonioResourcesResponse>("list-antonio", { fetcher: list });
+		return useSWR<ListAntonioResourcesResponse>(swrKeys.list, { fetcher: list });
 	}
+	export function refreshList() { mutate(swrKeys.list, undefined) }
 	
 	export async function getSummary(): Promise<AntonioSummaryResponse> {
 		if(envVars.USE_MOCK_DATA) return antonioMock.summaryResponse;
 		return (await fetch(`${baseUrl}/summary.php`, { method: 'GET' })).json();
 	}
 	export function useGetSummary() {
-		return useSWR<AntonioSummaryResponse>("antonio-summary", { fetcher: getSummary, refreshInterval: 60_000 });
+		return useSWR<AntonioSummaryResponse>(swrKeys.summary, { fetcher: getSummary, refreshInterval: 60_000 });
 	}
+	export function refreshSummary() { mutate(swrKeys.summary, undefined) }
 	
 	export async function vote(req: AntonioResourceVoteRequest) : Promise<AntonioResourceVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

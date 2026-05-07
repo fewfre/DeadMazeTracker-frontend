@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { bossTrackerStore } from "../../../stores/trackers/boss-tracker-localstorage-store";
-	const { bossTracker } = bossTrackerStore;
+    import { bossTracker } from "./utils/boss-tracker";
+	const { bossTrackerStore } = bossTracker;
 
 	interface Props {
 		bossImage: string;
-		zone: string | number;
+		zone: number;
 	}
 	let { bossImage, zone } : Props = $props();
-	const bossChecked = $derived($bossTracker.bosses.includes(zone.toString()));
+	const bossChecked = $derived($bossTrackerStore.bosses.includes(zone.toString()));
 </script>
 
 <button
 	aria-label="Toggle boss for zone: {zone} (currently: {bossChecked ? "ON" : "OFF" })"
 	class={['personal-boss', { 'boss-voted': bossChecked }]}
 	style='background-image:url({bossImage});'
-	onclick={() => bossTrackerStore.toggleBossInBossTracker(zone.toString())}
+	onclick={() => bossTracker.toggleBossInBossTracker(zone.toString())}
 ></button>
 
 <style>

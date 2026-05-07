@@ -1,13 +1,16 @@
 <script lang="ts">
-    import { passagesApi } from "../../../api/passages";
-    import { passagesTrackerStore } from "../../../stores/trackers/passages-tracker-localstorage-store";
+    import { type PassageZoneInfo } from "../../../api/passages";
+    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import ImageModal from "../../common/modal/ImageModal.svelte";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
-	const { passageVoteFlags } = passagesTrackerStore;
+    import { passagesVoteHistory } from "./utils/passages-vote-history";
+	const { passageDailyTrackerFlags } = passagesDailyTracker;
+	const { votesHistoryStore } = passagesVoteHistory;
 	
-	const { data } = passagesApi.useList();
+	interface Props { zones:PassageZoneInfo[]; }
+	const { zones }:Props = $props();
 	
 	// interface Props {
 	// 	passagesPromise: Promise<ListPassagesResponse>;
@@ -17,70 +20,75 @@
 	let mapModalImage:string|null = $state(null);
 </script>
 
-{#if !$data}
-	<p>Loading...</p>
-{:else}
-	<table id="zone-table">
-		<thead>
-			<tr>
-				<th colspan="2">Zone</th>
-				<th>Passages</th>
-			</tr>
-		</thead>
-		<tbody>
-		{#each $data.zones as zone}
-			<tr id='zone{zone.id}' class='zone-info' data-id='{zone.id}'>
-				<td><img src='{zone.icon}' width='35' alt='{zone.name}' /></td>
-				<td>
-					{#if zone.bossImage}
-						<PassageZoneBossToggle bossImage={zone.bossImage} zone={zone.id} />
+<table id="zone-table">
+	<thead>
+		<tr>
+			<th colspan="2">Zone</th>
+			<th>Passages</th>
+		</tr>
+	</thead>
+	<tbody>
+	{#each zones as zone}
+		{@const aPassageInZoneHasUpvote = zone.passages.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
+		<tr class='zone-info'>
+			<td><img src='{zone.icon}' width='35' alt='{zone.name}' /></td>
+			<td>
+				{#if zone.bossImage}
+					<PassageZoneBossToggle bossImage={zone.bossImage} zone={zone.id} />
+				{/if}
+				<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
+				<br />
+				<div style='z-index: 1; position: relative; display:inline-block;'>
+					{#if zone.mapLink}
+						<a href='{zone.mapLink}' class='map-link' onclick={(e)=>{ e.preventDefault(); mapModalImage = zone.mapLink; }}>Map</a>
 					{/if}
-					<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
-					<br />
-					<div style='z-index: 1; position: relative; display:inline-block;'>
-						{#if zone.mapLink}
-							<a href='{zone.mapLink}' class='map-link' onclick={(e)=>{ e.preventDefault(); mapModalImage = zone.mapLink; }}>Map</a>
-						{/if}
-					</div>
-				</td>
-				<td>
-					<div class='passages vote-box-list'>
-					{#each zone.passages as passage}
-						{@const { votesUp, votesDown } = passage}
-						
-						{@const goodPassage = votesUp - votesDown > 0}
-						{@const tooltip = [
-							passage.openTwoRoundsAgo ? "This passage was open two rounds ago." : "",
-							passage.openOneRoundAgo ? "This passage was open in the previous round. As the same SP is never open two rounds in a row, this will very likely not be open this round." : "",
-							goodPassage ? "This passage has a positive vote total, indicating it is most likely open." : "",
-							passage.broken ? "This passage is currently broken, and does not appear to open anymore." : "",
-						].filter(s=>!!s)[0]}
-						<VoteBox
-							title={passage.name}
-							subtitle={passage.altName}
-							active={goodPassage}
-							grayOut={passage.openOneRoundAgo}
-							lightlyGrayOut={passage.openTwoRoundsAgo}
-							broken={passage.broken}
-							flagged={passagesTrackerStore.hasFlag($passageVoteFlags, passage.id)}
-							actions={[
-								{ type:"flag", onclick:()=>{ passagesTrackerStore.toggleFlag(passage.id) } },
-								!!tooltip ? { type:'info', tooltip:tooltip } : { type:'blank' },
-							]}
-						>
-							{#snippet voteButtons()}
-								<VoteButtons upVotes={votesUp} downVotes={votesDown} onUpVoteClicked={()=>{}} onDownVoteClicked={()=>{}} />
-							{/snippet}
-						</VoteBox>
-					{/each}
-					</div>
-				</td>
-			</tr>
-		{/each}
-		</tbody>
-	</table>
-	<ImageModal bind:modalImage={mapModalImage} />
-{/if}
+				</div>
+			</td>
+			<td>
+				<div class='passages vote-box-list'>
+				{#each zone.passages as passage}
+					{@const { id, votesUp, votesDown } = passage}
+					
+					{@const goodPassage = votesUp - votesDown > 0}
+					{@const tooltip = [
+						passage.openTwoRoundsAgo ? "This passage was open two rounds ago." : "",
+						passage.openOneRoundAgo ? "This passage was open in the previous round. As the same SP is never open two rounds in a row, this will very likely not be open this round." : "",
+						goodPassage ? "This passage has a positive vote total, indicating it is most likely open." : "",
+						passage.broken ? "This passage is currently broken, and does not appear to open anymore." : "",
+					].filter(s=>!!s)[0]}
+					<VoteBox
+						title={passage.name}
+						subtitle={passage.altName}
+						active={goodPassage}
+						grayOut={passage.openOneRoundAgo}
+						lightlyGrayOut={passage.openTwoRoundsAgo}
+						broken={passage.broken}
+						flagged={$passageDailyTrackerFlags.idsFlagged[id]}
+						actions={[
+							{ type:"flag", onclick:()=>{ passagesDailyTracker.toggleFlag(id) } },
+							!!tooltip ? { type:'info', tooltip:tooltip } : { type:'blank' },
+						]}
+					>
+						{#snippet voteButtons()}
+							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+								disableUpvote={aPassageInZoneHasUpvote !== false && aPassageInZoneHasUpvote !== id}
+								onUpVoteClicked={()=>{
+									passagesVoteHistory.toggleVote(id, "up");
+								}}
+								onDownVoteClicked={()=>{
+									passagesVoteHistory.toggleVote(id, "down");
+								}}
+							/>
+						{/snippet}
+					</VoteBox>
+				{/each}
+				</div>
+			</td>
+		</tr>
+	{/each}
+	</tbody>
+</table>
+<ImageModal bind:modalImage={mapModalImage} />
 
 <style>
 #zone-table { border-collapse:collapse; }

@@ -1,10 +1,10 @@
-//////////////////////////////
-//#region Types
 
-import { useSWR } from "sswr";
+import { mutate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { renownMock } from "./mock-data/renown-mock";
 
+//////////////////////////////
+//#region Types
 //////////////////////////////
 export interface FriendshipLocationInfo {
   id: number;
@@ -37,6 +37,9 @@ export interface RenownDogVoteResponse {}
 //////////////////////////////
 //#region API Calls
 //////////////////////////////
+const swrKeys = {
+	list: "list-friends"
+};
 export namespace renownApi {
 	const baseUrl = `${envVars.API_BASE}trackers/renown`;
 	
@@ -45,8 +48,9 @@ export namespace renownApi {
 		return (await fetch(`${baseUrl}/friendship-table-json.php`, { method: 'GET' })).json();
 	}
 	export function useList() {
-		return useSWR<ListRenownDogResponse>("list-friends", { fetcher: list });
+		return useSWR<ListRenownDogResponse>(swrKeys.list, { fetcher: list });
 	}
+	export function refreshList() { mutate(swrKeys.list, undefined) }
 	
 	export async function vote(req: RenownDogVoteRequest) : Promise<RenownDogVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

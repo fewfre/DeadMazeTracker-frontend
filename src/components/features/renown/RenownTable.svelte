@@ -1,12 +1,14 @@
 <script lang="ts">
     import type { FriendshipInfo } from "../../../api/renown";
-    import { friendTrackerStore } from "../../../stores/trackers/friend-tracker-localstorage-store";
+    import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
-	const { friendsVoteFlags } = friendTrackerStore;
-
-	interface Props { list:FriendshipInfo[]; }
-	const { list }:Props = $props();
+    import { friendshipVoteHistory } from "./utils/friendship-vote-history";
+	const { friendshipDailyTrackerFlags } = friendshipDailyTracker;
+	const { votesHistoryStore } = friendshipVoteHistory;
+	
+	interface Props { friends:FriendshipInfo[]; }
+	const { friends }:Props = $props();
 </script>
 
 <table id="friend-table">
@@ -17,18 +19,22 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#each list as friend}
-		<tr id='friend{friend.id}' class='friend-info' data-id='{friend.id}'>
+	{#each friends as friend}
+		{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
+		<tr class='friend-info'>
 			<td><div class='npc-portrait' style='background-image:url({friend.portrait});'></div></td>
 			<td>
-				<button class='personal-daily' class:active={friendTrackerStore.hasFlag($friendsVoteFlags, friend.id)} onclick={() => friendTrackerStore.toggleFlag(friend.id)} aria-label='Personal friend tracker toggle' aria-pressed={friendTrackerStore.hasFlag($friendsVoteFlags, friend.id)}></button>
+				<button class='personal-daily' class:active={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
+					onclick={() => friendshipDailyTracker.toggleFlag(friend.id)}
+					aria-label='Personal friend tracker toggle' aria-pressed={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
+				></button>
 				<a href='http://deadmaze.wikia.com/wiki/{friend.name}'>{friend.name}</a>
 				<br /><small style='white-space: nowrap;'>{friend.points}</small>
 			</td>
 			<td>
 				<div class='friends vote-box-list'>
 				{#each friend.locations as quest}
-					{@const { votesUp, votesDown } = quest}
+					{@const { id, votesUp, votesDown } = quest}
 					{@const goodPassage = votesUp - votesDown > 0}
 					
 					<VoteBox
@@ -41,7 +47,15 @@
 						]}
 					>
 						{#snippet voteButtons()}
-							<VoteButtons upVotes={votesUp} downVotes={votesDown} onUpVoteClicked={()=>{}} onDownVoteClicked={()=>{}} />
+							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+								disableUpvote={aLocationInFriendshipHasUpvote !== false && aLocationInFriendshipHasUpvote !== id}
+								onUpVoteClicked={()=>{
+									friendshipVoteHistory.toggleVote(id, "up");
+								}}
+								onDownVoteClicked={()=>{
+									friendshipVoteHistory.toggleVote(id, "down");
+								}}
+							/>
 						{/snippet}
 					</VoteBox>
 				{/each}

@@ -4,7 +4,8 @@
     import RenownTable from "./RenownTable.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
-    import { friendTrackerStore } from "../../../stores/trackers/friend-tracker-localstorage-store";
+    import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
+    import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
 	
 	const { data, error:listFriendshipsError, mutate } = renownApi.useList();
 	const onRefreshClick = () => { mutate(undefined); };
@@ -21,12 +22,12 @@
 		<strong>
 			Personal Daily Tracker
 			<span id="personalDailyReset" style="float:right;">
-				<button onclick={() => friendTrackerStore.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
+				<button onclick={() => friendshipDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
 			</span>
 		</strong>
 		<p>
 			Click the ⚐ icon to mark friendship tasks completed for the day
-			<abbr title="This is for YOUR personal use; this info is not sent to the server or shared with others.">ⓘ</abbr>.
+			<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 			Flags auto-reset at 3am UTC (when all quests refresh).
 		</p>
 	</div>
@@ -43,7 +44,7 @@
 	<p>
 		<b class="instr">Renown Table:</b>
 		A <b>green background</b> shows a location with a positive vote total.
-		<abbr title="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)">ⓘ</abbr>
+		<InfoIconTooltip tooltip="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)" />
 	</p>
 </section>
 <section>
@@ -56,7 +57,7 @@
 	{#if !$data}
 		<p>Loading...</p>
 	{:else}
-		<RenownTable list={$data.friends} />
+		<RenownTable friends={$data.friends} />
 	{/if}
 </section>
 

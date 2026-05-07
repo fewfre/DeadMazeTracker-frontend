@@ -6,7 +6,7 @@
     import AntonioTable from "./AntonioTable.svelte";
     import AlertBox from "../../common/AlertBox.svelte";
 
-	const { error:listAntonioError, mutate } = antonioApi.useList();
+	const { data, error:listAntonioError, mutate } = antonioApi.useList();
 	
 	const onRefreshClick = () => {
 		mutate(undefined);
@@ -33,5 +33,9 @@
 		<AlertBox type="danger">{$listAntonioError?.message}</AlertBox>
 	{/if}
 	
-	<AntonioTable />
+	{#if !$data}
+		<p>Loading...</p>
+	{:else}
+		<AntonioTable resources={$data.resources} />
+	{/if}
 </section>

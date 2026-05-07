@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export namespace bossTrackerStore {
+export namespace bossTracker {
 	const BOSS_TRACKER_LS_KEY = "dm-tracker-personal-bosses";
 	
 	function getLocalStorageObject() {
@@ -18,21 +18,18 @@ export namespace bossTrackerStore {
 		};
 	}
 	
-	export const bossTracker = writable(getLocalStorageObject());
-
-	bossTracker.subscribe(value => {
-		localStorage.setItem(BOSS_TRACKER_LS_KEY, JSON.stringify(value));
-	});
+	export const bossTrackerStore = writable(getLocalStorageObject());
+	bossTrackerStore.subscribe(value => { localStorage.setItem(BOSS_TRACKER_LS_KEY, JSON.stringify(value)); });
 
 	export function toggleBossInBossTracker(boss:string) {
-		bossTracker.update(data => ({ ...data,
+		bossTrackerStore.update(data => ({ ...data,
 			bosses: data.bosses.includes(boss) ? data.bosses.filter(b => b !== boss) : [...data.bosses, boss],
 			lastVoteDate: new Date()
 		}));
 	}
 
 	export function resetBossTracker() {
-		bossTracker.set({ lastVoteDate: null, bosses: [] });
+		bossTrackerStore.set({ lastVoteDate: null, bosses: [] });
 	}
 }
 

@@ -38,7 +38,7 @@ export function copyToClipboard(value:string) {
 	});
 }
 
-export async function loadScript(url:string) {
+export function loadScript(url:string) {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = url;
@@ -53,4 +53,21 @@ export async function loadScript(url:string) {
 
         document.head.appendChild(script);
     });
+}
+
+export function sleep(ms:number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export async function setOnTheHourInterval(callback:()=>void) {
+	// We get the current time and the time at the next hour mark
+	var d = new Date(), h = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours() + 1, 0, 0, 0),
+	// Find the difference so we can wait for that long
+	e = h.getTime() - d.getTime();
+	if (e > 100) { // some arbitrary time period to avoid it being to small and getting in a loop
+		await sleep(e);
+		await sleep(5000); // Wait a little bit to make sure data reset
+		callback();
+		setOnTheHourInterval(callback);
+	}
 }

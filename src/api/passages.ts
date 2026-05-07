@@ -1,10 +1,10 @@
-//////////////////////////////
-//#region Types
 
-import { useSWR } from "sswr";
+import { mutate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { passagesMock } from "./mock-data/passages-mock";
 
+//////////////////////////////
+//#region Types
 //////////////////////////////
 export interface PassageZoneInfo {
   id: number;
@@ -38,6 +38,9 @@ export interface PassageVoteResponse {}
 //////////////////////////////
 //#region API Calls
 //////////////////////////////
+const swrKeys = {
+	list: "list-passages"
+};
 export namespace passagesApi {
 	const baseUrl = `${envVars.API_BASE}trackers/passages`;
 	
@@ -46,8 +49,9 @@ export namespace passagesApi {
 		return (await fetch(`${baseUrl}/zone-table-json.php`, { method: 'GET' })).json();
 	}
 	export function useList() {
-		return useSWR<ListPassagesResponse>("list-passages", { fetcher: list });
+		return useSWR<ListPassagesResponse>(swrKeys.list, { fetcher: list });
 	}
+	export function refreshList() { mutate(swrKeys.list, undefined) }
 	
 	export async function vote(req: PassageVoteRequest) : Promise<PassageVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

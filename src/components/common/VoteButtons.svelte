@@ -1,30 +1,30 @@
 <script lang="ts">
 	interface Props {
-		upVotes:number, upActive?:boolean, onUpVoteClicked:()=>void,
-		downVotes:number, downActive?:boolean, onDownVoteClicked:()=>void
+		upVotes:number, onUpVoteClicked:()=>void, disableUpvote?:boolean,
+		downVotes:number, onDownVoteClicked:()=>void
+		active?: "up"|"down"|undefined,
 	}
 	let {
-		upVotes=0, upActive=false, onUpVoteClicked,
-		downVotes=0, downActive=false, onDownVoteClicked
+		upVotes=0, onUpVoteClicked, disableUpvote,
+		downVotes=0, onDownVoteClicked,
+		active
 	} : Props = $props();
 	
 	const upClicked = () => {
-		upVotes += (upActive ? -1 : 1);
-		upActive = !upActive;
+		upVotes += (active === 'up' ? -1 : 1);
 		onUpVoteClicked();
 	}
 	
 	const downClicked = () => {
-		downVotes += (downActive ? -1 : 1);
-		downActive = !downActive;
+		downVotes += (active === 'down' ? -1 : 1);
 		onDownVoteClicked();
 	}
 </script>
 
 
 <div class='vote-buttons-group'>
-	<button class={['vote-up', { active:upActive }]} onclick={upClicked}>✔ {upVotes}</button>
-	<button class={['vote-down', { active:downActive }]} onclick={downClicked}>✘ {downVotes}</button>
+	<button class={['vote-up', { active:active === 'up' }]} disabled={disableUpvote || active === 'down'} onclick={upClicked}>✔ {upVotes}</button>
+	<button class={['vote-down', { active:active === 'down' }]} disabled={active === 'up'} onclick={downClicked}>✘ {downVotes}</button>
 </div>
 
 <style>

@@ -1,67 +1,72 @@
 <script lang="ts">
     import { type QuestZoneInfo } from "../../../api/sidequest";
-    import { sideQuestTrackerStore } from "../../../stores/trackers/sidequest-tracker-localstorage-store";
+    import { sideQuestDailyTracker } from "./utils/side-quest-daily-tracker";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
-	const { sideQuestVoteFlags } = sideQuestTrackerStore;
+    import { sideQuestVoteHistory } from "./utils/side-quest-vote-history";
+	const { sideQuestDailyTrackerStore } = sideQuestDailyTracker;
+	const { votesHistoryStore } = sideQuestVoteHistory;
 
-	interface Props { list:QuestZoneInfo[] | undefined; }
-	const { list }:Props = $props();
+	interface Props { zones:QuestZoneInfo[]; }
+	const { zones }:Props = $props();
 </script>
 
-{#if !list}
-	<p>Loading...</p>
-{:else}
-	<table id="quest-table">
-		<thead>
-			<tr>
-				<th colspan="2">Zone</th>
-				<th>Side Quests</th>
-			</tr>
-		</thead>
-		<tbody>
-		{#each list as zone}
-			<tr id='zone{zone.id}' class='zone-info' data-id={zone.id}>
-				<td><img src={zone.icon} alt="" width='35' /></td>
-				<td>
-					<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
-				</td>
-				<td>
-					<div class='quests vote-box-list'>
-					{#each zone.quests as quest}
-						{@const { votesUp, votesDown } = quest}
-						{@const goodPassage = votesUp - votesDown > 0}
-			<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$quest["id"]]) || $highestQuests[$quest["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$quest["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$quest["id"]]["server"] ));
-			$passageOnOtherServer = !$passageOnOtherServer ? "" : "<span class='action disabled other-server'><img src='images/flags/{$passageOnOtherServer}.png' height='15' /></span>"; -->
+<table id="quest-table">
+	<thead>
+		<tr>
+			<th colspan="2">Zone</th>
+			<th>Side Quests</th>
+		</tr>
+	</thead>
+	<tbody>
+	{#each zones as zone}
+		<tr class='zone-info'>
+			<td><img src={zone.icon} alt="" width='35' /></td>
+			<td>
+				<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
+			</td>
+			<td>
+				<div class='quests vote-box-list'>
+				{#each zone.quests as quest}
+					{@const { id, votesUp, votesDown } = quest}
+					{@const goodPassage = votesUp - votesDown > 0}
+		<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$quest["id"]]) || $highestQuests[$quest["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$quest["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$quest["id"]]["server"] ));
+		$passageOnOtherServer = !$passageOnOtherServer ? "" : "<span class='action disabled other-server'><img src='images/flags/{$passageOnOtherServer}.png' height='15' /></span>"; -->
+
+					<!-- {@const mapType = !quest.npcMap && quest.npcMap.indexOf("//fewfre.com/dmmap") !== -1 ? "iframe" : "image"} -->
+							<!-- $mapType = !empty($quest["npc_map"]) && strpos($quest["npc_map"], "//fewfre.com/dmmap") !== false ? "iframe" : "image";
+		$map = !empty($quest["npc_map"]) ? " <a href='{$quest["npc_map"]}' class='action action-map-icon' data-featherlight='{$mapType}' data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'></a>" : ""; -->
+					<VoteBox
+						title={quest.npcName}
+						active={goodPassage}
+						flagged={$sideQuestDailyTrackerStore.idsFlagged[id]}
+						actions={[
+							{ type:"flag", onclick:()=>{ sideQuestDailyTracker.toggleFlag(id) } },
+							{ type:"map", link:quest.npcMap }
+						]}
+					>
+						{#snippet voteButtons()}
+							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+								onUpVoteClicked={()=>{
+									sideQuestVoteHistory.toggleVote(id, "up");
+								}}
+								onDownVoteClicked={()=>{
+									sideQuestVoteHistory.toggleVote(id, "down");
+								}}
+							/>
+						{/snippet}
 	
-						<!-- {@const mapType = !quest.npcMap && quest.npcMap.indexOf("//fewfre.com/dmmap") !== -1 ? "iframe" : "image"} -->
-								<!-- $mapType = !empty($quest["npc_map"]) && strpos($quest["npc_map"], "//fewfre.com/dmmap") !== false ? "iframe" : "image";
-			$map = !empty($quest["npc_map"]) ? " <a href='{$quest["npc_map"]}' class='action action-map-icon' data-featherlight='{$mapType}' data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'></a>" : ""; -->
-						<VoteBox
-							title={quest.npcName}
-							active={goodPassage}
-							flagged={sideQuestTrackerStore.hasFlag($sideQuestVoteFlags, quest.id)}
-							actions={[
-								{ type:"flag", onclick:()=>{ sideQuestTrackerStore.toggleFlag(quest.id) } },
-								{ type:"map", link:quest.npcMap }
-							]}
-						>
-							{#snippet voteButtons()}
-								<VoteButtons upVotes={votesUp} downVotes={votesDown} onUpVoteClicked={()=>{}} onDownVoteClicked={()=>{}} />
-							{/snippet}
-		
-							{#snippet addonLeft()}
-								<div class='npc-portrait' style='background-image:url({quest.npcPortrait});'></div>
-							{/snippet}
-						</VoteBox>
-					{/each}
-					</div>
-				</td>
-			</tr>
-		{/each}
-		</tbody>
-	</table>
-{/if}
+						{#snippet addonLeft()}
+							<div class='npc-portrait' style='background-image:url({quest.npcPortrait});'></div>
+						{/snippet}
+					</VoteBox>
+				{/each}
+				</div>
+			</td>
+		</tr>
+	{/each}
+	</tbody>
+</table>
 
 <style>
 #quest-table { border-collapse:collapse; }

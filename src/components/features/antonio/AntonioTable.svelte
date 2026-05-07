@@ -1,23 +1,37 @@
 <script lang="ts">
-	import { antonioApi } from "../../../api/antonio";
+	import { antonioApi, type AntonioResourceInfo } from "../../../api/antonio";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
-
-	const { data } = antonioApi.useList();
+    import { antonioVoteHistory } from "./utils/antonio-vote-history";
+	const { votesHistoryStore } = antonioVoteHistory;
+	
+	interface Props { resources:AntonioResourceInfo[]; }
+	const { resources }:Props = $props();
+	
+	const aResourceHasUpvote = $derived( resources.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false );
 </script>
 
 <div class='tracker-data-row-table vote-box-list'>
 <!-- <table id="tracker-table" class='tracker-data-row-table'>
 <tr> -->
 
-{#each $data?.resources as resource}
+{#each resources as resource}
+	{@const { id, votesUp, votesDown } = resource}
 	<VoteBox
 		title={resource.name}
 		active={resource.isGood}
 		best={resource.isBest}
 	>
 		{#snippet voteButtons()}
-			<VoteButtons upVotes={resource.votesUp} downVotes={resource.votesDown} onUpVoteClicked={()=>{}} onDownVoteClicked={()=>{}} />
+			<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+				disableUpvote={aResourceHasUpvote !== false && aResourceHasUpvote !== id}
+				onUpVoteClicked={()=>{
+					antonioVoteHistory.toggleVote(id, "up");
+				}}
+				onDownVoteClicked={()=>{
+					antonioVoteHistory.toggleVote(id, "down");
+				}}
+			/>
 		{/snippet}
 		
 		{#snippet addonLeft()}

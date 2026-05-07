@@ -1,14 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { passagesApi } from "../../../api/passages";
-    import { bossTrackerStore } from "../../../stores/trackers/boss-tracker-localstorage-store";
-    import { passagesTrackerStore } from "../../../stores/trackers/passages-tracker-localstorage-store";
+    import { bossTracker } from "./utils/boss-tracker";
+    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import PassagesTable from "./PassagesTable.svelte";
     import AlertBox from "../../common/AlertBox.svelte";
+    import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
 	
-	const { error:listPassagesError, mutate } = passagesApi.useList();
+	const { data, error:listPassagesError, mutate } = passagesApi.useList();
 	
 	const onRefreshClick = () => {
 		mutate(undefined);
@@ -26,12 +27,12 @@
 			<strong>
 				Personal SP Log
 				<span id="personalDailyReset" style="float:right;">
-					<button onclick={() => passagesTrackerStore.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
+					<button onclick={() => passagesDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
 				</span>
 			</strong>
 			<p>
 				Click the ⚐ icon to mark passages completed for the day
-				<abbr title="This is for YOUR personal use; this info is not sent to the server or shared with others.">ⓘ</abbr>.
+				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 				Flags auto-reset at 5am UTC (when all containers refresh).
 			</p>
 		</div>
@@ -39,12 +40,12 @@
 			<strong>
 				Personal Boss Log
 				<span id="personalBossReset" style="float:right;">
-					<button onclick={() => bossTrackerStore.resetBossTracker()}>Reset</button>
+					<button onclick={() => bossTracker.resetBossTracker()}>Reset</button>
 				</span>
 			</strong>
 			<p>
 				Click the boss image next to zone name to mark it for the week
-				<abbr title="This is for YOUR personal use; this info is not sent to the server or shared with others.">ⓘ</abbr>.
+				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 				Doesn't auto reset.
 			</p>
 		</div>
@@ -62,14 +63,14 @@
 	<p>
 		<b class="instr">Requirements:</b>
 		<!-- Join the international (EN) server
-		<abbr title="Only make reports from the international server. This is to avoid conflicting reports, and also make it easier to form groups. You can change your server when logging in by clicking the country flag.">ⓘ</abbr>
+		<InfoIconTooltip tooltip="Only make reports from the international server. This is to avoid conflicting reports, and also make it easier to form groups. You can change your server when logging in by clicking the country flag." />
 		<button id="memoButton">how?</button>
 		&bull; -->
 		Read <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style="text-decoration:underline;">the wiki</a> for basics and locations
-		<abbr title="Don't pester people about locations / basics without first doing a little research!">ⓘ</abbr>
+		<InfoIconTooltip tooltip="Don't pester people about locations / basics without first doing a little research!" />
 		&bull;
 		Join <code>/chat sp</code> in-game
-		<abbr title="This chat is useful for making real time reports, forming groups, and getting help.">ⓘ</abbr>
+		<InfoIconTooltip tooltip="This chat is useful for making real time reports, forming groups, and getting help." />
 		&bull;
 		In-game sp chat is <b>only</b> for sp discussions; for other topics use <code>/chat boss</code>, <code>/chat dm-trade</code>, <code>/chat dm-help</code>, etc
 	</p>
@@ -82,14 +83,14 @@
 	<p style="color:white; font-weight:bold; background:rgba(255,255,255,0.1); padding:2px;">
 		Please join the international (EN) server, and only make reports from that server.
 		This is to avoid conflicting reports.
-		You can change your server when logining in by clicking the country flag.
+		You can change your server when logging in by clicking the country flag.
 	</p>
 	-->
 	
 	<p>
 		<b class="instr">Locations Table:</b>
 		A <b>green background</b> shows a passage with a positive vote total.
-		<abbr title="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)">ⓘ</abbr>
+		<InfoIconTooltip tooltip="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)" />
 		&bull;
 		Passages with a "∅" icon had the highest vote total for their zone the prior hour and shouldn't be open again.
 	</p>
@@ -107,7 +108,11 @@
 		<AlertBox type="danger">{$listPassagesError?.message}</AlertBox>
 	{/if}
 	
-	<PassagesTable />
+	{#if !$data}
+		<p>Loading...</p>
+	{:else}
+		<PassagesTable zones={$data.zones} />
+	{/if}
 </section>
 
 <style>

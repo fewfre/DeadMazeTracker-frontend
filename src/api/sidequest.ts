@@ -1,10 +1,9 @@
-//////////////////////////////
-//#region Types
-
-import { useSWR } from "sswr";
+import { mutate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { sideQuestMock } from "./mock-data/sidequest-mock";
 
+//////////////////////////////
+//#region Types
 //////////////////////////////
 export interface QuestInfo {
   id: number;
@@ -56,6 +55,9 @@ export interface SideQuestVoteRestartResponse {}
 //////////////////////////////
 //#region API Calls
 //////////////////////////////
+const swrKeys = {
+	list: "list-side-quests"
+};
 export namespace sideQuestApi {
 	const baseUrl = `${envVars.API_BASE}trackers/sidequest`;
 	
@@ -64,8 +66,9 @@ export namespace sideQuestApi {
 		return (await fetch(`${baseUrl}/quest-table-json.php?server=${req.server}`, { method: 'GET' })).json();
 	}
 	export function useList(req:ListSideQuestRequest) {
-		return useSWR<ListSideQuestResponse>("list-side-quests-"+req.server, { fetcher: list });
+		return useSWR<ListSideQuestResponse>(`${swrKeys.list}-${req.server}`, { fetcher: list });
 	}
+	export function refreshList(server:string) { mutate(`${swrKeys.list}-${server}`, undefined) }
 	
 	export async function vote(req: SideQuestVoteRequest) : Promise<SideQuestVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

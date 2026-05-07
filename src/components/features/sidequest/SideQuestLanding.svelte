@@ -8,18 +8,11 @@
     import SideQuestServerSelectModal from "./SideQuestServerSelectModal.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import SideQuestRestartControl from "./SideQuestRestartControl.svelte";
-    import { sideQuestTrackerStore } from "../../../stores/trackers/sidequest-tracker-localstorage-store";
+    import { sideQuestDailyTracker } from "./utils/side-quest-daily-tracker";
+    import { sideQuestServerStore } from "./utils/side-quest-server-store";
+    import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
 	
-	const SIDE_QUEST_MEGA_SERVER_LS_KEY = "sideQuestMegaServer";
-	export const server = writable((()=>{
-		let lang = localStorage.getItem(SIDE_QUEST_MEGA_SERVER_LS_KEY);
-		const validServers = ["en", "e2", "fr", "br", "es", "tr", "pl", "ru", "cn", "no", "hu", "nl", "ro", "id", "de", "ar", "ph", "jp", "fi", "it", "lt", "he", "cz", "hr", "bg", "lv", "et", "pt"];
-		if(!validServers.includes(lang || "")) { lang = "en"; }
-		return lang;
-	})());
-	server.subscribe(value => { localStorage.setItem(SIDE_QUEST_MEGA_SERVER_LS_KEY, value); });
-	
-	const { data, error:listSideQuestsError, mutate } = sideQuestApi.useList({ server:$server });
+	const { data, error:listSideQuestsError, mutate } = sideQuestApi.useList({ server:$sideQuestServerStore });
 	let showServerSelectModal = $state(false);
 	
 	const onRefreshClick = () => {
@@ -37,12 +30,12 @@
 			<strong>
 				Personal Daily Tracker
 				<span id="personalDailyReset" style="float:right;">
-					<button onclick={() => sideQuestTrackerStore.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
+					<button onclick={() => sideQuestDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
 				</span>
 			</strong>
 			<p>
 				Click the ⚐ icon to mark quests completed for the day
-				<abbr title="This is for YOUR personal use; this info is not sent to the server or shared with others.">ⓘ</abbr>.
+				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 				Flags auto-reset at 3am UTC (when all quests refresh).
 			</p>
 		</div>
@@ -61,14 +54,14 @@
 	<p>
 		<b class="instr">Quests Table:</b>
 		A <b>green background</b> shows a quest with a positive vote total.
-		<abbr title="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)">ⓘ</abbr>
+		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
 	</p>
 </section>
 <section>
 	<div style="overflow-x:hidden;">
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
 		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
-			<img src={`images/flags/${$server === 'br' ? 'br_mega' : $server}.png`} alt={$server} width={43} />
+			<img src={`images/flags/${$sideQuestServerStore === 'br' ? 'br_mega' : $sideQuestServerStore}.png`} alt={$sideQuestServerStore} width={43} />
 		</button>
 		Quests Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
@@ -78,9 +71,13 @@
 	{/if}
 	</div>
 	
-	<SideQuestRestartControl restartData={$data?.restartTracker} />
-	<SideQuestTable list={$data?.zones} />
-	<SideQuestServerSelectModal bind:showModal={showServerSelectModal} onServerChange={(newServer) => { server.set(newServer); }} />
+	{#if !$data}
+		<p>Loading...</p>
+	{:else}
+		<SideQuestRestartControl restartData={$data?.restartTracker} />
+		<SideQuestTable zones={$data?.zones} />
+	{/if}
+	<SideQuestServerSelectModal bind:showModal={showServerSelectModal} onServerChange={(newServer) => { sideQuestServerStore.set(newServer); }} />
 </section>
 
 <style>
