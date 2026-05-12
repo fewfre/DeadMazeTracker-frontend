@@ -21,6 +21,18 @@ export namespace passagesDailyTracker {
 	export function resetTracker() {
 		passageDailyTrackerFlags.set({ idsFlagged: {}, timestamp: getNewFormattedTimestamp() });
 	}
+		
+	//////////////////////////////
+	// Export / Import as json
+	//////////////////////////////
+	type ExportImportProps = { secretPassagePersonal?:any }
+	export function exportData() : ExportImportProps {
+		return { secretPassagePersonal: get(passageDailyTrackerFlags) }
+	}
+	export function importData(pData:ExportImportProps) {
+		if(pData.secretPassagePersonal) { passageDailyTrackerFlags.set(pData.secretPassagePersonal); }
+		passagesApi.refreshList();
+	}
 }
 
 setOnTheHourInterval(()=>{

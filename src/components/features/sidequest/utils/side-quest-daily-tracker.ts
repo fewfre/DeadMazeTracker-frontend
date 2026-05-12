@@ -22,6 +22,18 @@ export namespace sideQuestDailyTracker {
 	export function resetTracker() {
 		sideQuestDailyTrackerStore.set({ idsFlagged: {}, timestamp: getNewFormattedTimestamp() });
 	}
+	
+	//////////////////////////////
+	// Export / Import as json
+	//////////////////////////////
+	type ExportImportProps = { sideQuestPersonal?:any }
+	export function exportData() : ExportImportProps {
+		return { sideQuestPersonal: get(sideQuestDailyTrackerStore) }
+	}
+	export function importData(pData:ExportImportProps) {
+		if(pData.sideQuestPersonal) { sideQuestDailyTrackerStore.set(pData.sideQuestPersonal); }
+		sideQuestApi.refreshList( get(sideQuestServerStore) );
+	}
 }
 
 setOnTheHourInterval(()=>{

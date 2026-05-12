@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 export namespace bossTracker {
 	const BOSS_TRACKER_LS_KEY = "dm-tracker-personal-bosses";
@@ -31,10 +31,18 @@ export namespace bossTracker {
 	export function resetBossTracker() {
 		bossTrackerStore.set({ lastVoteDate: null, bosses: [] });
 	}
+		
+	//////////////////////////////
+	// Export / Import as json
+	//////////////////////////////
+	type ExportImportProps = { bossPersonal?:any }
+	export function exportData() : ExportImportProps {
+		return { bossPersonal: get(bossTrackerStore) }
+	}
+	export function importData(pData:ExportImportProps) {
+		if(pData.bossPersonal) { bossTrackerStore.set(pData.bossPersonal); }
+	}
 }
-
-
-
 
 
 	// // var _bossTrackerTimestamp = _getDailyTrackerTimestamp();

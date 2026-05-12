@@ -1,11 +1,14 @@
 <script lang="ts">
     import { copyToClipboard } from "../../../utils/helpers";
-    import AlertBox from "../../common/AlertBox.svelte";
+    import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import Modal from "../../common/modal/Modal.svelte";
+    import { bossTracker } from "../../features/passages/utils/boss-tracker";
+    import { passagesDailyTracker } from "../../features/passages/utils/passages-daily-tracker";
+    import { sideQuestDailyTracker } from "../../features/sidequest/utils/side-quest-daily-tracker";
 
 	let { showModal = $bindable() } = $props();
 	
-	let alert : { type:"success" | "warning" | "danger" | "info" | "primary", message: string } = $state(null);
+	let alert : { type:AlertType, message: string } | null = $state(null);
 	let importInputValue = $state("");
 
 	$effect(() => {
@@ -16,41 +19,27 @@
 	});
 	
 	function exportData() {
-		// var data = {
-		// 	sp_personal_daily: {
-		// 		time: _dailyTrackerTimestamp,
-		// 		data: _personalDailyHistory,
-		// 	},
-		// 	boss_personal: {
-		// 		data: _personalBossHistory,
-		// 	},
-		// 	sidequest_personal: {
-		// 		time: Cookies.getJSON("sidequest_personalDailyTime"),
-		// 		data: Cookies.getJSON("sidequest_personalDaily"),
-		// 	},
-		// };
-		// return btoa(JSON.stringify(data));
-		return btoa(JSON.stringify( window.tabber.doDataExport() ));
+		return btoa(JSON.stringify({
+			...passagesDailyTracker.exportData(),
+			...bossTracker.exportData(),
+			...sideQuestDailyTracker.exportData(),
+		}));
 	}
 	
-	function importData(pString) {
-		
+	function importData(pString:string) {
 		var data = JSON.parse(atob(pString));
-		// if(data.sp_personal_daily) {
-		// 	_dailyTrackerTimestamp = data.sp_personal_daily.time;
-		// 	_personalDailyHistory = data.sp_personal_daily.data;
-		// 	_savePersonalDailyHistory();
-		// }
-		// if(data.boss_personal) {
-		// 	_personalBossHistory = data.boss_personal.data;
-		// 	_savePersonalBossHistory();
-		// }
-		// if(data.sidequest_personal) {
-		// 	Cookies.set("sidequest_personalDailyTime", data.sidequest_personal.time, { expires: 1 });
-		// 	Cookies.set("sidequest_personalDaily", data.sidequest_personal.data, { expires: 1 });
-		// }
-		// refreshTable();
-		window.tabber.doDataImport(data)
+		passagesDailyTracker.importData(data);
+		bossTracker.importData(data);
+		sideQuestDailyTracker.importData(data);
+	}
+	
+	function onCopy() {
+		copyToClipboard( exportData() ).then(() => {
+			alert = { type:"success", message:"Data copied to clipboard" };
+		})
+		.catch((error:Error) => {
+			alert = { type:"danger", message:`Error copying to clipboard: ${error.message ?? 'unknown'}` };
+		});
 	}
 	
 	function onPaste(e:ClipboardEvent & { currentTarget: EventTarget & HTMLInputElement; }) {
@@ -82,10 +71,10 @@
 	</p>
 	
 	{#if alert}
-		<AlertBox type={alert.type}>{alert.message}</AlertBox>
+		<AlertBox type={alert.type} onClose={()=>(alert = null)}>{alert.message}</AlertBox>
 	{/if}
 	<label for="export_import_export">Export:</label>
-	<button id="export_import_export" onclick={() => copyToClipboard( exportData() )}>Copy to Clipboard</button>
+	<button id="export_import_export" onclick={onCopy}>Copy to Clipboard</button>
 	&bull;
 	<label for="export_import_input">Import:</label>
 	<input id="export_import_input" placeholder="Paste here" bind:value={importInputValue} onpaste={onPaste} onclick={() => (importInputValue = "")} />

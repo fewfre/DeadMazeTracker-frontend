@@ -1,13 +1,17 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
 
-	interface Props { type:'success'|'warning'|'danger'|'info'|'primary', onclick?:()=>void; children:Snippet }
-	let { type, onclick, children } : Props = $props();
+	export type AlertType = 'success'|'warning'|'danger'|'info'|'primary';
+	interface Props { type:AlertType, children:Snippet, onClose?:() => void; }
+	let { type, children, onClose } : Props = $props();
 </script>
 
-<button class={['alert', 'alert-'+type]} onclick={onclick}>
+<div class={['alert', 'alert-'+type]}>
 	{@render children()}
-</button>
+	{#if onClose}
+		<button type="button" class="alert-close" onclick={onClose} aria-label="Dismiss alert">&times;</button>
+	{/if}
+</div>
 
 <style>
 /* Alert box - https://codepen.io/uiswarup/pen/RwNraeW */
@@ -28,7 +32,7 @@
 		box-shadow: 0px 0px 2px #259c08;
 		color: #0ad406;
 		
-		&:hover { background-color: rgba(7, 149, 66, 0.35); }
+		&.clickable:hover { background-color: rgba(7, 149, 66, 0.35); }
 	}
 	&.alert-warning {
 		border: 1px solid rgba(241, 142, 6, 0.81);
@@ -36,7 +40,7 @@
 		box-shadow: 0px 0px 2px #ffb103;
 		color: #ffb103;
 		
-		&:hover { background-color: rgba(220, 128, 1, 0.33); }
+		&.clickable:hover { background-color: rgba(220, 128, 1, 0.33); }
 	}
 	&.alert-danger {
 		border: 1px solid rgba(241, 6, 6, 0.81);
@@ -44,7 +48,7 @@
 		box-shadow: 0px 0px 2px #ff0303;
 		color: #ff0303;
 		
-		&:hover { background-color: rgba(220, 17, 1, 0.33); }
+		&.clickable:hover { background-color: rgba(220, 17, 1, 0.33); }
 	}
 	&.alert-info {
 		border: 1px solid rgba(6, 44, 241, 0.46);
@@ -52,7 +56,7 @@
 		box-shadow: 0px 0px 2px #0396ff;
 		color: #0396ff;
 		
-		&:hover { background-color: rgba(7, 73, 149, 0.35); }
+		&.clickable:hover { background-color: rgba(7, 73, 149, 0.35); }
 	}
 	&.alert-primary {
 		border: 1px solid rgba(6, 241, 226, 0.81);
@@ -60,7 +64,24 @@
 		box-shadow: 0px 0px 2px #03fff5;
 		color: #03d0ff;
 		
-		&:hover { background-color: rgba(1, 204, 220, 0.33); }
+		&.clickable:hover { background-color: rgba(1, 204, 220, 0.33); }
 	}
+}
+
+.alert-close {
+	position: absolute;
+	top: 0.25rem;
+	right: 0.5rem;
+	border: none;
+	background: transparent;
+	color: inherit;
+	font-size: 1.2rem;
+	line-height: 1;
+	cursor: pointer;
+	padding: 0;
+}
+
+.alert-close:hover {
+	opacity: 0.75;
 }
 </style>
