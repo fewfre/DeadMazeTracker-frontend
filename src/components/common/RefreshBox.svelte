@@ -1,10 +1,16 @@
 <script lang="ts">
-	interface Props { onRefreshClick:()=>void; onAutoRefreshToggled:()=>void; }
-	let { onRefreshClick, onAutoRefreshToggled } : Props = $props();
+	interface Props { onRefreshClick:()=>void; onAutoRefreshToggled:()=>void; loading?:boolean; }
+	let { onRefreshClick, onAutoRefreshToggled, loading } : Props = $props();
 </script>
 
 <div id="refreshCont">
-	<button id="refresh" onclick={onRefreshClick}>Refresh</button> -
+	<button id="refresh" onclick={onRefreshClick} disabled={loading}>
+		{#if loading}
+			<img src='images/loading-dots.gif' width='43' alt='Loading...' />
+		{:else}
+			Refresh
+		{/if}
+	</button> &bull;
 	<label><input id="autoRefreshCheckbox" type="checkbox" onchange={()=>onAutoRefreshToggled()} /><abbr title="Your setting will be stored in a cookie">Auto Refresh</abbr></label>
 	<label id="autoRefreshValueCont" style="display:none;"> : <input id="autoRefreshValue" type="number" step="any" min="0" value="1" required /> Minutes</label>
 </div>

@@ -12,7 +12,7 @@
     import { sideQuestServerStore } from "./utils/side-quest-server-store";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
 	
-	const { data, error:listSideQuestsError, mutate } = sideQuestApi.useList({ server:$sideQuestServerStore });
+	const { data, error:listSideQuestsError, mutate, isFetching } = sideQuestApi.useList({ server:$sideQuestServerStore });
 	let showServerSelectModal = $state(false);
 	
 	const onRefreshClick = () => {
@@ -63,7 +63,7 @@
 		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
 			<img src={`images/flags/${$sideQuestServerStore === 'br' ? 'br_mega' : $sideQuestServerStore}.png`} alt={$sideQuestServerStore} width={43} />
 		</button>
-		Quests Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Quests Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	
 	{#if $listSideQuestsError}

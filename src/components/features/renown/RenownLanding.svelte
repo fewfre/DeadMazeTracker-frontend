@@ -8,7 +8,7 @@
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import AlertBox from "../../common/AlertBox.svelte";
 	
-	const { data, error:listFriendshipsError, mutate } = renownApi.useList();
+	const { data, error:listFriendshipsError, mutate, isFetching } = renownApi.useList();
 	const onRefreshClick = () => { mutate(undefined); };
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
@@ -51,7 +51,7 @@
 <section>
 	<div style="overflow-x:hidden;">
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Renown Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Renown Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	</div>
 	

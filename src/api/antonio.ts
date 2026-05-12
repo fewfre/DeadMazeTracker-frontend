@@ -1,6 +1,9 @@
-import { mutate, useSWR } from "sswr";
+import { revalidate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { antonioMock } from "./mock-data/antonio-mock";
+import { sleep } from "../utils/helpers";
+import { writable } from "svelte/store";
+import { useSwrFetch } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -47,18 +50,21 @@ export namespace antonioApi {
 		return (await fetch(`${baseUrl}/table-json.php`, { method: 'GET' })).json();
 	}
 	export function useList() {
-		return useSWR<ListAntonioResourcesResponse>(swrKeys.list, { fetcher: list });
+		return useSwrFetch(swrKeys.list, list);
 	}
-	export function refreshList() { mutate(swrKeys.list, undefined) }
+	export function refreshList() {
+		revalidate(swrKeys.list);
+		revalidate(swrKeys.summary); // Also refresh summary since summary of list
+	}
 	
 	export async function getSummary(): Promise<AntonioSummaryResponse> {
 		if(envVars.USE_MOCK_DATA) return antonioMock.summaryResponse;
 		return (await fetch(`${baseUrl}/summary-json.php`, { method: 'GET' })).json();
 	}
 	export function useGetSummary() {
-		return useSWR<AntonioSummaryResponse>(swrKeys.summary, { fetcher: getSummary, refreshInterval: 60_000 });
+		return useSwrFetch(swrKeys.summary, getSummary, { refreshInterval: 60_000 });
 	}
-	export function refreshSummary() { mutate(swrKeys.summary, undefined) }
+	export function refreshSummary() { revalidate(swrKeys.summary) }
 	
 	export async function vote(req: AntonioResourceVoteRequest) : Promise<AntonioResourceVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

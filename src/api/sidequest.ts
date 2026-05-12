@@ -1,6 +1,7 @@
-import { mutate, useSWR } from "sswr";
+import { revalidate, useSWR } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { sideQuestMock } from "./mock-data/sidequest-mock";
+import { useSwrFetch } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -66,9 +67,9 @@ export namespace sideQuestApi {
 		return (await fetch(`${baseUrl}/quest-table-json.php?server=${req.server}`, { method: 'GET' })).json();
 	}
 	export function useList(req:ListSideQuestRequest) {
-		return useSWR<ListSideQuestResponse>(`${swrKeys.list}-${req.server}`, { fetcher: ()=>list(req) });
+		return useSwrFetch(`${swrKeys.list}-${req.server}`, ()=>list(req));
 	}
-	export function refreshList(server:string) { mutate(`${swrKeys.list}-${server}`, undefined) }
+	export function refreshList(server:string) { revalidate(`${swrKeys.list}-${server}`) }
 	
 	export async function vote(req: SideQuestVoteRequest) : Promise<SideQuestVoteResponse> {
 		return fetch(`${baseUrl}/vote.php`, {

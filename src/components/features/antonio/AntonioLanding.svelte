@@ -6,11 +6,8 @@
     import AntonioTable from "./AntonioTable.svelte";
     import AlertBox from "../../common/AlertBox.svelte";
 
-	const { data, error:listAntonioError, mutate } = antonioApi.useList();
-	
-	const onRefreshClick = () => {
-		mutate(undefined);
-	};
+	const { data, error:listAntonioError, revalidate, isFetching } = antonioApi.useList();
+	const onRefreshClick = () => revalidate();
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
@@ -26,7 +23,7 @@
 </section>
 <section>
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Resource List <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Resource List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	
 	{#if $listAntonioError}

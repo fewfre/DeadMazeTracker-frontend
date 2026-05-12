@@ -6,14 +6,11 @@
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import PassagesTable from "./PassagesTable.svelte";
-    import AlertBox from "../../common/AlertBox.svelte";
+    import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
 	
-	const { data, error:listPassagesError, mutate } = passagesApi.useList();
-	
-	const onRefreshClick = () => {
-		mutate(undefined);
-	};
+	const { data, error:listPassagesError, revalidate, isFetching } = passagesApi.useList();
+	const onRefreshClick = () => revalidate();
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
@@ -57,7 +54,7 @@
 	</p>
 	<!--
 		The purpose of this page is to let people mark what passages are currently open or closed.
-		This is a simple script, and other than reseting every hour requires input by the community to be useful.
+		This is a simple script, and other than resetting every hour requires input by the community to be useful.
 		Don't make false reports!
 	-->
 	<p>
@@ -90,7 +87,7 @@
 	<p>
 		<b class="instr">Locations Table:</b>
 		A <b>green background</b> shows a passage with a positive vote total.
-		<InfoIconTooltip tooltip="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)" />
+		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
 		&bull;
 		Passages with a "∅" icon had the highest vote total for their zone the prior hour and shouldn't be open again.
 	</p>
@@ -98,7 +95,7 @@
 <section>
 	<!-- <div style="overflow-x:hidden;"> -->
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Locations Table <RefreshBox onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Locations Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	<!-- </div> -->
 	
