@@ -45,9 +45,4 @@
 p {
 	margin: 12px 0;
 }
-#login_modal {
-	display: none;
-	max-width: 500px;
-	margin-top: 3px;
-}
 </style>

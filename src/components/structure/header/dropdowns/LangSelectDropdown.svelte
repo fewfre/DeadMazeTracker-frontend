@@ -19,7 +19,7 @@
 	<ul>
 		{#each langList as langData}
 			<NavMenuListItem>
-				<button onclick={() => { siteLang.set(langData.code); window.location.reload(); }}>
+				<button onclick={() => { siteLang.set(langData.code); }}>
 					<img src={langData.flag} width="20" alt={langData.code}>
 					{langData.name}
 				</button>

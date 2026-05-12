@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { antonioApi, type AntonioResourceInfo } from "../../../api/antonio";
+    import { ptBrI18n } from "../../../i18n/pt-br";
+    import { siteLang } from "../../../stores/string-localstorage-stores";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import { antonioVoteHistory } from "./utils/antonio-vote-history";
@@ -9,6 +11,12 @@
 	const { resources }:Props = $props();
 	
 	const aResourceHasUpvote = $derived( resources.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false );
+	
+	const i18n:Record<string, string> = $derived($siteLang === 'pt-br' ? ptBrI18n : {});
+	
+	function getResourceName(name:string) {
+		return i18n[`resource.${name}`] ?? name;
+	}
 </script>
 
 <div class='tracker-data-row-table vote-box-list'>
@@ -18,7 +26,7 @@
 {#each resources as resource}
 	{@const { id, votesUp, votesDown } = resource}
 	<VoteBox
-		title={resource.name}
+		title={getResourceName(resource.name)}
 		active={resource.isGood}
 		best={resource.isBest}
 	>

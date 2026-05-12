@@ -12,7 +12,7 @@
 	let activeIndex = $state(1);
 	let tabs = $state(new Map<number, { titleSnippet: Snippet | undefined; content: () => Snippet | undefined; hash?: string }>());
 
-	const tabsContext: TabsContextType = $derived({
+	const tabsContext: TabsContextType = {
 		registerTab: (index: number, titleSnippet: Snippet | undefined, content: () => Snippet | undefined, hash?: string) => {
 			tabs.set(index, { titleSnippet, content, hash });
 			tabs = new Map(tabs); // Trigger reactivity
@@ -20,11 +20,13 @@
 		setActiveIndex: (index: number) => {
 			activeIndex = index;
 		},
-		tabs,
+		get tabs() {
+			return tabs;
+		},
 		get activeIndex() {
 			return activeIndex;
 		}
-	});
+	};
 	setTabsContext(tabsContext);
 
 	const getIndexFromHash = (hash: string) => {
@@ -104,7 +106,7 @@
 		{#each sortedTabs as tab (tab.index)}
 			{#if activeIndex === tab.index}
 				<div class="tab-pane">
-					{@render tab.content()()}
+					{@render tab.content()?.()}
 				</div>
 			{/if}
 		{/each}
