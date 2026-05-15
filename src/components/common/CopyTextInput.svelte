@@ -81,7 +81,6 @@
 		border-left: none;
 	}
 	.label {
-		flex-grow: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;

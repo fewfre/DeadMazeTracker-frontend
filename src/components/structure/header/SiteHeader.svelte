@@ -100,7 +100,7 @@
 		gap: 5px;
 		padding: 4px 5px 0;
 	}
-	#subheader :global(*:first-child) {
+	#subheader :global(> *:first-child) {
 		flex: 1;
 	}
 	#subheader :global(.timer-cont) {
