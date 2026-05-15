@@ -1,6 +1,5 @@
 import { get, writable } from 'svelte/store';
-import { setOnTheHourInterval } from '../../../../utils/helpers';
-import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
+import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, setReoccurringEventInterval, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
 
 export namespace bossTracker {
 	const BOSS_TRACKER_LS_KEY = "dm-tracker-personal-bosses";
@@ -34,9 +33,6 @@ export namespace bossTracker {
 	}
 }
 
-setOnTheHourInterval(() => {
-	const currentTimestamp = get(bossTracker.bossTrackerStore).timestamp;
-	if (currentTimestamp != bossTracker.getNewFormattedTimestamp()) {
-		bossTracker.resetTracker();
-	}
+setReoccurringEventInterval(bossTracker.resetOccurrence, () => get(bossTracker.bossTrackerStore).timestamp, () => {
+	bossTracker.resetTracker();
 });

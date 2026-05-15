@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
 import { writable } from "svelte/store";
+import { setOnTheHourInterval } from "./helpers";
 
 dayjs.extend(utc);
 
@@ -55,25 +56,13 @@ export function createComparisonTimestamp(occurrence:ReoccurringEventProps) {
 	}
 }
 
-// // https://stackoverflow.com/a/37399351/1411473
-// export function getDateWithUTCOffset(inputTzOffset: number, options?:{ weekdayOffset?:number }): Date {
-// 	const now = new Date(); // get the current time
-
-// 	const currentTzOffset = -now.getTimezoneOffset() / 60 // in hours, i.e. -4 in NY
-// 	const deltaTzOffset = inputTzOffset - currentTzOffset; // timezone diff
-
-// 	var nowTimestamp = now.getTime(); // get the number of milliseconds since unix epoch
-// 	var deltaTzOffsetMilli = deltaTzOffset * 1000 * 60 * 60; // convert hours to milliseconds (tzOffsetMilli*1000*60*60)
-// 	var outputDate = new Date(nowTimestamp + deltaTzOffsetMilli) // your new Date object with the timezone offset applied.
-
-// 	if(options?.weekdayOffset !== undefined) {
-// 		const currentWeekday = outputDate.getDay();
-// 		const daysToAdd = (options.weekday - currentWeekday + 7) % 7;
-// 		outputDate.setDate(outputDate.getDate() + daysToAdd);
-// 	}
-	
-// 	return outputDate;
-// }
+export function setReoccurringEventInterval(occurrence:ReoccurringEventProps, getComparisonTimestamp:()=>string, callback:()=>void) {
+	return setOnTheHourInterval(()=>{
+		if(getComparisonTimestamp() != createComparisonTimestamp(occurrence)) {
+			callback();
+		}
+	});
+}
 
 //////////////////////////////////
 // Tracker

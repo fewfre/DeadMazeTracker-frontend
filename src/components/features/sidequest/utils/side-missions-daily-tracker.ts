@@ -1,8 +1,7 @@
 import { get, writable } from 'svelte/store';
-import { setOnTheHourInterval } from '../../../../utils/helpers';
-import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
-import { sideMissionsServerStore } from './side-missions-server-store';
 import { sideMissionApi } from '../../../../api/side-missions';
+import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, setReoccurringEventInterval, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
+import { sideMissionsServerStore } from './side-missions-server-store';
 import { sideMissionsVoteHistory } from './side-missions-vote-history';
 
 export namespace sideMissionsDailyTracker {
@@ -38,10 +37,6 @@ export namespace sideMissionsDailyTracker {
 	}
 }
 
-setOnTheHourInterval(()=>{
-	const currentTimestamp = get(sideMissionsDailyTracker.sideQuestDailyTrackerStore).timestamp;
-	if(currentTimestamp != sideMissionsDailyTracker.getNewFormattedTimestamp()) {
-		sideMissionsDailyTracker.resetTracker();
-		sideMissionApi.refreshList( get(sideMissionsServerStore) );
-	}
+setReoccurringEventInterval(sideMissionsDailyTracker.resetOccurrence, () => get(sideMissionsDailyTracker.sideQuestDailyTrackerStore).timestamp, () => {
+	sideMissionsDailyTracker.resetTracker()
 });

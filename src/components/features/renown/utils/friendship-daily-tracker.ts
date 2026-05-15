@@ -1,7 +1,6 @@
 import { get, writable } from 'svelte/store';
-import { setOnTheHourInterval } from '../../../../utils/helpers';
-import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
 import { renownApi } from '../../../../api/renown';
+import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, setReoccurringEventInterval, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
 import { friendshipVoteHistory } from './friendship-vote-history';
 
 export namespace friendshipDailyTracker {
@@ -25,10 +24,7 @@ export namespace friendshipDailyTracker {
 	}
 }
 
-setOnTheHourInterval(()=>{
-	const currentTimestamp = get(friendshipDailyTracker.friendshipDailyTrackerFlags).timestamp;
-	if(currentTimestamp != friendshipDailyTracker.getNewFormattedTimestamp()) {
-		friendshipDailyTracker.resetTracker();
-		renownApi.refreshList();
-	}
+setReoccurringEventInterval(friendshipDailyTracker.resetOccurrence, () => get(friendshipDailyTracker.friendshipDailyTrackerFlags).timestamp, () => {
+	friendshipDailyTracker.resetTracker();
+	renownApi.refreshList();
 });
