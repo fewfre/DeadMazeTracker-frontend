@@ -1,7 +1,8 @@
 import { revalidate } from "sswr";
+import { get, type Readable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
-import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse } from "./utils/api-helpers";
 import { sideMissionMock } from "./mock-data/side-missions-mock";
+import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -66,14 +67,16 @@ const swrKeys = {
 export namespace sideMissionApi {
 	const baseUrl = `${envVars.API_BASE}/side-missions`;
 	
-	export async function list(req:ListSideMissionsRequest): Promise<ListSideMissionsResponse> {
+	export async function list(req:Readable<ListSideMissionsRequest>): Promise<ListSideMissionsResponse> {
 		if(envVars.USE_MOCK_DATA) return sideMissionMock.listSideMissionsResponse;
-		return (await fetch(`${baseUrl}/list-side-missions?server=${req.server}`, { method: 'GET' })).json();
+		return (await fetch(`${baseUrl}/list-side-missions?server=${get(req).server}`, { method: 'GET' })).json();
 	}
-	export function useList(req:ListSideMissionsRequest) {
-		return useSwrFetch(`${swrKeys.list}-${req.server}`, ()=>list(req));
+	export function useList(req:Readable<ListSideMissionsRequest>, options:SWRFetchOptionsExposed={}) {
+		const resp = useSwrFetch(swrKeys.list, ()=>list(req), options);
+		req.subscribe(() => resp.mutate(undefined)); // Trigger refresh if request changes
+		return resp;
 	}
-	export function refreshList(server:string) { revalidate(`${swrKeys.list}-${server}`) }
+	export function refreshList(server:string) { revalidate(swrKeys.list) }
 	
 	export async function vote(req: SideMissionVoteRequest) : Promise<SideMissionVoteResponse> {
 		return standardJsonPostFetch(`${baseUrl}/vote`, req);

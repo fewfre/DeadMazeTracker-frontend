@@ -1,6 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { writable } from "svelte/store";
     import { sideMissionApi } from "../../../api/side-missions";
+    import { sideMissionsAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
@@ -12,7 +14,9 @@
     import { sideMissionsServerStore } from "./utils/side-missions-server-store";
     import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
 	
-	const { data, error:listSideMissionsError, revalidate, isFetching, mutate } = sideMissionApi.useList({ server:$sideMissionsServerStore });
+	const req = writable({ server:$sideMissionsServerStore });
+	$effect(() => { req.set({ server:$sideMissionsServerStore }); });
+	const { data, error:listSideMissionsError, revalidate, isFetching, mutate } = sideMissionApi.useList(req, { refreshInterval: sideMissionsAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
@@ -63,7 +67,7 @@
 		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
 			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={43} />
 		</button>
-		Side Missions <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Side Missions <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$sideMissionsAutoRefreshInterval} />
 	</h2>
 	</div>
 	

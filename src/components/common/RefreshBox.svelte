@@ -1,6 +1,7 @@
 <script lang="ts">
-	interface Props { onRefreshClick:()=>void; onAutoRefreshToggled:()=>void; loading?:boolean; }
-	let { onRefreshClick, onAutoRefreshToggled, loading } : Props = $props();
+	interface Props { onRefreshClick:()=>void; autoRefreshInterval:number|null; loading?:boolean; }
+	let { onRefreshClick, autoRefreshInterval=$bindable(), loading } : Props = $props();
+	let checked = $derived(!!autoRefreshInterval);
 </script>
 
 <div id="refreshCont">
@@ -11,8 +12,17 @@
 			Refresh
 		{/if}
 	</button> &bull;
-	<label><input id="autoRefreshCheckbox" type="checkbox" onchange={()=>onAutoRefreshToggled()} /><abbr title="Your setting will be stored in a cookie">Auto Refresh</abbr></label>
-	<label id="autoRefreshValueCont" style="display:none;"> : <input id="autoRefreshValue" type="number" step="any" min="0" value="1" required /> Minutes</label>
+	<label><input id="autoRefreshCheckbox" type="checkbox" checked={!!autoRefreshInterval} onchange={()=>(autoRefreshInterval = !checked ? 600_000 : null)} /><abbr title="This value will be remembered across page loads">Auto Refresh</abbr></label>
+	<label id="autoRefreshValueCont" style:display={!checked ? 'none' : ''}> :
+		<input id="autoRefreshValue" type="number" required step="1" min="0.1"
+		value={(autoRefreshInterval ?? 0)/60_000}
+		onchange={(e)=>{
+			const val = (e.target as HTMLInputElement).valueAsNumber;
+			if(!val || !isFinite(val) || isNaN(val)) return autoRefreshInterval = null;
+			autoRefreshInterval = Math.max(6_000, val*60_000);
+		}} />
+		Minutes
+	</label>
 </div>
 
 <style>
@@ -38,7 +48,7 @@
 	line-height: 25px;
 	border-radius: 5px;
 	margin: 5px 0 5px 10px;
-	min-width: 90px;
+	min-width: 86px;
 }
 #refresh:before {
 	content:"";

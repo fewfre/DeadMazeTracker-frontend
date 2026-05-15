@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { passagesApi } from "../../../api/passages";
+    import { passagesAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
@@ -11,7 +12,7 @@
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
 	
-	const { data, error:listPassagesError, revalidate, isFetching, mutate } = passagesApi.useList();
+	const { data, error:listPassagesError, revalidate, isFetching, mutate } = passagesApi.useList({}, { refreshInterval: passagesAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
@@ -117,7 +118,7 @@
 <section>
 	<!-- <div style="overflow-x:hidden;"> -->
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Locations <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Locations <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$passagesAutoRefreshInterval} />
 	</h2>
 	<!-- </div> -->
 	

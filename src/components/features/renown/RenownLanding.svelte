@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { renownApi } from "../../../api/renown";
+    import { renownAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
@@ -10,7 +11,7 @@
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import { friendshipVoteHistory } from "./utils/friendship-vote-history";
 	
-	const { data, error:listFriendshipsError, revalidate, isFetching, mutate } = renownApi.useList();
+	const { data, error:listFriendshipsError, revalidate, isFetching, mutate } = renownApi.useList({}, { refreshInterval: renownAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
@@ -55,7 +56,7 @@
 <section>
 	<div style="overflow-x:hidden;">
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Friendships <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Friendships <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$renownAutoRefreshInterval} />
 	</h2>
 	</div>
 	

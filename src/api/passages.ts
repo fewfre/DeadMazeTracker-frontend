@@ -2,7 +2,7 @@
 import { revalidate } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { passagesMock } from "./mock-data/passages-mock";
-import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse } from "./utils/api-helpers";
+import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -49,8 +49,8 @@ export namespace passagesApi {
 		if(envVars.USE_MOCK_DATA) return passagesMock.createListPassagesResponse;
 		return (await fetch(`${baseUrl}/list-passages`, { method: 'GET' })).json();
 	}
-	export function useList() {
-		return useSwrFetch(swrKeys.list, list);
+	export function useList(req:ListPassagesRequest, options:SWRFetchOptionsExposed={}) {
+		return useSwrFetch(swrKeys.list, list, options);
 	}
 	export function refreshList() { revalidate(swrKeys.list, list) }
 	

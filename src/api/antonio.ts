@@ -1,7 +1,8 @@
 import { revalidate } from "sswr";
+import { readable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
 import { antonioMock } from "./mock-data/antonio-mock";
-import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse } from "./utils/api-helpers";
+import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -47,8 +48,8 @@ export namespace antonioApi {
 		if(envVars.USE_MOCK_DATA) return antonioMock.listResourcesResponse;
 		return (await fetch(`${baseUrl}/list-resources`, { method: 'GET' })).json();
 	}
-	export function useList() {
-		return useSwrFetch(swrKeys.list, list);
+	export function useList(req: ListAntonioResourcesRequest, options:SWRFetchOptionsExposed={}) {
+		return useSwrFetch(swrKeys.list, list, options);
 	}
 	export function refreshList() {
 		revalidate(swrKeys.list);
@@ -60,7 +61,7 @@ export namespace antonioApi {
 		return (await fetch(`${baseUrl}/summary`, { method: 'GET' })).json();
 	}
 	export function useGetSummary() {
-		return useSwrFetch(swrKeys.summary, getSummary, { refreshInterval: 60_000 });
+		return useSwrFetch(swrKeys.summary, getSummary, { refreshInterval: readable(60_000) });
 	}
 	export function refreshSummary() { revalidate(swrKeys.summary) }
 	

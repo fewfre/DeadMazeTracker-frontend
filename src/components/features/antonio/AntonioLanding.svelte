@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { antonioApi } from "../../../api/antonio";
+    import { antonioAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
@@ -8,7 +9,7 @@
     import AntonioTable from "./AntonioTable.svelte";
     import { antonioVoteHistory } from "./utils/antonio-vote-history";
 
-	const { data, error:listAntonioError, revalidate, isFetching, mutate } = antonioApi.useList();
+	const { data, error:listAntonioError, revalidate, isFetching, mutate } = antonioApi.useList({}, { refreshInterval: antonioAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
@@ -27,7 +28,7 @@
 </section>
 <section>
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Resources List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Resources List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$antonioAutoRefreshInterval} />
 	</h2>
 	
 	{#if alert}

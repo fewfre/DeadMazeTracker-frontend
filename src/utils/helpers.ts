@@ -1,3 +1,4 @@
+
 export const padStart = (str:string|number, max: number=2) => str.toString().padStart(max, "0");
 
 export function copyToClipboard(value:string) {

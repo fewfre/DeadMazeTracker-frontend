@@ -1,17 +1,27 @@
 import { useSWR } from "sswr";
-import { writable } from "svelte/store";
+import { writable, type Readable } from "svelte/store";
 import { getToken } from "../../components/structure/auth/auth0-helpers";
 import { envVars } from "../../utils/env-vars";
+import { useSvelteInterval } from "../../utils/hooks";
 
-export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:Omit<Partial<SWROptions<T>>, 'fetcher'>) => {
-	let isFetching = writable(false);
-	const swrResult = useSWR<T>(key, {
-		...options,
-		fetcher: () => {
-			isFetching.set(true);
-			return fetcher().finally(() => isFetching.set(false));
-		}
-	});
+export type SWRFetchOptions<T> = Partial<Omit<SWROptions<T>, 'fetcher'> & { refreshInterval?:Readable<number|null|undefined> }>;
+export type SWRFetchOptionsExposed<T=any> = Pick<SWRFetchOptions<T>, 'refreshInterval'>;
+export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:SWRFetchOptions<T>) => {
+  let isFetching = writable(false);
+  let intervalId: NodeJS.Timeout | null = null;
+
+  const swrResult = useSWR<T>(key, {
+    ...options,
+    fetcher: async () => {
+      isFetching.set(true);
+      try {
+        return await fetcher();
+      } finally {
+        isFetching.set(false);
+      }
+    }
+  });
+	if(options?.refreshInterval) useSvelteInterval(() =>(swrResult.mutate(undefined)), options.refreshInterval);
 	
 	return {
 		...swrResult,
