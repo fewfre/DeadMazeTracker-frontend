@@ -1,4 +1,8 @@
 export const ptBrI18n = {
+  "tab.secretPassages": "Passagens secretas",
+  "tab.sideMissions": "Missões secundárias",
+  "tab.doggy": "Catioros",
+	
   "resource.Scrap metal": "Sucata",
   "resource.Wood": "Madeira",
   "resource.Tools": "Ferramentas",
