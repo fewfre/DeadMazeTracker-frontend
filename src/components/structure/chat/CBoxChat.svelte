@@ -3,32 +3,26 @@
     import ChatFiltersModal from './ChatFiltersModal.svelte';
     import ChatRulesModal from './ChatRulesModal.svelte';
     import { forceChatBelow } from '../../../stores/bool-localstorage-stores';
+    import { envVars } from '../../../utils/env-vars';
 	
 	let showRulesModal = $state(false);
 	let showFiltersModal = $state(false);
 
-	let activeTabIndex = $state(0);
-	let chatSrc = $state('https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF');
-
+	const cboxBase = `https://www2.cbox.ws/box/?boxid=${envVars.CBOX_BOXID}&boxtag=xY8OvF`;
 	const tabs = [
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF', label: 'General' },
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF&tid=5&tkey=17ccf67c30d09bf7', label: 'Trade' },
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF&tid=6&tkey=30ae46fac3de7f81', label: 'Boss' },
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF&tid=2&tkey=892b3205d36a083c', label: '🇬🇧' },
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF&tid=3&tkey=b5c130c9c339148b', label: '🇪🇸' },
-		{ href: 'https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF&tid=4&tkey=feb06400f051a730', label: '🇧🇷' },
+		{ href: cboxBase, label: 'General' },
+		{ href: `${cboxBase}&tid=5&tkey=17ccf67c30d09bf7`, label: 'Trade' },
+		{ href: `${cboxBase}&tid=6&tkey=30ae46fac3de7f81`, label: 'Boss' },
+		{ href: `${cboxBase}&tid=2&tkey=892b3205d36a083c`, label: '🇬🇧', flag:true },
+		{ href: `${cboxBase}&tid=3&tkey=b5c130c9c339148b`, label: '🇪🇸', flag:true },
+		{ href: `${cboxBase}&tid=4&tkey=feb06400f051a730`, label: '🇧🇷', flag:true },
+		// { href: 'https://projects.fewfre.com/a801/deadmaze/trackerchat/`, label: 'BlaB! AX' },
 	];
-	// <div id="chat-tabs">
-	// <a href="https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF" class="chat-tab-link">Cbox</a>
-	// <a href="https://projects.fewfre.com/a801/deadmaze/trackerchat/" class="chat-tab-link">BlaB! AX</a>
-	// <a href="https://www6.cbox.ws/box/?boxid=822633&boxtag=BiGAu1" class="chat-tab-link">Cbox (Free version)</a>
-	// <a href="https://titanembeds.com/embed/558398920066334730?defaultchannel=558398920066334732&theme=MetroEdge&scrollbartheme=inset-3" class="chat-tab-link">Discord</a>
-	// <a href="https://titanembeds.com/embed/558398920066334730?defaultchannel=558399041860272130&lang=en&theme=MetroEdge&scrollbartheme=inset-3" class="chat-tab-link">D-English</a>
-	// <a href="https://titanembeds.com/embed/558398920066334730?defaultchannel=558399150698528779&lang=pt_BR&theme=MetroEdge&scrollbartheme=inset-3" class="chat-tab-link">D-Português</a>
-	// <a href="https://www2.cbox.ws/box/?boxid=2386998&boxtag=xY8OvF" class="chat-tab-link">Cbox (old)</a>
-	// </div>
 
-	function handleTabClick(index) {
+	let activeTabIndex = $state(0);
+	let chatSrc = $state(tabs[0].href);
+
+	function handleTabClick(index:number) {
 		activeTabIndex = index;
 		chatSrc = tabs[index].href;
 	}
@@ -92,7 +86,7 @@
 <div id="chat_pos">
 	<div id="chat-tabs">
 		{#each tabs as tab, i}
-			<a href={tab.href} class="chat-tab-link" class:active={activeTabIndex === i} onclick={(e) => { e.preventDefault(); handleTabClick(i); }}>
+			<a href={tab.href} class="chat-tab-link" class:flag={tab.flag} class:active={activeTabIndex === i} onclick={(e) => { e.preventDefault(); handleTabClick(i); }}>
 				{tab.label}
 			</a>
 		{/each}
@@ -149,5 +143,8 @@
 	background: #0656b7;
 	border-color: #577AA0;
 	pointer-events: none;
+}
+.flag {
+	font-family: "Twemoji Country Flags", "Helvetica", "Comic Sans", serif;
 }
 </style>

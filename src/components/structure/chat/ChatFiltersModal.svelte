@@ -50,10 +50,16 @@ wts       : giving away
 WTS       : GIVING AWAY
 wtb       : begging for
 WTB       : BEGGING FOR -->
-boss      : (boss image) BOSS
+boss      : <img src="/images/like-a-boss.png" alt="" /> BOSS
 zombie    : infected
 Zombie    : Infected
 zombies   : infected
-spam      : (spam image) spam	
+spam      : <img src="/images/spam-can.png" alt="" /> spam
 	</pre>
 </Modal>
+
+<style>
+img {
+	vertical-align: top;
+}
+</style>
