@@ -1,7 +1,7 @@
-import type { ListSideQuestResponse } from "../sidequest";
+import type { ListSideMissionsResponse } from "../side-missions";
 
-export namespace sideQuestMock {
-	export const listSideQuestResponse:ListSideQuestResponse = {
+export namespace sideMissionMock {
+	export const listSideMissionsResponse:ListSideMissionsResponse = {
 	"restartTracker": {
 		"id": 1,
 		"votesUp": 0,
@@ -15,7 +15,7 @@ export namespace sideQuestMock {
 		"name": "Sacramento Suburbs",
 		"mapLink": "https://i.imgur.com/wZfYhJY.jpg",
 		"bossImage": "https://vignette.wikia.nocookie.net/deadmaze/images/d/db/Pusher.png/revision/latest/scale-to-width-down/55?t=.png",
-		"quests": [
+		"missions": [
 			{
 			"id": 1,
 			"npcName": "Emmett",
@@ -94,7 +94,7 @@ export namespace sideQuestMock {
 		"name": "Bodega Bay",
 		"mapLink": "https://i.imgur.com/wwoJHiV.jpg",
 		"bossImage": "https://vignette.wikia.nocookie.net/deadmaze/images/2/23/Monster38.png/revision/latest/scale-to-width-down/55?t=.png",
-		"quests": [
+		"missions": [
 			{
 			"id": 2,
 			"npcName": "Abbi",
@@ -163,7 +163,7 @@ export namespace sideQuestMock {
 		"name": "Santa Rosa",
 		"mapLink": "https://i.imgur.com/wO6mc5s.jpg",
 		"bossImage": "https://vignette.wikia.nocookie.net/deadmaze/images/a/a0/Monster37.png/revision/latest/scale-to-width-down/55?t=.png",
-		"quests": [
+		"missions": [
 			{
 			"id": 3,
 			"npcName": "Sylvia",
@@ -182,7 +182,7 @@ export namespace sideQuestMock {
 		"name": "Mazon College",
 		"mapLink": "https://i.imgur.com/g56VxYb.jpg",
 		"bossImage": "",
-		"quests": [
+		"missions": [
 			{
 			"id": 4,
 			"npcName": "Glenn",
@@ -201,7 +201,7 @@ export namespace sideQuestMock {
 		"name": "Sunset Mall",
 		"mapLink": "https://i.imgur.com/rzTaejo.jpg",
 		"bossImage": "https://vignette.wikia.nocookie.net/deadmaze/images/5/5f/Monster39.png/revision/latest/scale-to-width-down/55?t=.png",
-		"quests": [
+		"missions": [
 			{
 			"id": 5,
 			"npcName": "John",
@@ -270,7 +270,7 @@ export namespace sideQuestMock {
 		"name": "Walker River",
 		"mapLink": "https://i.imgur.com/cx0LZlq.jpg",
 		"bossImage": "https://vignette.wikia.nocookie.net/deadmaze/images/a/a6/Monster35.png/revision/latest/scale-to-width-down/55?t=.png",
-		"quests": [
+		"missions": [
 			{
 			"id": 6,
 			"npcName": "Lily",
@@ -339,7 +339,7 @@ export namespace sideQuestMock {
 		"name": "Jurassic Museum",
 		"mapLink": "https://i.imgur.com/9Amj309.jpg",
 		"bossImage": "",
-		"quests": [
+		"missions": [
 			{
 			"id": 10,
 			"npcName": "Joshua",

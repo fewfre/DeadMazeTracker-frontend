@@ -1,8 +1,8 @@
 
-import { revalidate, useSWR } from "sswr";
+import { revalidate } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { passagesMock } from "./mock-data/passages-mock";
-import { useSwrFetch } from "./utils/api-helpers";
+import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -30,11 +30,11 @@ export interface ListPassagesRequest {}
 export type ListPassagesResponse = { zones:PassageZoneInfo[]; };
 
 export interface PassageVoteRequest {
-  id : string | number;
-  type: "up" | "down";
-  unvote?: boolean;
+  id : number;
+  upvote: boolean;
+  undo?: boolean;
 }
-export interface PassageVoteResponse {}
+export type PassageVoteResponse = ErrorableResponse<{ success:true }>;
 
 //////////////////////////////
 //#region API Calls
@@ -43,26 +43,18 @@ const swrKeys = {
 	list: "list-passages"
 };
 export namespace passagesApi {
-	const baseUrl = `${envVars.API_BASE}trackers/passages`;
+	const baseUrl = `${envVars.API_BASE}/passages`;
 	
 	export async function list(): Promise<ListPassagesResponse> {
 		if(envVars.USE_MOCK_DATA) return passagesMock.createListPassagesResponse;
-		return (await fetch(`${baseUrl}/zone-table-json.php`, { method: 'GET' })).json();
+		return (await fetch(`${baseUrl}/list-passages`, { method: 'GET' })).json();
 	}
 	export function useList() {
 		return useSwrFetch(swrKeys.list, list);
 	}
-	export function refreshList() { revalidate(swrKeys.list) }
+	export function refreshList() { revalidate(swrKeys.list, list) }
 	
-	export async function vote(req: PassageVoteRequest) {
-		return fetch(`${baseUrl}/vote.php`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({
-				passage: req.id.toString(),
-				type: req.type,
-				unvote: !req.unvote ? "1" : "0"
-			}).toString()
-		});
+	export async function vote(req: PassageVoteRequest) : Promise<PassageVoteResponse> {
+		return standardJsonPostFetch(`${baseUrl}/vote`, req);
 	}
 }

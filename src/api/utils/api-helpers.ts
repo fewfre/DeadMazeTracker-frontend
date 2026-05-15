@@ -1,5 +1,7 @@
 import { useSWR } from "sswr";
 import { writable } from "svelte/store";
+import { getToken } from "../../components/structure/auth/auth0-helpers";
+import { envVars } from "../../utils/env-vars";
 
 export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:Omit<Partial<SWROptions<T>>, 'fetcher'>) => {
 	let isFetching = writable(false);
@@ -16,6 +18,22 @@ export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:O
 		isFetching
 	};
 }
+
+export const getHeadersForJsonPostWithAuth = async () => ({
+	'Content-Type': 'application/json',
+	'Accept': 'application/json',
+	[envVars.API_AUTH_HEADER]: `Bearer ${await getToken()}`
+})
+
+export type ErrorableResponse<T> = T | { error:string };
+
+export const standardJsonPostFetch = async <Req extends {}, Res>(url:string, req:Req) : Promise<Res> => {
+	return (await fetch(url, {
+		method: 'POST',
+		headers: await getHeadersForJsonPostWithAuth(),
+		body: JSON.stringify(req)
+	})).json();
+};
 
 export type SWRFetcher<D = any> = (...props: any[]) => Promise<D> | D;
 // sswr / swrev types aren't working for me, so just redefining it here

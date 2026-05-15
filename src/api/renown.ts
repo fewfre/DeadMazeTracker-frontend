@@ -1,8 +1,8 @@
 
-import { revalidate, useSWR } from "sswr";
+import { revalidate } from "sswr";
 import { envVars } from "../utils/env-vars";
 import { renownMock } from "./mock-data/renown-mock";
-import { useSwrFetch } from "./utils/api-helpers";
+import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse } from "./utils/api-helpers";
 
 //////////////////////////////
 //#region Types
@@ -26,14 +26,14 @@ export interface FriendshipInfo {
 }
 
 export interface ListRenownDogRequest {}
-export type ListRenownDogResponse = { friends: FriendshipInfo[] };
+export type ListRenownDogResponse = { friendships: FriendshipInfo[] };
 
 export interface RenownDogVoteRequest {
-  id : string | number;
-  type: "up" | "down";
-  unvote?: boolean;
+  id : number;
+  upvote: boolean;
+  undo?: boolean;
 }
-export interface RenownDogVoteResponse {}
+export type RenownDogVoteResponse = ErrorableResponse<{ success:true }>;
 
 //////////////////////////////
 //#region API Calls
@@ -42,11 +42,11 @@ const swrKeys = {
 	list: "list-friends"
 };
 export namespace renownApi {
-	const baseUrl = `${envVars.API_BASE}trackers/renown`;
+	const baseUrl = `${envVars.API_BASE}/renown`;
 	
 	export async function list(): Promise<ListRenownDogResponse> {
 		if(envVars.USE_MOCK_DATA) return renownMock.listRenownDogResponse;
-		return (await fetch(`${baseUrl}/friendship-table-json.php`, { method: 'GET' })).json();
+		return (await fetch(`${baseUrl}/list-friendships`, { method: 'GET' })).json();
 	}
 	export function useList() {
 		return useSwrFetch(swrKeys.list, list);
@@ -54,14 +54,6 @@ export namespace renownApi {
 	export function refreshList() { revalidate(swrKeys.list) }
 	
 	export async function vote(req: RenownDogVoteRequest) : Promise<RenownDogVoteResponse> {
-		return fetch(`${baseUrl}/vote.php`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: new URLSearchParams({
-				location_id: req.id.toString(),
-				type: req.type,
-				unvote: !req.unvote ? "1" : "0"
-			}).toString()
-		});
+		return standardJsonPostFetch(`${baseUrl}/vote`, req);
 	}
 }

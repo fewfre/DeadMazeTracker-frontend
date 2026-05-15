@@ -1,19 +1,19 @@
 <script>
-    import { getUserAvatar, isAuthenticated, logout, user } from "../../../../utils/auth0-helpers";
-    import LoginModal from "../../../features/login/LoginModal.svelte";
+    import { isAuthenticated, isLoginModalOpen, logout, user } from "../../auth/auth0-helpers";
+    import LoginModal from "../../auth/LoginModal.svelte";
     import NavDropdown from "./common/NavDropdown.svelte";
     import NavMenuListItem from "./common/NavMenuListItem.svelte";
 	
-	let showLoginModal = false;
 </script>
-{#if !$isAuthenticated}
-	<button id="login-btn" onclick={() => showLoginModal = true}>Log in</button>
-	<LoginModal bind:showModal={showLoginModal} />
+{#if !$isAuthenticated || !$user}
+	<button id="login-btn" onclick={() => $isLoginModalOpen = true}>Log in</button>
+	<LoginModal />
 {:else}
 	<NavDropdown contId='user-dropdown' contentId='user-dropdown-content'>
 		{#snippet button()}
 			<button id="auth-dropdown-trigger" aria-controls="user-dropdown-content">
-				<img class="avatar" height="25" alt="" src={getUserAvatar($user)} /> <strong class="name">{$user.nickname}</strong>
+				{#if $user.picture} <img class="avatar" height="25" alt="" src={$user.picture} /> {/if}
+				<strong class="name">{$user.nickname || $user.name || "Nickname"}</strong>
 			</button>
 		{/snippet}
 		<ul>
@@ -27,6 +27,7 @@
 	all: unset;
 	display: flex;
 	align-items: center;
+	gap: 4px;
 	padding: 5px;
 	cursor: pointer;
 }

@@ -2,7 +2,7 @@ import type { ListRenownDogResponse } from "../renown";
 
 export namespace renownMock {
 	export const listRenownDogResponse: ListRenownDogResponse = {
-		"friends": [
+		"friendships": [
 			{
 				"id": 2,
 				"name": "Dog (250&700)",
