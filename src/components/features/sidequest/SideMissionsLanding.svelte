@@ -6,6 +6,7 @@
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
+    import TableHeader from "../../common/TableHeader.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
@@ -62,14 +63,13 @@
 	</p>
 </section>
 <section>
-	<div style="overflow-x:hidden;">
-	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
-			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={43} />
-		</button>
+	<TableHeader>
 		Side Missions <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$sideMissionsAutoRefreshInterval} />
-	</h2>
-	</div>
+		<div style:flex-grow=1></div>
+		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
+			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={30} />
+		</button>
+	</TableHeader>
 	
 	{#if alert}
 		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>

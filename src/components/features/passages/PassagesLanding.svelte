@@ -5,6 +5,7 @@
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
+    import TableHeader from "../../common/TableHeader.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import PassagesTable from "./PassagesTable.svelte";
@@ -116,11 +117,9 @@
 	</div>
 </section>
 <section>
-	<!-- <div style="overflow-x:hidden;"> -->
-	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
+	<TableHeader>
 		Locations <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$passagesAutoRefreshInterval} />
-	</h2>
-	<!-- </div> -->
+	</TableHeader>
 	
 	{#if alert}
 		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>

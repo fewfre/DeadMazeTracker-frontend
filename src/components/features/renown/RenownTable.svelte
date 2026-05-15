@@ -15,7 +15,7 @@
 	<thead>
 		<tr>
 			<th colspan="2">Friend</th>
-			<th>Location</th>
+			<th>Possible Locations</th>
 		</tr>
 	</thead>
 	<tbody>

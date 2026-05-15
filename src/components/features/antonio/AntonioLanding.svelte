@@ -4,6 +4,7 @@
     import { antonioAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
+    import TableHeader from "../../common/TableHeader.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import AntonioTable from "./AntonioTable.svelte";
@@ -27,9 +28,9 @@
 	</p>
 </section>
 <section>
-	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
+	<TableHeader>
 		Resources List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$antonioAutoRefreshInterval} />
-	</h2>
+	</TableHeader>
 	
 	{#if alert}
 		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>
