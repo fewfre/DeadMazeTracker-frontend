@@ -12,19 +12,18 @@
 		};
 
 		window.addEventListener("hashchange", handleHashChange);
-		// We need to also listen for this custom event since hashchange doesn't fire since the tabs use replaceState since we don't want the history cluttered with tab changes
-		window.addEventListener("trackerAppTabsChanged", handleHashChange);
 
 		return () => {
 			window.removeEventListener("hashchange", handleHashChange);
-			window.removeEventListener("trackerAppTabsChanged", handleHashChange);
 		};
 	});
 	
 	const handleClick = () => {
-		if (!selected) {
-			window.location.hash = "antonio";
-		}
+		if (selected) return;
+		
+		const target = "#antonio";
+		window.history.replaceState(null, '', target);
+		window.dispatchEvent(new HashChangeEvent("hashchange"));
 	};
 </script>
 
@@ -35,6 +34,10 @@
 <style>
 .antonio_btn_header {
 	border: 2px solid rgb(51, 167, 57);
+	cursor: pointer;
+}
+.antonio_btn_header:not(.selected):hover {
+	filter: sepia(25%)
 }
 .antonio_btn_header.selected {
 	background: lightcyan;

@@ -38,6 +38,7 @@
 	line-height: 25px;
 	border-radius: 5px;
 	margin: 5px 0 5px 10px;
+	min-width: 90px;
 }
 #refresh:before {
 	content:"";

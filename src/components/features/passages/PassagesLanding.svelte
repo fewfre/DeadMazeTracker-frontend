@@ -1,23 +1,28 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { passagesApi } from "../../../api/passages";
-    import { bossTracker } from "./utils/boss-tracker";
-    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
-    import RefreshBox from "../../common/RefreshBox.svelte";
-    import TimerBox from "../../common/TimerBox.svelte";
-    import PassagesTable from "./PassagesTable.svelte";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
+    import RefreshBox from "../../common/RefreshBox.svelte";
+    import TimerBox from "../../common/TimerBox.svelte";
+    import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
+    import PassagesTable from "./PassagesTable.svelte";
+    import { bossTracker } from "./utils/boss-tracker";
+    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
+    import { passagesVoteHistory } from "./utils/passages-vote-history";
 	
-	const { data, error:listPassagesError, revalidate, isFetching } = passagesApi.useList();
+	const { data, error:listPassagesError, revalidate, isFetching, mutate } = passagesApi.useList();
 	const onRefreshClick = () => revalidate();
+	
+	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
+	$effect(() => { alert = $listPassagesError ? { type:'danger', message:$listPassagesError.message } : null; });
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
 </script>
 
 <section>
-	<TimerBox label="Time Until Reset" format='ms' offset={0} />
+	<TimerBox label="Time Until Reset" occurrence={passagesVoteHistory.resetOccurrence} timer2={{ label: "Boss Reset", occurrence:bossTracker.resetOccurrence }} />
 	
 	<div id="personalTrackerDescCont">
 		<div id='personalDailyResetDesc'>
@@ -37,13 +42,13 @@
 			<strong>
 				Personal Boss Log
 				<span id="personalBossReset" style="float:right;">
-					<button onclick={() => bossTracker.resetBossTracker()}>Reset</button>
+					<button onclick={() => bossTracker.resetTracker()}>Reset</button>
 				</span>
 			</strong>
 			<p>
 				Click the boss image next to zone name to mark it for the week
 				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
-				Doesn't auto reset.
+				Bosses auto-reset at 0:00 UTC on Thursdays.
 			</p>
 		</div>
 	</div>
@@ -99,16 +104,42 @@
 	</h2>
 	<!-- </div> -->
 	
-	<div id="zoneNotifications"></div>
-	
-	{#if $listPassagesError}
-		<AlertBox type="danger">{$listPassagesError?.message}</AlertBox>
+	{#if alert}
+		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>
 	{/if}
 	
 	{#if !$data}
 		<p>Loading...</p>
 	{:else}
-		<PassagesTable zones={$data.zones} />
+		<PassagesTable zones={$data.zones} handleVoteApiCall={async req => {
+			alert = null;
+			if(await cancelEarlyIfNotAuthenticated()) return;
+			
+			const applyVoteToData = (entry:{ votesUp:number; votesDown:number; }, upvote:boolean, add:boolean) => { entry[upvote ? 'votesUp' : 'votesDown'] += add ? 1 : -1; }
+			
+			applyVoteToData($data.zones.flatMap(z=>z.passages).find(o => o.id === req.id)!, req.upvote, !req.undo);
+			mutate($data, { revalidate: false });
+			passagesVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+			const revert = () => {
+				passagesVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+				applyVoteToData($data.zones.flatMap(z=>z.passages).find(o => o.id === req.id)!, req.upvote, !!req.undo);
+				mutate($data, { revalidate: false });
+			};
+			
+			passagesApi.vote(req)
+			.then(function(resp){
+				if('error' in resp) {
+					alert = { type:'warning', message:resp.error, dismissible:true };
+					revert();
+				}
+			})
+			.catch(function(err:Error){
+				alert = { type:'danger', message:err?.message || "There was an error submitting your vote", dismissible:true }
+				console.error(err);
+				revert();
+			})
+			.finally(()=>onRefreshClick());
+		}} />
 	{/if}
 </section>
 

@@ -1,68 +1,42 @@
 import { get, writable } from 'svelte/store';
+import { setOnTheHourInterval } from '../../../../utils/helpers';
+import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
 
 export namespace bossTracker {
 	const BOSS_TRACKER_LS_KEY = "dm-tracker-personal-bosses";
-	
-	function getLocalStorageObject() {
-		let json:Record<string, any> = {};
-		try {
-			const stored = localStorage.getItem(BOSS_TRACKER_LS_KEY);
-			if (stored) {
-				json = JSON.parse(stored);
-			}
-		} catch (e) { console.error('Failed to parse personal bosses from localStorage', e); }
-		
-		return {
-			lastVoteDate: typeof json.lastVoteDate === 'string' ? new Date(json.lastVoteDate) : null,
-			bosses: Array.isArray(json.bosses) ? json.bosses : []
-		};
-	}
-	
-	export const bossTrackerStore = writable(getLocalStorageObject());
+
+	export const resetOccurrence: ReoccurringEventProps = { frequency: "weekly", weekday: 4, hour: 0 };
+	export const getNewFormattedTimestamp = () => createComparisonTimestamp(resetOccurrence);
+
+	export const bossTrackerStore = writable(parseAndUpdateTimeIdTrackerLS(BOSS_TRACKER_LS_KEY, getNewFormattedTimestamp));
 	bossTrackerStore.subscribe(value => { localStorage.setItem(BOSS_TRACKER_LS_KEY, JSON.stringify(value)); });
 
-	export function toggleBossInBossTracker(boss:string) {
-		bossTrackerStore.update(data => ({ ...data,
-			bosses: data.bosses.includes(boss) ? data.bosses.filter(b => b !== boss) : [...data.bosses, boss],
-			lastVoteDate: new Date()
-		}));
+	/**
+	 * Toggle a personal vote flag for a specific passage (by index)
+	 */
+	export function toggleFlag(id: number, value?: boolean) {
+		bossTrackerStore.update(data => ({ ...data, idsFlagged: { ...data.idsFlagged, [id]: value ?? !data.idsFlagged[id] } }));
 	}
 
-	export function resetBossTracker() {
-		bossTrackerStore.set({ lastVoteDate: null, bosses: [] });
+	export function resetTracker() {
+		bossTrackerStore.set({ idsFlagged: {}, timestamp: getNewFormattedTimestamp() });
 	}
-		
+
 	//////////////////////////////
 	// Export / Import as json
 	//////////////////////////////
-	type ExportImportProps = { bossPersonal?:any }
-	export function exportData() : ExportImportProps {
+	type ExportImportProps = { bossPersonal?: any }
+	export function exportData(): ExportImportProps {
 		return { bossPersonal: get(bossTrackerStore) }
 	}
-	export function importData(pData:ExportImportProps) {
-		if(pData.bossPersonal) { bossTrackerStore.set(pData.bossPersonal); }
+	export function importData(pData: ExportImportProps) {
+		if (pData.bossPersonal) { bossTrackerStore.set(pData.bossPersonal); }
 	}
 }
 
-
-	// // var _bossTrackerTimestamp = _getDailyTrackerTimestamp();
-	// var _personalBossHistory = [];
-	// if(Cookies.get("personalBoss")) {//} && (Cookies.get("personalBossTime")==null || Cookies.get("personalDailyTime") == _dailyTrackerTimestamp)) {
-	// 	_personalBossHistory = Cookies.getJSON('personalBoss');
-	// 	_applyPersonalBoss();
-	// }
-	
-	// function _savePersonalBossHistory() {
-	// 	// Cookies.set("personalBossTime", _bossTrackerTimestamp, { expires: 1 });
-	// 	Cookies.set("personalBoss", _personalBossHistory, { expires: 7 });
-	// }
-
-
-
-
-
-
-
-
-
-
+setOnTheHourInterval(() => {
+	const currentTimestamp = get(bossTracker.bossTrackerStore).timestamp;
+	if (currentTimestamp != bossTracker.getNewFormattedTimestamp()) {
+		bossTracker.resetTracker();
+	}
+});

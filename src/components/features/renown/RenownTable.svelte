@@ -1,14 +1,14 @@
 <script lang="ts">
-    import type { FriendshipInfo } from "../../../api/renown";
-    import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
+    import type { FriendshipInfo, RenownDogVoteRequest } from "../../../api/renown";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
+    import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import { friendshipVoteHistory } from "./utils/friendship-vote-history";
 	const { friendshipDailyTrackerFlags } = friendshipDailyTracker;
 	const { votesHistoryStore } = friendshipVoteHistory;
 	
-	interface Props { friends:FriendshipInfo[]; }
-	const { friends }:Props = $props();
+	interface Props { friendships:FriendshipInfo[]; handleVoteApiCall:(req:RenownDogVoteRequest) => void }
+	const { friendships, handleVoteApiCall }:Props = $props();
 </script>
 
 <table id="friend-table">
@@ -19,7 +19,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#each friends as friend}
+	{#each friendships as friend(friend.id)}
 		{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
 		<tr class='friend-info'>
 			<td><div class='npc-portrait' style='background-image:url({friend.portrait});'></div></td>
@@ -33,28 +33,24 @@
 			</td>
 			<td>
 				<div class='friends vote-box-list'>
-				{#each friend.locations as quest}
-					{@const { id, votesUp, votesDown } = quest}
-					{@const goodPassage = votesUp - votesDown > 0}
+				{#each friend.locations as loc(loc.id)}
+					{@const { id } = loc}
+					{@const goodPassage = loc.votesUp - loc.votesDown > 0}
 					
 					<VoteBox
-						title={quest.name}
+						title={loc.name}
 						active={goodPassage}
-						best={quest.isBest}
+						best={loc.isBest}
 						actions={[
-							{ type:"map", link:quest.map },
-							{ type:"youtube", videoId:quest.video.split("?v=")[1] }
+							{ type:"map", link:loc.map },
+							{ type:"youtube", videoId:loc.video.split("?v=")[1] }
 						]}
 					>
 						{#snippet voteButtons()}
-							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+							<VoteButtons upVotes={loc.votesUp} downVotes={loc.votesDown} active={$votesHistoryStore.votes[id]}
 								disableUpvote={aLocationInFriendshipHasUpvote !== false && aLocationInFriendshipHasUpvote !== id}
-								onUpVoteClicked={()=>{
-									friendshipVoteHistory.toggleVote(id, "up");
-								}}
-								onDownVoteClicked={()=>{
-									friendshipVoteHistory.toggleVote(id, "down");
-								}}
+								onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
+								onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
 							/>
 						{/snippet}
 					</VoteBox>

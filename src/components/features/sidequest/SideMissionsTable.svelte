@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { type QuestZoneInfo } from "../../../api/sidequest";
-    import { sideQuestDailyTracker } from "./utils/side-quest-daily-tracker";
+    import { type SideMissionVoteRequest, type SideMissionZoneInfo } from "../../../api/side-missions";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
-    import { sideQuestVoteHistory } from "./utils/side-quest-vote-history";
-	const { sideQuestDailyTrackerStore } = sideQuestDailyTracker;
-	const { votesHistoryStore } = sideQuestVoteHistory;
+    import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
+    import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
+	const { sideQuestDailyTrackerStore } = sideMissionsDailyTracker;
+	const { votesHistoryStore } = sideMissionsVoteHistory;
 
-	interface Props { zones:QuestZoneInfo[]; }
-	const { zones }:Props = $props();
+	interface Props { zones:SideMissionZoneInfo[]; handleVoteApiCall:(req:SideMissionVoteRequest) => void }
+	const { zones, handleVoteApiCall }:Props = $props();
 </script>
 
 <table id="quest-table">
@@ -19,7 +19,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#each zones as zone}
+	{#each zones as zone(zone.id)}
 		<tr class='zone-info'>
 			<td><img src={zone.icon} alt="" width='35' /></td>
 			<td>
@@ -27,9 +27,9 @@
 			</td>
 			<td>
 				<div class='quests vote-box-list'>
-				{#each zone.quests as quest}
-					{@const { id, votesUp, votesDown } = quest}
-					{@const goodPassage = votesUp - votesDown > 0}
+				{#each zone.missions as mission(mission.id)}
+					{@const { id } = mission}
+					{@const goodPassage = mission.votesUp - mission.votesDown > 0}
 		<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$quest["id"]]) || $highestQuests[$quest["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$quest["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$quest["id"]]["server"] ));
 		$passageOnOtherServer = !$passageOnOtherServer ? "" : "<span class='action disabled other-server'><img src='images/flags/{$passageOnOtherServer}.png' height='15' /></span>"; -->
 
@@ -37,27 +37,23 @@
 							<!-- $mapType = !empty($quest["npc_map"]) && strpos($quest["npc_map"], "//fewfre.com/dmmap") !== false ? "iframe" : "image";
 		$map = !empty($quest["npc_map"]) ? " <a href='{$quest["npc_map"]}' class='action action-map-icon' data-featherlight='{$mapType}' data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'></a>" : ""; -->
 					<VoteBox
-						title={quest.npcName}
+						title={mission.npcName}
 						active={goodPassage}
 						flagged={$sideQuestDailyTrackerStore.idsFlagged[id]}
 						actions={[
-							{ type:"flag", onclick:()=>{ sideQuestDailyTracker.toggleFlag(id) } },
-							{ type:"map", link:quest.npcMap }
+							{ type:"flag", onclick:()=>{ sideMissionsDailyTracker.toggleFlag(id) } },
+							{ type:"map", link:mission.npcMap }
 						]}
 					>
 						{#snippet voteButtons()}
-							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
-								onUpVoteClicked={()=>{
-									sideQuestVoteHistory.toggleVote(id, "up");
-								}}
-								onDownVoteClicked={()=>{
-									sideQuestVoteHistory.toggleVote(id, "down");
-								}}
+							<VoteButtons upVotes={mission.votesUp} downVotes={mission.votesDown} active={$votesHistoryStore.votes[id]}
+								onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
+								onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
 							/>
 						{/snippet}
 	
 						{#snippet addonLeft()}
-							<div class='npc-portrait' style='background-image:url({quest.npcPortrait});'></div>
+							<div class='npc-portrait' style='background-image:url({mission.npcPortrait});'></div>
 						{/snippet}
 					</VoteBox>
 				{/each}

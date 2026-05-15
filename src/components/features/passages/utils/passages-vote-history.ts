@@ -1,10 +1,10 @@
-import { createComparisonTimestamp, createNewVoteHistoryWithStore } from '../../../../utils/time-id-store-helpers';
 import { passagesApi } from '../../../../api/passages';
 import { setOnTheHourInterval } from '../../../../utils/helpers';
+import { createNewVoteHistoryWithStore } from '../../../../utils/time-id-store-helpers';
 
 export const passagesVoteHistory = createNewVoteHistoryWithStore({
 	lsKey:"passages-vote",
-	createTimestamp: () => createComparisonTimestamp('hourly', new Date())
+	resetOccurrence:{ frequency:"hourly" },
 });
 
 setOnTheHourInterval(()=>{

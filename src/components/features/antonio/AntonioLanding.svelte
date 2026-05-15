@@ -1,19 +1,24 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { antonioApi } from "../../../api/antonio";
+    import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
+    import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import AntonioTable from "./AntonioTable.svelte";
-    import AlertBox from "../../common/AlertBox.svelte";
+    import { antonioVoteHistory } from "./utils/antonio-vote-history";
 
-	const { data, error:listAntonioError, revalidate, isFetching } = antonioApi.useList();
+	const { data, error:listAntonioError, revalidate, isFetching, mutate } = antonioApi.useList();
 	const onRefreshClick = () => revalidate();
+	
+	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
+	$effect(() => { alert = $listAntonioError ? { type:'danger', message:$listAntonioError.message } : null; });
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
 </script>
 <section>
-	<TimerBox label="Time Until Reset" format='hms' offset={-4} />
+	<TimerBox label="Time Until Reset" occurrence={antonioVoteHistory.resetOccurrence} />
 	
 	<p>
 	Antonio is a shop npc who buys resources.
@@ -26,13 +31,41 @@
 		Resource List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	
-	{#if $listAntonioError}
-		<AlertBox type="danger">{$listAntonioError?.message}</AlertBox>
+	{#if alert}
+		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>
 	{/if}
 	
 	{#if !$data}
 		<p>Loading...</p>
 	{:else}
-		<AntonioTable resources={$data.resources} />
+		<AntonioTable resources={$data.resources} handleVoteApiCall={async req => {
+			alert = null;
+			if(await cancelEarlyIfNotAuthenticated()) return;
+			
+			const applyVoteToData = (entry:{ votesUp:number; votesDown:number; }, upvote:boolean, add:boolean) => { entry[upvote ? 'votesUp' : 'votesDown'] += add ? 1 : -1; }
+			
+			applyVoteToData($data.resources.find(o => o.id === req.id)!, req.upvote, !req.undo);
+			mutate($data, { revalidate: false });
+			antonioVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+			const revert = () => {
+				antonioVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+				applyVoteToData($data.resources.find(o => o.id === req.id)!, req.upvote, !!req.undo);
+				mutate($data, { revalidate: false });
+			};
+			
+			antonioApi.vote(req)
+			.then(function(resp){
+				if('error' in resp) {
+					alert = { type:'warning', message:resp.error, dismissible:true };
+					revert();
+				}
+			})
+			.catch(function(err:Error){
+				alert = { type:'danger', message:err?.message || "There was an error submitting your vote", dismissible:true }
+				console.error(err);
+				revert();
+			})
+			.finally(()=>onRefreshClick());
+		}} />
 	{/if}
 </section>

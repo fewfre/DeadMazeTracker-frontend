@@ -1,22 +1,27 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import { renownApi } from "../../../api/renown";
-    import RenownTable from "./RenownTable.svelte";
+    import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
+    import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TimerBox from "../../common/TimerBox.svelte";
+    import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
+    import RenownTable from "./RenownTable.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
-    import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
-    import AlertBox from "../../common/AlertBox.svelte";
+    import { friendshipVoteHistory } from "./utils/friendship-vote-history";
 	
-	const { data, error:listFriendshipsError, mutate, isFetching } = renownApi.useList();
-	const onRefreshClick = () => { mutate(undefined); };
+	const { data, error:listFriendshipsError, revalidate, isFetching, mutate } = renownApi.useList();
+	const onRefreshClick = () => revalidate();
+	
+	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
+	$effect(() => { alert = $listFriendshipsError ? { type:'danger', message:$listFriendshipsError.message } : null; });
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
 </script>
 
 <section>
-	<TimerBox label="Time Until Reset" format='hms' offset={-3} />
+	<TimerBox label="Time Until Reset" occurrence={friendshipVoteHistory.resetOccurrence} />
 	
 	<div id="personalTrackerDescCont">
 	<div id='personalDailyResetDesc'>
@@ -55,14 +60,42 @@
 	</h2>
 	</div>
 	
-	{#if $listFriendshipsError}
-		<AlertBox type="danger">{$listFriendshipsError?.message}</AlertBox>
+	{#if alert}
+		<AlertBox type={alert.type} onClose={alert?.dismissible ? ()=>{ alert=null; } : undefined}>{alert.message}</AlertBox>
 	{/if}
 	
 	{#if !$data}
 		<p>Loading...</p>
 	{:else}
-		<RenownTable friends={$data.friends} />
+		<RenownTable friendships={$data.friendships} handleVoteApiCall={async req => {
+			alert = null;
+			if(await cancelEarlyIfNotAuthenticated()) return;
+			
+			const applyVoteToData = (entry:{ votesUp:number; votesDown:number; }, upvote:boolean, add:boolean) => { entry[upvote ? 'votesUp' : 'votesDown'] += add ? 1 : -1; }
+			
+			applyVoteToData($data.friendships.flatMap(z=>z.locations).find(o => o.id === req.id)!, req.upvote, !req.undo);
+			mutate($data, { revalidate: false });
+			friendshipVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+			const revert = () => {
+				friendshipVoteHistory.toggleVote(req.id, req.upvote ? 'up' : 'down');
+				applyVoteToData($data.friendships.flatMap(z=>z.locations).find(o => o.id === req.id)!, req.upvote, !!req.undo);
+				mutate($data, { revalidate: false });
+			};
+			
+			renownApi.vote(req)
+			.then(function(resp){
+				if('error' in resp) {
+					alert = { type:'warning', message:resp.error, dismissible:true };
+					revert();
+				}
+			})
+			.catch(function(err:Error){
+				alert = { type:'danger', message:err?.message || "There was an error submitting your vote", dismissible:true }
+				console.error(err);
+				revert();
+			})
+			.finally(()=>onRefreshClick());
+		}} />
 	{/if}
 </section>
 

@@ -1,11 +1,11 @@
-import { createComparisonTimestamp, createNewVoteHistoryWithStore } from '../../../../utils/time-id-store-helpers';
-import { getDateWithUTCOffset, setOnTheHourInterval } from '../../../../utils/helpers';
+import { createNewVoteHistoryWithStore } from '../../../../utils/time-id-store-helpers';
+import { setOnTheHourInterval } from '../../../../utils/helpers';
 import { renownApi } from '../../../../api/renown';
 import { get } from 'svelte/store';
 
 export const friendshipVoteHistory = createNewVoteHistoryWithStore({
 	lsKey:"friend-vote",
-	createTimestamp: () => createComparisonTimestamp('daily', getDateWithUTCOffset(-3))
+	resetOccurrence:{ frequency:"daily", hour:3 },
 });
 
 setOnTheHourInterval(()=>{

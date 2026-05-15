@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { sideQuestApi, type SideQuestRestartTrackerInfo } from "../../../api/sidequest";
+    import { type SideMissionRestartTrackerInfo } from "../../../api/side-missions";
 	
-	const { restartData } : { restartData:SideQuestRestartTrackerInfo|undefined } = $props();
+	const { restartData } : { restartData:SideMissionRestartTrackerInfo|undefined } = $props();
 
-	const restartVotesUp = restartData?.votesUp ?? 0;
-	const restartVotesDown = restartData?.votesDown ?? 0;
-	const restartResetCount = restartData?.resetCount ?? 0;
+	const restartVotesUp = $derived(restartData?.votesUp ?? 0);
+	const restartVotesDown = $derived(restartData?.votesDown ?? 0);
+	const restartResetCount = $derived(restartData?.resetCount ?? 0);
 
 	const danger = $derived(restartVotesUp > restartVotesDown/2 && restartVotesUp >= 9);
 </script>

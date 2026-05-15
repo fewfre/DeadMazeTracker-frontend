@@ -1,19 +1,20 @@
 <script lang="ts">
-    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth, forceChatBelow } from "../stores/bool-localstorage-stores";
+    import { getI18n } from "../i18n/i18n";
+    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth } from "../stores/bool-localstorage-stores";
+    import { browserPoniesDisplayOnSiteBackground, browserPoniesUseTransparentSite } from "../stores/browser-ponies";
     import { nyanCatBodyClass, nyanCatEnabled } from "../stores/nyancat";
-    import PassagesLanding from "./features/passages/PassagesLanding.svelte";
+    import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
     import AntonioSummary from "./features/antonio/AntonioSummary.svelte";
+    import PassagesLanding from "./features/passages/PassagesLanding.svelte";
+    import RenownLanding from "./features/renown/RenownLanding.svelte";
+    import SideMissionsLanding from "./features/sidequest/SideMissionsLanding.svelte";
+    import NyanCatCursor from "./structure/NyanCatCursor.svelte";
     import SiteFooter from "./structure/SiteFooter.svelte";
     import CBoxChat from "./structure/chat/CBoxChat.svelte";
     import CookieBanner from "./structure/header/CookieBanner.svelte";
     import SiteHeader from "./structure/header/SiteHeader.svelte";
     import TabItem from "./structure/tabs/TabItem.svelte";
     import Tabs from "./structure/tabs/Tabs.svelte";
-    import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
-    import SideQuestLanding from "./features/sidequest/SideQuestLanding.svelte";
-    import RenownLanding from "./features/renown/RenownLanding.svelte";
-    import { browserPoniesDisplayOnSiteBackground, browserPoniesUseTransparentSite } from "../stores/browser-ponies";
-    import NyanCatCursor from "./structure/NyanCatCursor.svelte";
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -48,17 +49,19 @@
 	
 	<div id="main_two_column_layout">
 		<div id="main_two_column_layout_flex_column">
-		<Tabs onChange={(index, hash) => { window.dispatchEvent(new Event('trackerAppTabsChanged')) }}>
+		<Tabs>
 			<TabItem index={1} hash='passages'>
-				{#snippet titleSnippet()}<img src="images/tabicon-sp-crate.png" height="20" alt="" />&nbsp;Passages{/snippet}
+				{#snippet titleSnippet()}<img src="images/tabicon-sp-crate.png" height="20" alt="" />&nbsp;{$getI18n("tab.secretPassages", "Secret Passages")}{/snippet}
 				<PassagesLanding />
 			</TabItem>
-			<TabItem index={2} hash='sidequest'>
-				{#snippet titleSnippet()}<img src='images/tabicon-compass.png' height="20" alt="" />&nbsp;Side Quests{/snippet}
-				<SideQuestLanding />
+			<TabItem index={2} hash='side-missions'>
+				{#snippet titleSnippet()}<img src='images/tabicon-compass.png' height="20" alt="" />&nbsp;{$getI18n("tab.sideMissions", "Side Missions")}{/snippet}
+				<SideMissionsLanding />
 			</TabItem>
 			<TabItem index={3} hash='renown'>
-				{#snippet titleSnippet()}<img src='images/tabicon-survivor-notes.png' height="20" alt="" />&nbsp;Renown (<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;Dog){/snippet}
+				{#snippet titleSnippet()}
+					<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;{$getI18n("tab.doggy", "Doggy")}
+				{/snippet}
 				<RenownLanding />
 			</TabItem>
 			<TabItem index={4} hash='antonio'>

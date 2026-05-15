@@ -11,12 +11,12 @@
 	} : Props = $props();
 	
 	const upClicked = () => {
-		upVotes += (active === 'up' ? -1 : 1);
+		// upVotes += (active === 'up' ? -1 : 1);
 		onUpVoteClicked();
 	}
 	
 	const downClicked = () => {
-		downVotes += (active === 'down' ? -1 : 1);
+		// downVotes += (active === 'down' ? -1 : 1);
 		onDownVoteClicked();
 	}
 </script>

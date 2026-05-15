@@ -1,12 +1,14 @@
 import { get, writable } from 'svelte/store';
-import { getDateWithUTCOffset, setOnTheHourInterval } from '../../../../utils/helpers';
-import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS } from '../../../../utils/time-id-store-helpers';
+import { setOnTheHourInterval } from '../../../../utils/helpers';
+import { createComparisonTimestamp, parseAndUpdateTimeIdTrackerLS, type ReoccurringEventProps } from '../../../../utils/time-id-store-helpers';
 import { renownApi } from '../../../../api/renown';
+import { friendshipVoteHistory } from './friendship-vote-history';
 
 export namespace friendshipDailyTracker {
 	const FRIEND_TRACKER_LS_KEY = "friend-tracker";
 
-	export const getNewFormattedTimestamp = () => createComparisonTimestamp('daily', getDateWithUTCOffset(-3));
+	export const resetOccurrence:ReoccurringEventProps = friendshipVoteHistory.resetOccurrence;
+	export const getNewFormattedTimestamp = () => createComparisonTimestamp(resetOccurrence);
 
 	export const friendshipDailyTrackerFlags = writable(parseAndUpdateTimeIdTrackerLS(FRIEND_TRACKER_LS_KEY, getNewFormattedTimestamp));
 	friendshipDailyTrackerFlags.subscribe(value => { localStorage.setItem(FRIEND_TRACKER_LS_KEY, JSON.stringify(value)); });

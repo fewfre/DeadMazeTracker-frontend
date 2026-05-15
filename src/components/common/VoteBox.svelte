@@ -32,7 +32,7 @@
 		title, subtitle, voteButtons, addonLeft, actions = [],
 	} : Props = $props();
 	
-	let media : { type:"image" | "iframe"; url:string; } | null = $state()
+	let media : { type:"image" | "iframe"; url:string; } | null = $state(null)
 </script>
 
 <div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged }]}>
@@ -61,7 +61,7 @@
 					<a class='action action-map-icon' href={action.link}
 						onclick={(e) => { e.preventDefault(); media = { type:action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image", url:e.currentTarget['href'] }; }}
 					>
-						<img src='https://vignette.wikia.nocookie.net/deadmaze/images/3/30/Map_icon.png/revision/latest/scale-to-width-down/15' alt="Map icon" />
+						<img src='images/map-icon.png' width="16" alt="Map icon" />
 					</a>
 				{:else if action.type==='youtube'}
 					<a class='action' href={`https://www.youtube.com/embed/${action.videoId}?rel=0&autoplay=1`}
@@ -110,7 +110,8 @@
 	&.best { box-shadow: 0 0 10px 2px lightgreen; }
 	&.best.active { background-color: #50FF50; }
 
-	&.flagged .vote-contents { box-shadow: inset 0 0 5px 3px orangered; }
+	/* &.flagged .vote-contents { box-shadow: inset 0 0 5px 3px orangered; } */
+	&.flagged { box-shadow: inset 0 0 5px 3px orangered; }
 	& .personal-daily { color:#666; }
 	& .info { color:#666; }
 	&.flagged .personal-daily { color: white; background: red; }

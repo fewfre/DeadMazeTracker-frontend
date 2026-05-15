@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { type PassageZoneInfo } from "../../../api/passages";
-    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
+    import { type PassageVoteRequest, type PassageZoneInfo } from "../../../api/passages";
     import ImageModal from "../../common/modal/ImageModal.svelte";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
+    import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
 	const { passageDailyTrackerFlags } = passagesDailyTracker;
 	const { votesHistoryStore } = passagesVoteHistory;
 	
-	interface Props { zones:PassageZoneInfo[]; }
-	const { zones }:Props = $props();
+	interface Props { zones:PassageZoneInfo[]; handleVoteApiCall:(req:PassageVoteRequest) => void }
+	const { zones, handleVoteApiCall }:Props = $props();
 	
 	// interface Props {
 	// 	passagesPromise: Promise<ListPassagesResponse>;
@@ -28,7 +28,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	{#each zones as zone}
+	{#each zones as zone(zone.id)}
 		{@const aPassageInZoneHasUpvote = zone.passages.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
 		<tr class='zone-info'>
 			<td><img src='{zone.icon}' width='35' alt='{zone.name}' /></td>
@@ -46,10 +46,10 @@
 			</td>
 			<td>
 				<div class='passages vote-box-list'>
-				{#each zone.passages as passage}
-					{@const { id, votesUp, votesDown } = passage}
+				{#each zone.passages as passage(passage.id)}
+					{@const { id } = passage}
 					
-					{@const goodPassage = votesUp - votesDown > 0}
+					{@const goodPassage = passage.votesUp - passage.votesDown > 0}
 					{@const tooltip = [
 						passage.openTwoRoundsAgo ? "This passage was open two rounds ago." : "",
 						passage.openOneRoundAgo ? "This passage was open in the previous round. As the same SP is never open two rounds in a row, this will very likely not be open this round." : "",
@@ -70,14 +70,10 @@
 						]}
 					>
 						{#snippet voteButtons()}
-							<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+							<VoteButtons upVotes={passage.votesUp} downVotes={passage.votesDown} active={$votesHistoryStore.votes[id]}
 								disableUpvote={aPassageInZoneHasUpvote !== false && aPassageInZoneHasUpvote !== id}
-								onUpVoteClicked={()=>{
-									passagesVoteHistory.toggleVote(id, "up");
-								}}
-								onDownVoteClicked={()=>{
-									passagesVoteHistory.toggleVote(id, "down");
-								}}
+								onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
+								onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
 							/>
 						{/snippet}
 					</VoteBox>

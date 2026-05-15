@@ -1,44 +1,34 @@
 <script lang="ts">
-	import { antonioApi, type AntonioResourceInfo } from "../../../api/antonio";
-    import { ptBrI18n } from "../../../i18n/pt-br";
-    import { siteLang } from "../../../stores/string-localstorage-stores";
-    import VoteBox from "../../common/VoteBox.svelte";
-    import VoteButtons from "../../common/VoteButtons.svelte";
-    import { antonioVoteHistory } from "./utils/antonio-vote-history";
+	import { type AntonioResourceInfo, type AntonioResourceVoteRequest } from "../../../api/antonio";
+	import { getI18n } from "../../../i18n/i18n";
+	import VoteBox from "../../common/VoteBox.svelte";
+	import VoteButtons from "../../common/VoteButtons.svelte";
+	import { antonioVoteHistory } from "./utils/antonio-vote-history";
 	const { votesHistoryStore } = antonioVoteHistory;
 	
-	interface Props { resources:AntonioResourceInfo[]; }
-	const { resources }:Props = $props();
+	interface Props { resources:AntonioResourceInfo[]; handleVoteApiCall:(req:AntonioResourceVoteRequest) => void; }
+	const { resources, handleVoteApiCall }:Props = $props();
 	
-	const aResourceHasUpvote = $derived( resources.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false );
+	const aResourceHasUpvote = $derived( resources.find(({id}) => $votesHistoryStore.votes[id] === 'up')?.id ?? false );
 	
-	const i18n:Record<string, string> = $derived($siteLang === 'pt-br' ? ptBrI18n : {});
-	
-	function getResourceName(name:string) {
-		return i18n[`resource.${name}`] ?? name;
-	}
+	function getResourceName(name:string) { return $getI18n(`resource.${name}` as any, name); }
 </script>
 
 <div class='tracker-data-row-table vote-box-list'>
 <!-- <table id="tracker-table" class='tracker-data-row-table'>
 <tr> -->
-
-{#each resources as resource}
-	{@const { id, votesUp, votesDown } = resource}
+{#each resources as resource(resource.id)}
+	{@const { id } = resource}
 	<VoteBox
 		title={getResourceName(resource.name)}
 		active={resource.isGood}
 		best={resource.isBest}
 	>
 		{#snippet voteButtons()}
-			<VoteButtons upVotes={votesUp} downVotes={votesDown} active={$votesHistoryStore.votes[id]}
+			<VoteButtons upVotes={resource.votesUp} downVotes={resource.votesDown} active={$votesHistoryStore.votes[id]}
 				disableUpvote={aResourceHasUpvote !== false && aResourceHasUpvote !== id}
-				onUpVoteClicked={()=>{
-					antonioVoteHistory.toggleVote(id, "up");
-				}}
-				onDownVoteClicked={()=>{
-					antonioVoteHistory.toggleVote(id, "down");
-				}}
+				onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
+				onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
 			/>
 		{/snippet}
 		

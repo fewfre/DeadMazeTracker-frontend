@@ -4,7 +4,7 @@
     import Modal from "../../common/modal/Modal.svelte";
     import { bossTracker } from "../../features/passages/utils/boss-tracker";
     import { passagesDailyTracker } from "../../features/passages/utils/passages-daily-tracker";
-    import { sideQuestDailyTracker } from "../../features/sidequest/utils/side-quest-daily-tracker";
+    import { sideMissionsDailyTracker } from "../../features/sidequest/utils/side-missions-daily-tracker";
 
 	let { showModal = $bindable() } = $props();
 	
@@ -22,7 +22,7 @@
 		return btoa(JSON.stringify({
 			...passagesDailyTracker.exportData(),
 			...bossTracker.exportData(),
-			...sideQuestDailyTracker.exportData(),
+			...sideMissionsDailyTracker.exportData(),
 		}));
 	}
 	
@@ -30,7 +30,7 @@
 		var data = JSON.parse(atob(pString));
 		passagesDailyTracker.importData(data);
 		bossTracker.importData(data);
-		sideQuestDailyTracker.importData(data);
+		sideMissionsDailyTracker.importData(data);
 	}
 	
 	function onCopy() {

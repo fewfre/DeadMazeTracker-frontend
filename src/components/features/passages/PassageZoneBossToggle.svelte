@@ -7,14 +7,14 @@
 		zone: number;
 	}
 	let { bossImage, zone } : Props = $props();
-	const bossChecked = $derived($bossTrackerStore.bosses.includes(zone.toString()));
+	const bossChecked = $derived($bossTrackerStore.idsFlagged[zone]);
 </script>
 
 <button
 	aria-label="Toggle boss for zone: {zone} (currently: {bossChecked ? "ON" : "OFF" })"
 	class={['personal-boss', { 'boss-voted': bossChecked }]}
 	style='background-image:url({bossImage});'
-	onclick={() => bossTracker.toggleBossInBossTracker(zone.toString())}
+	onclick={() => bossTracker.toggleFlag(zone)}
 ></button>
 
 <style>

@@ -41,6 +41,7 @@
 
 		const target = hash ? `#${hash}` : `${window.location.pathname}${window.location.search}`;
 		window.history.replaceState(null, '', target);
+		window.dispatchEvent(new HashChangeEvent("hashchange")); /* Needed since we need to know when hash changes for antonio in header */
 	};
 
 	const activateTab = (index: number) => {
@@ -133,18 +134,18 @@
 	padding: 0 0;
 }
 
-.tab-pane {
+/* .tab-pane {
 	animation: fadeIn 0.2s ease;
-}
+} */
 
-@keyframes fadeIn {
+/* @keyframes fadeIn {
 	from {
 		opacity: 0;
 	}
 	to {
 		opacity: 1;
 	}
-}
+} */
 
 .tab-button {
 	all: unset;

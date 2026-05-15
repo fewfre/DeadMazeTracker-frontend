@@ -1,7 +1,9 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { antonioApi } from "../../../api/antonio";
 
-	const { data: summaryData } = antonioApi.useGetSummary();
+	const { data: summaryData, mutate } = antonioApi.useGetSummary();
+	onMount(() => { mutate(undefined); });
 </script>
 
 <span id="antonio_summary">
