@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { getI18n } from "../../../i18n/i18n";
 	import { forceChatBelow } from "../../../stores/bool-localstorage-stores";
 	import { envVars } from "../../../utils/env-vars";
 	import ChatFiltersModal from "./ChatFiltersModal.svelte";
@@ -9,22 +10,21 @@
 	let showFiltersModal = $state(false);
 
 	const cboxBase = `https://www2.cbox.ws/box/?boxid=${envVars.CBOX_BOXID}&boxtag=xY8OvF`;
-	const tabs = [
-		{ href: cboxBase, label: "General" },
-		{ href: `${cboxBase}&tid=5&tkey=17ccf67c30d09bf7`, label: "Trade" },
+	const tabs = $derived([
+		{ href: cboxBase, label: $getI18n("chat_tab.general", "General") },
+		{ href: `${cboxBase}&tid=5&tkey=17ccf67c30d09bf7`, label: $getI18n("chat_tab.trade", "Trade") },
 		{ href: `${cboxBase}&tid=6&tkey=30ae46fac3de7f81`, label: "Boss" },
 		{ href: `${cboxBase}&tid=2&tkey=892b3205d36a083c`, label: "🇬🇧", img: "images/flags/en.png" },
 		{ href: `${cboxBase}&tid=3&tkey=b5c130c9c339148b`, label: "🇪🇸", img: "images/flags/es.png" },
 		{ href: `${cboxBase}&tid=4&tkey=feb06400f051a730`, label: "🇧🇷", img: "images/flags/br.png" },
 		// { href: 'https://projects.fewfre.com/a801/deadmaze/trackerchat/`, label: 'BlaB! AX' },
-	];
+	]);
 
 	let activeTabIndex = $state(0);
-	let chatSrc = $state(tabs[0].href);
+	let chatSrc = $derived(tabs[activeTabIndex].href);
 
 	function handleTabClick(index: number) {
 		activeTabIndex = index;
-		chatSrc = tabs[index].href;
 	}
 
 	/////////////////////////////////////

@@ -2,6 +2,9 @@ export const ptBrI18n = {
   "tab.secretPassages": "Passagens secretas",
   "tab.sideMissions": "Missões secundárias",
   "tab.doggy": "Catioros",
+  
+  "chat_tab.general": "Geral",
+  "chat_tab.trade": "Troca",
 	
   "resource.Scrap metal": "Sucata",
   "resource.Wood": "Madeira",

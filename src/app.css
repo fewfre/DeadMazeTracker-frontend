@@ -76,6 +76,83 @@ section {
 b.instr { font-size: 110%; text-decoration: underline; }
 
 /*******************************
+* Tooltip
+********************************/
+
+/* wrapper to create positioning context */
+[data-tooltip] { position: relative !important; }
+
+/* tooltip element (pseudo)
+   Default position: top
+*/
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  bottom: 100%;
+  transform: translate(-50%, -12px); /* default: top */
+  min-width: 280px;
+  max-width: 360px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 260ms cubic-bezier(.2,.9,.3,1), visibility 0s linear 220ms;
+  z-index: 1000;
+  box-sizing: border-box;
+  line-height: 1.15;
+}
+
+/* show on hover/focus (keyboard accessible) */
+[data-tooltip]:hover::before,
+[data-tooltip]:focus::before {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0.2s, 0.2s, 0.2s;
+}
+
+/* POSITION VARIANTS - use: data-tooltip-position="top|right|left|bottom" [default=top] */
+[data-tooltip][data-tooltip-position="right"]::before {
+  left: 100%;
+  top: 50%;
+  bottom: auto;
+  transform: translate(12px, -50%);
+}
+[data-tooltip][data-tooltip-position="left"]::before {
+  right: 100%;
+  left: auto;
+  top: 50%;
+  bottom: auto;
+  transform: translate(-12px, -50%);
+}
+[data-tooltip][data-tooltip-position="bottom"]::before {
+  left: 50%;
+  top: 100%;
+  bottom: auto;
+  transform: translate(-50%, 12px);
+}
+
+/* small responsive tweaks */
+@media (max-width: 480px) {
+  [data-tooltip]::before { min-width: 240px; max-width: 320px; font-size: 13px; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-tooltip]::before,
+  [data-tooltip]::after {
+    transition: none;
+  }
+}
+
+/*******************************
 * Nyan Cat
 ********************************/
 body.nyancat {
