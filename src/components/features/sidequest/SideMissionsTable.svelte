@@ -4,18 +4,18 @@
     import VoteButtons from "../../common/VoteButtons.svelte";
     import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
     import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
-	const { sideQuestDailyTrackerStore } = sideMissionsDailyTracker;
+	const { sideMissionsDailyTrackerStore } = sideMissionsDailyTracker;
 	const { votesHistoryStore } = sideMissionsVoteHistory;
 
 	interface Props { zones:SideMissionZoneInfo[]; handleVoteApiCall:(req:SideMissionVoteRequest) => void }
 	const { zones, handleVoteApiCall }:Props = $props();
 </script>
 
-<table id="quest-table">
+<table id="missions-table">
 	<thead>
 		<tr>
 			<th colspan="2">Zone</th>
-			<th>Side Quests</th>
+			<th>Side Missions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,20 +26,20 @@
 				<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
 			</td>
 			<td>
-				<div class='quests vote-box-list'>
+				<div class='missions vote-box-list'>
 				{#each zone.missions as mission(mission.id)}
 					{@const { id } = mission}
 					{@const goodPassage = mission.votesUp - mission.votesDown > 0}
-		<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$quest["id"]]) || $highestQuests[$quest["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$quest["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$quest["id"]]["server"] ));
+		<!-- $passageOnOtherServer = $goodPassage ? "" : (!isset($highestQuests[$mission["id"]]) || $highestQuests[$mission["id"]]["votes_diff"] == 0 ? "" : ( $highestQuests[$mission["id"]]["server"] == 'br' ? 'br_mega' : $highestQuests[$mission["id"]]["server"] ));
 		$passageOnOtherServer = !$passageOnOtherServer ? "" : "<span class='action disabled other-server'><img src='images/flags/{$passageOnOtherServer}.png' height='15' /></span>"; -->
 
-					<!-- {@const mapType = !quest.npcMap && quest.npcMap.indexOf("//fewfre.com/dmmap") !== -1 ? "iframe" : "image"} -->
-							<!-- $mapType = !empty($quest["npc_map"]) && strpos($quest["npc_map"], "//fewfre.com/dmmap") !== false ? "iframe" : "image";
-		$map = !empty($quest["npc_map"]) ? " <a href='{$quest["npc_map"]}' class='action action-map-icon' data-featherlight='{$mapType}' data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'></a>" : ""; -->
+					<!-- {@const mapType = !mission.npcMap && mission.npcMap.indexOf("//fewfre.com/dmmap") !== -1 ? "iframe" : "image"} -->
+							<!-- $mapType = !empty($mission["npc_map"]) && strpos($mission["npc_map"], "//fewfre.com/dmmap") !== false ? "iframe" : "image";
+		$map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='action action-map-icon' data-featherlight='{$mapType}' data-featherlight-iframe-width='1024' data-featherlight-iframe-height='640'></a>" : ""; -->
 					<VoteBox
 						title={mission.npcName}
 						active={goodPassage}
-						flagged={$sideQuestDailyTrackerStore.idsFlagged[id]}
+						flagged={$sideMissionsDailyTrackerStore.idsFlagged[id]}
 						actions={[
 							{ type:"flag", onclick:()=>{ sideMissionsDailyTracker.toggleFlag(id) } },
 							{ type:"map", link:mission.npcMap }
@@ -65,12 +65,12 @@
 </table>
 
 <style>
-#quest-table { border-collapse:collapse; }
-#quest-table thead th { padding:2px 0; }
-#quest-table>tbody>tr { padding:2px 0; border:2px solid #EEE; }
-#quest-table>tbody>tr>td:nth-of-type(1) { padding-left:5px; }
-#quest-table>tbody>tr>td:nth-of-type(2) { padding-right:5px; border-right:1px solid #EEE; position: relative; }
-#quest-table > tbody > tr:nth-of-type(odd) { background: var(--striped-table-row-bg--secondary, #005500); }
+#missions-table { border-collapse:collapse; }
+#missions-table thead th { padding:2px 0; }
+#missions-table>tbody>tr { padding:2px 0; border:2px solid #EEE; }
+#missions-table>tbody>tr>td:nth-of-type(1) { padding-left:5px; }
+#missions-table>tbody>tr>td:nth-of-type(2) { padding-right:5px; border-right:1px solid #EEE; position: relative; }
+#missions-table > tbody > tr:nth-of-type(odd) { background: var(--striped-table-row-bg--secondary, #005500); }
 
 .vote-box-list { display: flex; flex-wrap: wrap; }
 
@@ -82,23 +82,4 @@
 	min-width: 40px;
 	height: 50px;
 }
-
-/* .vote-box .vote-title { width: auto; } */
-
-/* .quests { text-align: center; border-collapse:collapse; }
-.quests .passage-info {
-	min-width:155px; float: left; color:#222; border:1px solid purple; background:#EEE;
-	position: relative; vertical-align: bottom; background-clip: padding-box;
-}
-.quests .passage-info.secondlastopened { opacity:0.9; }
-.quests .passage-info.lastopened { opacity: 0.7; }
-.quests .passage-info.lastopened:before { content:'∅'; position:absolute; bottom:0; left:6px; }
-.quests .passage-info.lastopened:after { content:'∅'; position:absolute; bottom:0; right:6px; }
-.quests .passage-info.active { background-color:#A0FFA0; }
-.quests .passage-info.dailyvoted { border-color: red; box-shadow: inset 0 0 5px 1px orangered; }
-
-.personal-daily { position: absolute; top:0; right:0; padding: 2px; line-height: 1; color:#666; }
-.dailyvoted .personal-daily { color: white; background: red; border-bottom-left-radius: 5px; }
-.personal-daily:before { content:"⚐"; }
-.other-server { position: absolute; top:0; left:0; } */
 </style>

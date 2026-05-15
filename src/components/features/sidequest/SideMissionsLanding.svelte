@@ -7,16 +7,16 @@
     import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
-    import SideQuestTable from "./SideMissionsTable.svelte";
+    import SideMissionsTable from "./SideMissionsTable.svelte";
     import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
     import { sideMissionsServerStore } from "./utils/side-missions-server-store";
     import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
 	
-	const { data, error:listSideQuestsError, revalidate, isFetching, mutate } = sideMissionApi.useList({ server:$sideMissionsServerStore });
+	const { data, error:listSideMissionsError, revalidate, isFetching, mutate } = sideMissionApi.useList({ server:$sideMissionsServerStore });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
-	$effect(() => { alert = $listSideQuestsError ? { type:'danger', message:$listSideQuestsError.message } : null; });
+	$effect(() => { alert = $listSideMissionsError ? { type:'danger', message:$listSideMissionsError.message } : null; });
 	
 	let showServerSelectModal = $state(false);
 	
@@ -35,26 +35,25 @@
 				</span>
 			</strong>
 			<p>
-				Click the ⚐ icon to mark quests completed for the day
+				Click the ⚐ icon to mark missions completed for the day
 				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
-				Flags auto-reset at 3am UTC (when all quests refresh).
+				Flags auto-reset at 3am UTC (when all missions refresh).
 			</p>
 		</div>
 	</div>
 	<p>
-		<b class="instr">Page's Purpose:</b> Lets community keep track of available side quests.
-		<b class="instr">How it Works:</b> If a quest is available click ✔, if not then click ✘. Table is cleared every day, and requires the community to update it. Don't make false reports!
+		<b class="instr">Page's Purpose:</b> Lets community keep track of available side missions.
+		<b class="instr">How it Works:</b> If a mission is available click ✔, if not then click ✘.
+		Table is cleared every day, and requires the community to update it. Don't make false reports!
 	</p>
 	<p>
-		<b class="instr">Requirements:</b>
-		Select your server from the list, and only report sighting on that server.
-		&bull;
-		Read <a href="http://deadmaze.wikia.com/wiki/Side_quest" style="text-decoration:underline;">the wiki</a> for basics and locations.
+		<b class="instr">Information:</b>
+		Read <a href="https://deadmaze.fandom.com/wiki/Side_mission" style:text-decoration='underline'>the wiki</a> for basics and locations.
 	</p>
-	
 	<p>
-		<b class="instr">Quests Table:</b>
-		A <b>green background</b> shows a quest with a positive vote total.
+		<b class="instr">Table:</b>
+		Select your server from the list, and only report sighting on that server. &bull;
+		A <b>green background</b> shows a side mission with a positive vote total
 		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
 	</p>
 </section>
@@ -64,7 +63,7 @@
 		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
 			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={43} />
 		</button>
-		Quests Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Side Missions <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	</div>
 	
@@ -75,8 +74,8 @@
 	{#if !$data}
 		<p>Loading...</p>
 	{:else}
-		<!-- <SideQuestRestartControl restartData={$data?.restartTracker} /> -->
-		<SideQuestTable zones={$data?.zones} handleVoteApiCall={async req => {
+		<!-- <SideMissionRestartControl restartData={$data?.restartTracker} /> -->
+		<SideMissionsTable zones={$data?.zones} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;
 			

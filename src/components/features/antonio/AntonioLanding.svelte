@@ -21,14 +21,13 @@
 	<TimerBox label="Time Until Reset" occurrence={antonioVoteHistory.resetOccurrence} />
 	
 	<p>
-	Antonio is a shop npc who buys resources.
-	He can be found in the main building behind the counter in Lakeview Lane.
-	You can read more about it <a href="https://deadmaze.wikia.com/wiki/Antonio">here</a>.
+		<a href="https://deadmaze.wikia.com/wiki/Antonio" style:text-decoration='underline'>Antonio</a> is a shop NPC who buys resources.
+		He can be found in the main building behind the counter in Lakeview Lane.
 	</p>
 </section>
 <section>
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Resource List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Resources List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	
 	{#if alert}

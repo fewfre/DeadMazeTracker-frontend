@@ -24,83 +24,100 @@
 <section>
 	<TimerBox label="Time Until Reset" occurrence={passagesVoteHistory.resetOccurrence} timer2={{ label: "Boss Reset", occurrence:bossTracker.resetOccurrence }} />
 	
-	<div id="personalTrackerDescCont">
-		<div id='personalDailyResetDesc'>
-			<strong>
-				Personal SP Log
-				<span id="personalDailyReset" style="float:right;">
-					<button onclick={() => passagesDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
-				</span>
-			</strong>
+	<div class="two-column-layout">
+		<div>
+			<div id="personalTrackerDescCont">
+				<div id='personalDailyResetDesc'>
+					<strong>
+						Personal SP Log
+						<span id="personalDailyReset" style="float:right;">
+							<button onclick={() => passagesDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
+						</span>
+					</strong>
+					<p>
+						Click the ⚐ icons below to mark passages completed for the day
+						<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
+						Flags auto-reset at 5am UTC (when all containers refresh).
+					</p>
+				</div>
+			</div>
+			
 			<p>
-				Click the ⚐ icon to mark passages completed for the day
-				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
-				Flags auto-reset at 5am UTC (when all containers refresh).
+				<b class="instr">Page's Purpose:</b>
+				This is a community tracker for which passages are currently open.
+				If a passage is open click ✔, if closed click ✘.
+				Table is automatically cleared every hour, and requires the community to update it. Don't make false reports!
+			</p>
+			<!--
+				The purpose of this page is to let people mark what passages are currently open or closed.
+				This is a simple script, and other than resetting every hour requires input by the community to be useful.
+				Don't make false reports!
+			-->
+			<p>
+				<b class="instr">Information:</b>
+				<!-- Join the international (EN) server
+				<InfoIconTooltip tooltip="Only make reports from the international server. This is to avoid conflicting reports, and also make it easier to form groups. You can change your server when logging in by clicking the country flag." />
+				<button id="memoButton">how?</button>
+				&bull; -->
+				Read <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style:text-decoration='underline'>the wiki</a> for basics and locations
+				<InfoIconTooltip tooltip="Don't pester people about locations / basics without first doing a little research!" />
+				&bull;
+				Join <code>/chat sp</code> in-game
+				<InfoIconTooltip tooltip="This chat is useful for making real time reports, forming groups, and getting help." />
+				&bull;
+				In-game sp chat is <b>only</b> for sp discussions; for other topics use <code>/chat dm-trade</code>, <code>/chat dm-help</code>, etc
+			</p>
+			<!--
+			<p>
+				Join <code>/chat sp</code> in-game for real time reports and help!
+				If you're new to what secret passages are, you can read the <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style:text-decoration='underline'>wiki article</a> which has basic information including locations.
+			</p>
+			
+			<p style="color:white; font-weight:bold; background:rgba(255,255,255,0.1); padding:2px;">
+				Please join the international (EN) server, and only make reports from that server.
+				This is to avoid conflicting reports.
+				You can change your server when logging in by clicking the country flag.
+			</p>
+			-->
+			
+			<p>
+				<b class="instr">Table:</b>
+				A <b>green background</b> shows a passage with a positive vote total
+				<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
+				&bull;
+				Passages with "∅" icons were voted open in their zone the prior hour and should most likely not be open again.
 			</p>
 		</div>
-		<div id='personalBossResetDesc'>
-			<strong>
-				Personal Boss Log
-				<span id="personalBossReset" style="float:right;">
-					<button onclick={() => bossTracker.resetTracker()}>Reset</button>
-				</span>
-			</strong>
+		<div>
+			<div id='personalBossResetDesc'>
+				<strong>
+					Personal Boss Log
+					<span id="personalBossReset" style="float:right;">
+						<button onclick={() => bossTracker.resetTracker()}>Manual Reset</button>
+					</span>
+				</strong>
+				<p>
+					
+					Boss tracking auto-resets 0:00 UTC on Thursdays.
+				</p>
+			</div>
+			
 			<p>
-				Click the boss image next to zone name to mark it for the week
+				<b class="instr">Marking complete:</b>
+				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank">boss</a> image next to zone names on the table below to track them
 				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
-				Bosses auto-reset at 0:00 UTC on Thursdays.
+			</p>
+			<p>
+				<b class="instr">Finding Bosses:</b>
+				The best way to be notified of boss sightings is to join the <code>/chat boss</code> in-game chat. You can also use the "Boss" tab on this site's chat window.
 			</p>
 		</div>
 	</div>
-	
-	<p>
-		<b class="instr">Page's Purpose:</b> Lets community keep track of open secret passages.
-		<b class="instr">How it Works:</b> If a passage is open click ✔, if closed click ✘. Table is cleared every hour, and requires the community to update it. Don't make false reports!
-	</p>
-	<!--
-		The purpose of this page is to let people mark what passages are currently open or closed.
-		This is a simple script, and other than resetting every hour requires input by the community to be useful.
-		Don't make false reports!
-	-->
-	<p>
-		<b class="instr">Requirements:</b>
-		<!-- Join the international (EN) server
-		<InfoIconTooltip tooltip="Only make reports from the international server. This is to avoid conflicting reports, and also make it easier to form groups. You can change your server when logging in by clicking the country flag." />
-		<button id="memoButton">how?</button>
-		&bull; -->
-		Read <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style="text-decoration:underline;">the wiki</a> for basics and locations
-		<InfoIconTooltip tooltip="Don't pester people about locations / basics without first doing a little research!" />
-		&bull;
-		Join <code>/chat sp</code> in-game
-		<InfoIconTooltip tooltip="This chat is useful for making real time reports, forming groups, and getting help." />
-		&bull;
-		In-game sp chat is <b>only</b> for sp discussions; for other topics use <code>/chat boss</code>, <code>/chat dm-trade</code>, <code>/chat dm-help</code>, etc
-	</p>
-	<!--
-	<p>
-		Join <code>/chat sp</code> in-game for real time reports and help!
-		If you're new to what secret passages are, you can read the <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style="text-decoration:underline;">wiki article</a> which has basic information including locations.
-	</p>
-	
-	<p style="color:white; font-weight:bold; background:rgba(255,255,255,0.1); padding:2px;">
-		Please join the international (EN) server, and only make reports from that server.
-		This is to avoid conflicting reports.
-		You can change your server when logging in by clicking the country flag.
-	</p>
-	-->
-	
-	<p>
-		<b class="instr">Locations Table:</b>
-		A <b>green background</b> shows a passage with a positive vote total.
-		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
-		&bull;
-		Passages with a "∅" icon had the highest vote total for their zone the prior hour and shouldn't be open again.
-	</p>
 </section>
 <section>
 	<!-- <div style="overflow-x:hidden;"> -->
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Locations Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Locations <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	<!-- </div> -->
 	
@@ -144,6 +161,15 @@
 </section>
 
 <style>
+.two-column-layout {
+	display: grid;
+	grid-template-columns: 1fr minmax(350px, 0.5fr);
+	gap: 6px;
+}
+.two-column-layout > *:nth-child(2) {
+	border-left: 1px solid #cccccc66;
+	padding-left: 6px;
+}
 #personalTrackerDescCont {
 	float:right;
 }
@@ -160,10 +186,8 @@
 	clear:both;
 }
 #personalBossResetDesc {
-	width:275px;
 	padding:2px 3px;
 	margin-top: 2px;
-	margin-left: 5px;
 	border:2px solid rgba(255,255,0,0.7);
 }
 #personalBossResetDesc strong:after {

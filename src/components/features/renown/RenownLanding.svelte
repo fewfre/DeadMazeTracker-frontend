@@ -42,13 +42,12 @@
 		<b class="instr">Page's Purpose:</b> Lets community keep track of available friendship locations.
 		<b class="instr">How it Works:</b> If a location is available click ✔, if not then click ✘. Table is cleared every day, and requires the community to update it. Don't make false reports!
 	</p>
-	<!-- <p>
-		<b class="instr">Requirements:</b>
-		Read <a href="http://deadmaze.wikia.com/wiki/Side_quest" style="text-decoration:underline;">the wiki</a> for basics and locations.
-	</p> -->
-	
 	<p>
-		<b class="instr">Renown Table:</b>
+		<b class="instr">Information:</b>
+		Read <a href="https://deadmaze.fandom.com/wiki/Renown" style:text-decoration='underline'>the wiki</a> for basics and locations.
+	</p>
+	<p>
+		<b class="instr">Table:</b>
 		A <b>green background</b> shows a location with a positive vote total.
 		<InfoIconTooltip tooltip="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)" />
 	</p>
@@ -56,7 +55,7 @@
 <section>
 	<div style="overflow-x:hidden;">
 	<h2 style="border-bottom: 2px solid currentColor; margin-bottom: 5px;">
-		Renown Table <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
+		Friendships <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} onAutoRefreshToggled={()=>{}} />
 	</h2>
 	</div>
 	

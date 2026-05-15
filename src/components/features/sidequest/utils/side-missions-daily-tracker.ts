@@ -5,23 +5,23 @@ import { sideMissionsServerStore } from './side-missions-server-store';
 import { sideMissionsVoteHistory } from './side-missions-vote-history';
 
 export namespace sideMissionsDailyTracker {
-	const SIDE_QUEST_TRACKER_LS_KEY = "side-missions-tracker";
+	const SIDE_MISSIONS_TRACKER_LS_KEY = "side-missions-tracker";
 			
 	export const resetOccurrence:ReoccurringEventProps = sideMissionsVoteHistory.resetOccurrence;
 	export const getNewFormattedTimestamp = () => createComparisonTimestamp(resetOccurrence);
 
-	export const sideQuestDailyTrackerStore = writable(parseAndUpdateTimeIdTrackerLS(SIDE_QUEST_TRACKER_LS_KEY, getNewFormattedTimestamp));
-	sideQuestDailyTrackerStore.subscribe(value => { localStorage.setItem(SIDE_QUEST_TRACKER_LS_KEY, JSON.stringify(value)); });
+	export const sideMissionsDailyTrackerStore = writable(parseAndUpdateTimeIdTrackerLS(SIDE_MISSIONS_TRACKER_LS_KEY, getNewFormattedTimestamp));
+	sideMissionsDailyTrackerStore.subscribe(value => { localStorage.setItem(SIDE_MISSIONS_TRACKER_LS_KEY, JSON.stringify(value)); });
 
 	/**
 	 * Toggle a personal vote flag for a specific side quest (by index)
 	 */
 	export function toggleFlag(id: number, value?: boolean) {
-		sideQuestDailyTrackerStore.update(data => ({ ...data, idsFlagged:{  ...data.idsFlagged, [id]:value ?? !data.idsFlagged[id] } }));
+		sideMissionsDailyTrackerStore.update(data => ({ ...data, idsFlagged:{  ...data.idsFlagged, [id]:value ?? !data.idsFlagged[id] } }));
 	}
 	
 	export function resetTracker() {
-		sideQuestDailyTrackerStore.set({ idsFlagged: {}, timestamp: getNewFormattedTimestamp() });
+		sideMissionsDailyTrackerStore.set({ idsFlagged: {}, timestamp: getNewFormattedTimestamp() });
 	}
 	
 	//////////////////////////////
@@ -29,14 +29,14 @@ export namespace sideMissionsDailyTracker {
 	//////////////////////////////
 	type ExportImportProps = { sideQuestPersonal?:any }
 	export function exportData() : ExportImportProps {
-		return { sideQuestPersonal: get(sideQuestDailyTrackerStore) }
+		return { sideQuestPersonal: get(sideMissionsDailyTrackerStore) }
 	}
 	export function importData(pData:ExportImportProps) {
-		if(pData.sideQuestPersonal) { sideQuestDailyTrackerStore.set(pData.sideQuestPersonal); }
+		if(pData.sideQuestPersonal) { sideMissionsDailyTrackerStore.set(pData.sideQuestPersonal); }
 		sideMissionApi.refreshList( get(sideMissionsServerStore) );
 	}
 }
 
-setReoccurringEventInterval(sideMissionsDailyTracker.resetOccurrence, () => get(sideMissionsDailyTracker.sideQuestDailyTrackerStore).timestamp, () => {
+setReoccurringEventInterval(sideMissionsDailyTracker.resetOccurrence, () => get(sideMissionsDailyTracker.sideMissionsDailyTrackerStore).timestamp, () => {
 	sideMissionsDailyTracker.resetTracker()
 });
