@@ -6,7 +6,7 @@
 	let checked = $derived(!!autoRefreshInterval);
 	let autoRefreshIntervalOpen = $state(false);
 	
-	console.log(RefreshIcon);
+	const toggleAutoRefresh = () => autoRefreshInterval = !checked ? 600_000 : null;
 </script>
 
 <div class="refresh-cont">
@@ -18,24 +18,31 @@
 			Refresh
 		{/if}
 	</button>
+</div>
+<div class="refresh-cont">
 	{#if !checked}
-		<button class="auto-refresh-toggle button-group-part" class:checked onclick={()=>(autoRefreshInterval = 600_000)} role="switch" aria-checked={checked}
+		<button class="button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
 		data-tooltip="Toggle auto-refresh on - this value will be remembered across page loads">
 			<!-- ⏲ -->
+			 
 			 <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="-2 0 30 30"><path fill-rule="evenodd" d="M14 14.18V9a1 1 0 1 0-2 0v5.18A3 3 0 0 0 13 20a3 3 0 0 0 1-5.82M13 28a11 11 0 1 1 0-22 11 11 0 0 1 0 22m.99-23.95L14 4V2h4a1 1 0 1 0 0-2H8a1 1 0 1 0 0 2h4v2l.01.05a13 13 0 1 0 1.98 0"/></svg>
+				<span class="small">Enable Auto Refresh</span>
 		</button>
 	{:else}
-		<button class="auto-refresh-toggle button-group-part" class:checked onclick={()=>(autoRefreshInterval = !checked ? 600_000 : null)} role="switch" aria-checked={checked}
+		<button class="stop-button button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
 		data-tooltip="Click to toggle auto refresh off">
-			<span class="small">AUTO</span>
+			🛑
 		</button>
+		<div class="button-group-part">
+			<span class="small">Auto Refresh</span>
+		</div>
 	{/if}
 	
 	{#if checked}
 		{#if !autoRefreshIntervalOpen}
 			<button class="button-group-part open-interval-toggle" class:checked onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)} role="switch" aria-checked={autoRefreshIntervalOpen}
 			data-tooltip="How often content is auto refreshed - click to change current auto-refresh interval">
-				<span class="small">{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}</span>
+				<span class="small">Rate:&thinsp;{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}</span>
 			</button>
 		{:else}
 			<button class="close-input button-group-part" onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)}>
@@ -89,12 +96,18 @@
 	border: solid 1px var(--refresh-border-color);
 	height: 27px;
 	padding: 0 3px;
+	cursor: default;
 }
 .button-group-part + .button-group-part {
 	border-left: none;
 }
+.button-group-part:first-child {
+	border-top-left-radius: var(--border-radius);
+	border-bottom-left-radius: var(--border-radius);
+}
 .button-group-part:last-child {
-	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	border-top-right-radius: var(--border-radius);
+	border-bottom-right-radius: var(--border-radius);
 }
 button.button-group-part:hover {
 	background-color:var(--refresh-bg-hover);
@@ -169,11 +182,9 @@ button.button-group-part:hover {
 * Toggle to turn auto refresh on/off
 ****************************************/
 
-/* #refresh:has(+ .auto-refresh-toggle) {
-	border-right: none;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
-} */
+.stop-button {
+	font-size: 16px;
+}
 
 /* .toggle-icon { font-size: 14px; font-weight: bolder; }
 .toggle-icon { color:black; }
@@ -182,19 +193,6 @@ button.button-group-part:hover {
 /***************************************
 * Interval Inputs and such
 ****************************************/
- 
-.auto-refresh-toggle:has(+ .open-interval-toggle) {
-	border-right: none;
-	&:after {
-		content:":";
-		position: relative;
-		right: -1px;
-		display: block;
-		width: 0;
-		font-size: 12px;
-		color: gray;
-	}
-}
 
 .close-input {
 	display: flex;
