@@ -29,7 +29,7 @@
 	{#if checked}
 		{#if !autoRefreshIntervalOpen}
 			<button class="button-group-part small open-interval-toggle" class:checked onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)} role="switch" aria-checked={autoRefreshIntervalOpen}
-			data-tooltip="Change current auto-refresh interval">
+			data-tooltip="How often content is auto refreshed - click to change current auto-refresh interval">
 				{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}
 			</button>
 		{:else}
@@ -169,9 +169,9 @@ button.button-group-part:hover {
 	border-bottom-right-radius: 0;
 } */
 
-.toggle-icon { font-size: 14px; font-weight: bolder; }
+/* .toggle-icon { font-size: 14px; font-weight: bolder; }
 .toggle-icon { color:black; }
-.checked .toggle-icon { color:green; }
+.checked .toggle-icon { color:green; } */
 
 /***************************************
 * Interval Inputs and such

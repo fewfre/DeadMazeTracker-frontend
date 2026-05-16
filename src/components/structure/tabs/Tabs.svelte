@@ -156,6 +156,7 @@
 	box-sizing: border-box;
 	cursor: pointer;
 	
+	height: 45px;
 	padding: 10px 2px;
 	margin: 0 3px;
 	font-size: 125%;
