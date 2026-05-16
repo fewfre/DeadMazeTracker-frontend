@@ -5,7 +5,7 @@
 	const { tooltip, size=16 } : Props = $props();
 </script>
 
-<span title={tooltip}><InfoIcon size={size} /></span>
+<span data-tooltip={tooltip}><InfoIcon size={size} /></span>
 
 <style>
 span {
