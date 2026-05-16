@@ -1,12 +1,17 @@
 <script lang="ts">
+    import RefreshIcon from "../../assets/RefreshIcon.svelte";
+
 	interface Props { onRefreshClick:()=>void; autoRefreshInterval:number|null; loading?:boolean; }
 	let { onRefreshClick, autoRefreshInterval=$bindable(), loading } : Props = $props();
 	let checked = $derived(!!autoRefreshInterval);
 	let autoRefreshIntervalOpen = $state(false);
+	
+	console.log(RefreshIcon);
 </script>
 
-<div id="refreshCont">
+<div class="refresh-cont">
 	<button id="refresh" class="button-group-part" onclick={onRefreshClick} disabled={loading}>
+		<div class="refresh-icon"><RefreshIcon size={24} /></div>
 		{#if loading}
 			<img src='images/loading-dots.gif' width='43' alt='Loading...' />
 		{:else}
@@ -55,7 +60,7 @@
 </div>
 
 <style>
-#refreshCont {
+.refresh-cont {
 	display: inline-flex;
 	align-items: center;
 	line-height: 1;
@@ -63,6 +68,9 @@
 	margin-bottom: 1px;
 	color: #0B1215;
 	--border-radius: 5px;
+	
+	--refresh-bg: lightgrey;
+	--refresh-bg-hover: #B9B9B9;
 }
 
 /***************************************
@@ -76,7 +84,7 @@
 	gap: 2px;
 	box-sizing: border-box;
 	
-	background: lightgrey;
+	background: var(--refresh-bg);
 	border: solid 1px grey;
 	height: 27px;
 	padding: 0 3px;
@@ -88,7 +96,7 @@
 	border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 button.button-group-part:hover {
-	background-color:#B9B9B9;
+	background-color:var(--refresh-bg-hover);
 }
 
 .small { font-family: monospace; font-size: 10px; position: relative; top: 1px; }
@@ -104,8 +112,8 @@ button.button-group-part:hover {
 #refresh {
 	box-sizing: border-box;
 	position: relative;
-	padding: 0px 5px 0px 30px !important;
-	background: lightgrey;
+	padding: 0px 5px 0px 28px !important;
+	background: var(--refresh-bg);
 	border: solid 1px grey;
 	line-height: 25px;
 	/* border-radius: var(--border-radius); */
@@ -113,46 +121,40 @@ button.button-group-part:hover {
 	min-width: 86px;
 	font-size: 14px;
 }
-#refresh:before {
-	content:"";
-	box-sizing: border-box;
-	display: inline-block;
+
+.refresh-icon {
 	position: absolute;
-	margin: 0;
-	padding: 0;
-
 	top:-5px;
-	left:-5px;
-
-	background:lightgrey;
+	left:-7px;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	
+	box-sizing: border-box;
+	background: var(--refresh-bg);
 	border:solid 1px grey;
 	border-right: 0;
 	width: 35px;
 	height: 35px;
 	border-radius: 35px;
 }
-#refresh:after {
-	content:"";
-	box-sizing: border-box;
+.refresh-icon:after {
+	/* Create a rectangle to cover up the part of the circle border we don't want visible */
+	content: "";
 	position: absolute;
-	margin: 0;
-	padding: 0;
-	transform-origin: 16px 16px;
-
-	top:-3.5px;
-	left:-3.5px;
-	
-	display: block;
-	width: 32px;
-	height: 32px;
-	background: url(../images/refresh_icon.png);
-	background-size: auto auto;
-	background-size: 32px;
+	width: 10px;
+	height: 25px;
+	right: 0;
+	background: var(--refresh-bg);
 }
-#refresh:hover, #refresh:hover:before {
-	background-color:#B9B9B9;
+:global(.refresh-icon svg) {
+	z-index: 1;
 }
-#refresh:hover:after {
+#refresh:hover, #refresh:hover .refresh-icon, #refresh:hover .refresh-icon:after {
+	background-color:var(--refresh-bg-hover);
+}
+#refresh:hover :global(.refresh-icon svg) {
 	animation: refresh-rotate 1.5s linear infinite;
 }
 @keyframes refresh-rotate {
