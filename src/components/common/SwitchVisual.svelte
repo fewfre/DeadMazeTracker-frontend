@@ -34,8 +34,7 @@
 	height: 14px;
 	border: 1px solid rgba(0,0,0,0.3);
 	border-radius: 40px;
-	background: #fff;
-	background: linear-gradient(top,  #ececec 0%,#ffffff 100%);
+	background: white;
 
 	box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,0.5);
 	z-index: 999;

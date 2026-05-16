@@ -32,6 +32,8 @@
 #lang-dropdown-btn {
 	display: flex;
 	align-items: center;
+	box-sizing: border-box;
+	height: 34px;
 	padding: 5px;
 	line-height: 1;
 	border: 2px solid white;

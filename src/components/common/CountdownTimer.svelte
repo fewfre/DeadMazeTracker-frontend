@@ -83,7 +83,7 @@ strong {
 
 @keyframes shake {
 	0%, 50%, 100% { transform: translateX(0); }
-	5%, 15%, 25%, 35%, 45% { transform: translateX(- var(--shake-offset)); animation-delay: calc(0.1s * var(--animation-index)); }
+	5%, 15%, 25%, 35%, 45% { transform: translateX(calc(-1 * var(--shake-offset))); animation-delay: calc(0.1s * var(--animation-index)); }
 	10%, 20%, 30%, 40% { transform: translateX(var(--shake-offset)); animation-delay: calc(0.1s * var(--animation-index)); }
 	/* 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); animation-delay: calc(0.1s * var(--animation-index)); }
 	20%, 40%, 60%, 80% { transform: translateX(5px); animation-delay: calc(0.1s * var(--animation-index)); } */

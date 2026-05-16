@@ -9,7 +9,7 @@
 <NavDropdown contId='settings-dropdown' contentId='settings-dropdown-contents'>
 	{#snippet button()}
 		<button id="settings-dropdown-btn" aria-controls="settings-dropdown-contents">
-			<img src="images/settings_icon.svg" width="25" alt="Settings">
+			<img src="images/settings_icon.svg" width="24" alt="Settings">
 		</button>
 	{/snippet}
 	
@@ -57,7 +57,11 @@
 
 <style>
 #settings-dropdown-btn {
-	padding: 3px 3px;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	height: 34px;
+	padding: 0 3px;
 	line-height: 1;
 	border: 2px solid white;
 	background: darkgreen;

@@ -23,6 +23,28 @@
 {/if}
 
 <style>
+#login-btn {
+	all: unset;
+	box-sizing: border-box;
+	height: 34px;
+	padding: 5px;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	
+	color: #005500;
+	background: #FFFFFFDD;
+	border: 2px solid green;
+	border-radius: 5px;
+	
+	&:hover {
+		transform: scale(1.05);
+	}
+	
+	&:active {
+		box-shadow: inset 3px 3px 3px 0px rgba(0, 0, 0, 0.2);
+	}
+}
 #auth-dropdown-trigger {
 	all: unset;
 	display: flex;

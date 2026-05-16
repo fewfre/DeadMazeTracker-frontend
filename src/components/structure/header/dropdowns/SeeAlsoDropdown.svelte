@@ -27,8 +27,11 @@
 
 <style>
 #see-also-dropdown-trigger {
-    display: block;
-    padding: 8px 9px;
+    display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	height: 34px;
+    padding: 0 9px;
     color: #fff;
     font-weight: bold;
     text-decoration: none;
