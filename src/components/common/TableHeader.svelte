@@ -32,6 +32,7 @@ h2 {
   content: "";
   position: absolute;
   inset: 0;
+  pointer-events: none;
   background: var(--c,red);
   padding: var(--b);
   border-radius: var(--r);
