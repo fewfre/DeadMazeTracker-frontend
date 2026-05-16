@@ -1,14 +1,24 @@
 import { writable } from "svelte/store";
-import { siteLang } from "../stores/string-localstorage-stores";
+import { createLocalStorageStringStore } from "../stores/string-localstorage-stores";
 import { ptBrI18n } from "./pt-br";
 
-export const getI18n = writable<(key:keyof typeof ptBrI18n, en:string)=>string>((key, en)=>en);
+const langMap = new Map(Object.entries({
+	"pt-br": ptBrI18n
+}))
 
+function getDefaultSupportedLang() {
+	const browserLang = (navigator.languages?.[0] || navigator.language).toLowerCase();
+	if (browserLang.startsWith('pt')) return 'pt-br';
+	return "en";
+}
+export const siteLang = createLocalStorageStringStore("lang", getDefaultSupportedLang());
+
+export const getI18n = writable<(key:keyof typeof ptBrI18n, en:string)=>string>((key, en)=>en);
 siteLang.subscribe(lang => {
-	if(lang === 'pt-br') {
-		getI18n.set((key, en) => ptBrI18n[key] ?? en);
+	if(langMap.has(lang)) {
+		getI18n.set((key, en) => langMap.get(lang)![key] ?? en);
 	} else {
 		getI18n.set((key, en)=>en);
 	}
 	
-})
+});

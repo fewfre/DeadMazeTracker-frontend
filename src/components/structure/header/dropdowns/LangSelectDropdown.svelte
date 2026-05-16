@@ -1,5 +1,5 @@
 <script lang='ts'>
-    import { siteLang } from "../../../../stores/string-localstorage-stores";
+    import { siteLang } from "../../../../i18n/i18n";
     import NavDropdown from "./common/NavDropdown.svelte";
     import NavMenuListItem from "./common/NavMenuListItem.svelte";
 	
