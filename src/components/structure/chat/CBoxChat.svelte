@@ -116,10 +116,12 @@
 			title="Cbox Chat"
 		></iframe>
 
-		<button data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
-		<ChatRulesModal bind:showModal={showRulesModal} />
-		<button data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
-		<ChatFiltersModal bind:showModal={showFiltersModal} />
+		<div style="width:fit-content;">
+			<button data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
+			<ChatRulesModal bind:showModal={showRulesModal} />
+			<button data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
+			<ChatFiltersModal bind:showModal={showFiltersModal} />
+		</div>
 	</div>
 </aside>
 
@@ -127,9 +129,9 @@
 	#chat_pos {
 		position: fixed;
 		width: inherit;
-		/* pointer-events: none; */
+		pointer-events: none; /* Needed to fix issue with it covering donate link */
 	}
-	/* #chat_pos * { pointer-events: all; } */
+	#chat_pos > * { pointer-events: all; }
 
 	#chat-tabs {
 		display: flex;
@@ -137,7 +139,7 @@
 		gap: 4px;
 	}
 	.chat-tab-link {
-		padding: 4px 5px 3px;
+		padding: 4px 6px 3px;
 		line-height: 1;
 		color: #fff;
 

@@ -1,9 +1,8 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import VoteButtons from "./VoteButtons.svelte";
-    import MediaModal from "./modal/MediaModal.svelte";
-    import YoutubeIcon from "../../assets/YoutubeIcon.svelte";
     import InfoIcon from "../../assets/InfoIcon.svelte";
+    import YoutubeIcon from "../../assets/YoutubeIcon.svelte";
+    import MediaModal from "./modal/MediaModal.svelte";
 
 	type ActionProps =
 	| { type: 'flag', onclick:()=>void }
