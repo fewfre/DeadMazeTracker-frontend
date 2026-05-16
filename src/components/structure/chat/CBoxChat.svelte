@@ -116,10 +116,10 @@
 			title="Cbox Chat"
 		></iframe>
 
-		<div style="width:fit-content;">
-			<button data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
+		<div class="chat-bottom">
+			<button class="chat-bottom-button" data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
 			<ChatRulesModal bind:showModal={showRulesModal} />
-			<button data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
+			<button class="chat-bottom-button" data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
 			<ChatFiltersModal bind:showModal={showFiltersModal} />
 		</div>
 	</div>
@@ -176,5 +176,31 @@
 	.chat-tab-link img {
 		height: 16px;
 		vertical-align: middle;
+	}
+	
+	.chat-bottom {
+		width:fit-content;
+		position: relative;
+		top: -1px;
+	}
+	.chat-bottom-button {
+		all: unset;
+		position: relative;
+		display: inline-block;
+		padding: 3px 6px;
+		background: #002b00; /* Slightly brighter version of the site content background that it sits on top of - still gives a bit of the illusion of being see through without seeing the stuff behind it (like the footer border) */
+		border: solid 3px #5e3660;
+		border-radius: 5px;
+		color: #fff;
+		box-shadow: 3px 3px 3px 0 #5e3660aa;
+		cursor: pointer;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+	.chat-bottom-button:hover {
+		transform: translate(3px, 3px);
+		box-shadow: -3px -3px 3px 0 #5e3660aa;
+	}
+	.chat-bottom-button:hover:active {
+		background-color: #00200c;
 	}
 </style>
