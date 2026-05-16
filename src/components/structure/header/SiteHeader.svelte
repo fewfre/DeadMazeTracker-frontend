@@ -3,7 +3,8 @@
 	import { nyanCatEnabled } from "../../../stores/nyancat";
 	import { envVars } from "../../../utils/env-vars";
 	import CopyTextInput from "../../common/CopyTextInput.svelte";
-	import TimerBox from "../../common/TimerBox.svelte";
+	import CountdownTimer from "../../common/CountdownTimer.svelte";
+	import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
 	import AntonioSummaryHeaderButton from "../../features/antonio/AntonioSummaryHeaderButton.svelte";
 	import NavAuthDropdown from "./dropdowns/AuthDropdown.svelte";
 	import NavLangSelectDropdown from "./dropdowns/LangSelectDropdown.svelte";
@@ -49,7 +50,9 @@
 	</div>
 
 	<div id="subheader">
-		<TimerBox label="Time Until Zone Reset" occurrence={{ frequency: "daily", hour: 5 }} />
+		<DoubleOrangeBorderBox mb={0}>
+			<CountdownTimer label="Time Until Zone Reset" occurrence={{ frequency: "daily", hour: 5 }} />
+		</DoubleOrangeBorderBox>
 		<CopyTextInput label="Share" value="https://fewfre.com/dmtracker" width="300px" />
 	</div>
 </header>
@@ -79,7 +82,7 @@
 		align-items: center;
 		justify-content: space-between;
 
-		padding: 4px 5px 4px 10px;
+		padding: 7px 5px 6px 10px;
 		border-bottom: 5px solid currentColor;
 	}
 	#app-title-row h1 {

@@ -3,10 +3,11 @@
     import { renownApi } from "../../../api/renown";
     import { renownAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
+    import CountdownTimer from "../../common/CountdownTimer.svelte";
+    import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
-    import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import RenownTable from "./RenownTable.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
@@ -23,7 +24,9 @@
 </script>
 
 <section>
-	<TimerBox label="Time Until Reset" occurrence={friendshipVoteHistory.resetOccurrence} />
+	<DoubleOrangeBorderBox>
+		<CountdownTimer label="Time Until Reset" occurrence={friendshipVoteHistory.resetOccurrence} />
+	</DoubleOrangeBorderBox>
 	
 	<div id="personalTrackerDescCont">
 	<div id='personalDailyResetDesc'>

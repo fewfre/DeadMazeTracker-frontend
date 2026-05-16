@@ -3,10 +3,11 @@
     import { passagesApi } from "../../../api/passages";
     import { passagesAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
+    import CountdownTimer from "../../common/CountdownTimer.svelte";
+    import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
-    import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import PassagesTable from "./PassagesTable.svelte";
     import { bossTracker } from "./utils/boss-tracker";
@@ -24,7 +25,10 @@
 </script>
 
 <section>
-	<TimerBox label="Time Until Passages Change" occurrence={passagesVoteHistory.resetOccurrence} timer2={{ label: "Boss Reset", occurrence:bossTracker.resetOccurrence }} />
+	<DoubleOrangeBorderBox>
+		<CountdownTimer label="Time Until Passages Change" occurrence={passagesVoteHistory.resetOccurrence} />
+		<CountdownTimer label="Boss Reset" occurrence={bossTracker.resetOccurrence} />
+	</DoubleOrangeBorderBox>
 	
 	<div class="two-column-layout">
 		<div>

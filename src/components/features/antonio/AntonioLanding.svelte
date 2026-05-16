@@ -3,9 +3,10 @@
     import { antonioApi } from "../../../api/antonio";
     import { antonioAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
+    import CountdownTimer from "../../common/CountdownTimer.svelte";
+    import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
-    import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import AntonioTable from "./AntonioTable.svelte";
     import { antonioVoteHistory } from "./utils/antonio-vote-history";
@@ -20,7 +21,9 @@
 	onMount(() => { onRefreshClick(); });
 </script>
 <section>
-	<TimerBox label="Time Until Reset" occurrence={antonioVoteHistory.resetOccurrence} />
+	<DoubleOrangeBorderBox>
+		<CountdownTimer label="Time Until Reset" occurrence={antonioVoteHistory.resetOccurrence} />
+	</DoubleOrangeBorderBox>
 	
 	<p>
 		<a href="https://deadmaze.wikia.com/wiki/Antonio" style:text-decoration='underline'>Antonio</a> is a shop NPC who buys resources.

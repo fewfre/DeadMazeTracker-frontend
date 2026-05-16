@@ -4,10 +4,11 @@
     import { sideMissionApi } from "../../../api/side-missions";
     import { sideMissionsAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
+    import CountdownTimer from "../../common/CountdownTimer.svelte";
+    import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import RefreshBox from "../../common/RefreshBox.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
-    import TimerBox from "../../common/TimerBox.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
     import SideMissionsTable from "./SideMissionsTable.svelte";
@@ -29,7 +30,9 @@
 	onMount(() => { onRefreshClick(); });
 </script>
 <section>
-	<TimerBox label="Time Until Reset" occurrence={sideMissionsVoteHistory.resetOccurrence} />
+	<DoubleOrangeBorderBox>
+		<CountdownTimer label="Time Until Reset" occurrence={sideMissionsVoteHistory.resetOccurrence} />
+	</DoubleOrangeBorderBox>
 	
 	<div id="personalTrackerDescCont">
 		<div id='personalDailyResetDesc'>
