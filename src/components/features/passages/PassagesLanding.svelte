@@ -24,7 +24,7 @@
 </script>
 
 <section>
-	<TimerBox label="Time Until Reset" occurrence={passagesVoteHistory.resetOccurrence} timer2={{ label: "Boss Reset", occurrence:bossTracker.resetOccurrence }} />
+	<TimerBox label="Time Until Passages Change" occurrence={passagesVoteHistory.resetOccurrence} timer2={{ label: "Boss Reset", occurrence:bossTracker.resetOccurrence }} />
 	
 	<div class="two-column-layout">
 		<div>
