@@ -27,7 +27,7 @@
 	</DoubleOrangeBorderBox>
 	
 	<p>
-		<a href="https://deadmaze.wikia.com/wiki/Antonio" style:text-decoration='underline'>Antonio</a> is a shop NPC who buys resources.
+		<a href="https://deadmaze.wikia.com/wiki/Antonio" class="underlined-link">Antonio</a> is a shop NPC who buys resources.
 		He can be found in the main building behind the counter in Lakeview Lane.
 	</p>
 </section>

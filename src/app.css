@@ -75,6 +75,14 @@ section {
 
 b.instr { font-size: 110%; text-decoration: underline; }
 
+.underlined-link {
+	color: #FFF;
+	text-decoration: underline;
+}
+.underlined-link:hover {
+	text-shadow: 0px 0px 2px #CCC;
+}
+
 /*******************************
 * Tooltip
 ********************************/

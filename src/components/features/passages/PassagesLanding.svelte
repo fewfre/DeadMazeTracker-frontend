@@ -66,7 +66,7 @@
 				<InfoIconTooltip tooltip="Only make reports from the international server. This is to avoid conflicting reports, and also make it easier to form groups. You can change your server when logging in by clicking the country flag." />
 				<button id="memoButton">how?</button>
 				&bull; -->
-				Read <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style:text-decoration='underline'>the wiki</a> for basics and locations
+				Read <a href="https://deadmaze.wikia.com/wiki/Secret_passage" class="underlined-link">the wiki</a> for basics and locations
 				<InfoIconTooltip tooltip="Don't pester people about locations / basics without first doing a little research!" />
 				&bull;
 				Join <code>/chat sp</code> in-game
@@ -77,7 +77,7 @@
 			<!--
 			<p>
 				Join <code>/chat sp</code> in-game for real time reports and help!
-				If you're new to what secret passages are, you can read the <a href="https://deadmaze.wikia.com/wiki/Secret_passage" style:text-decoration='underline'>wiki article</a> which has basic information including locations.
+				If you're new to what secret passages are, you can read the <a href="https://deadmaze.wikia.com/wiki/Secret_passage" class="underlined-link">wiki article</a> which has basic information including locations.
 			</p>
 			
 			<p style="color:white; font-weight:bold; background:rgba(255,255,255,0.1); padding:2px;">
@@ -111,7 +111,7 @@
 			
 			<p>
 				<b class="instr">Marking complete:</b>
-				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank">boss</a> image next to zone names on the table below to track them
+				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">boss</a> image next to zone names on the table below to track them
 				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 			</p>
 			<p>

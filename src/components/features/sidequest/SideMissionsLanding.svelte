@@ -51,13 +51,11 @@
 		</div>
 	</div>
 	<p>
-		<b class="instr">Page's Purpose:</b> Lets community keep track of available side missions.
+		<b class="instr">Page's Purpose:</b> Lets community keep track of available <a href="https://deadmaze.fandom.com/wiki/Side_mission" class="underlined-link">side missions</a> (&lt; link has basics and locations).
+	</p>
 		<b class="instr">How it Works:</b> If a mission is available click ✔, if not then click ✘.
 		Table is cleared every day, and requires the community to update it. Don't make false reports!
-	</p>
 	<p>
-		<b class="instr">Information:</b>
-		Read <a href="https://deadmaze.fandom.com/wiki/Side_mission" style:text-decoration='underline'>the wiki</a> for basics and locations.
 	</p>
 	<p>
 		<b class="instr">Table:</b>
