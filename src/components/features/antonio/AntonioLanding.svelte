@@ -5,7 +5,7 @@
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import CountdownTimer from "../../common/CountdownTimer.svelte";
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
-    import RefreshBox from "../../common/RefreshBox.svelte";
+    import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import AntonioTable from "./AntonioTable.svelte";
@@ -32,7 +32,7 @@
 </section>
 <section>
 	<TableHeader>
-		Resources List <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$antonioAutoRefreshInterval} />
+		Resources List <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$antonioAutoRefreshInterval} />
 	</TableHeader>
 	
 	{#if alert}

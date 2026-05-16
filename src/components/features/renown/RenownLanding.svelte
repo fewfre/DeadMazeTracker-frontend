@@ -6,7 +6,7 @@
     import CountdownTimer from "../../common/CountdownTimer.svelte";
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
-    import RefreshBox from "../../common/RefreshBox.svelte";
+    import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import RenownTable from "./RenownTable.svelte";
@@ -59,7 +59,7 @@
 </section>
 <section>
 	<TableHeader>
-		Friendships <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$renownAutoRefreshInterval} />
+		Friendships <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$renownAutoRefreshInterval} />
 	</TableHeader>
 	
 	{#if alert}

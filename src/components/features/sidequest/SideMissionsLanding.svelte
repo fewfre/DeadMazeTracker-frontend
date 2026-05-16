@@ -7,7 +7,7 @@
     import CountdownTimer from "../../common/CountdownTimer.svelte";
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
-    import RefreshBox from "../../common/RefreshBox.svelte";
+    import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
@@ -67,7 +67,7 @@
 </section>
 <section>
 	<TableHeader>
-		Side Missions <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$sideMissionsAutoRefreshInterval} />
+		Side Missions <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$sideMissionsAutoRefreshInterval} />
 		<div style:flex-grow=1></div>
 		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
 			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={30} />

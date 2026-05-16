@@ -6,7 +6,7 @@
     import CountdownTimer from "../../common/CountdownTimer.svelte";
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
-    import RefreshBox from "../../common/RefreshBox.svelte";
+    import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import PassagesTable from "./PassagesTable.svelte";
@@ -122,7 +122,7 @@
 </section>
 <section>
 	<TableHeader>
-		Locations <RefreshBox loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$passagesAutoRefreshInterval} />
+		Locations <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$passagesAutoRefreshInterval} />
 	</TableHeader>
 	
 	{#if alert}
