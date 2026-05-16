@@ -68,9 +68,6 @@ abbr { cursor: help; }
 section {
 	margin: 5px 0;
 	padding: 0px 3px 5px;
-	/* padding: 5px 10px 35px; */
-	/* background: url('https://www.transformice.com/wp-content/themes/Themice/images/lignepierre.png') no-repeat bottom; */
-	/* background-size: 100% auto; */
 }
 
 b.instr { font-size: 110%; text-decoration: underline; }
