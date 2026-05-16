@@ -51,7 +51,7 @@
 
 	<div id="subheader">
 		<DoubleOrangeBorderBox mb={0}>
-			<CountdownTimer label="Time Until Zone Reset" occurrence={{ frequency: "daily", hour: 5 }} />
+			<CountdownTimer label="Zone Loot Reset" occurrence={{ frequency: "daily", hour: 5 }} />
 		</DoubleOrangeBorderBox>
 		<CopyTextInput label="Share" value="https://fewfre.com/dmtracker" width="300px" />
 	</div>

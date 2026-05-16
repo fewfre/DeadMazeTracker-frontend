@@ -26,7 +26,7 @@
 
 <section>
 	<DoubleOrangeBorderBox>
-		<CountdownTimer label="Time Until Passages Change" occurrence={passagesVoteHistory.resetOccurrence} />
+		<CountdownTimer label="Passages Rotate" occurrence={passagesVoteHistory.resetOccurrence} />
 		<CountdownTimer label="Boss Reset" occurrence={bossTracker.resetOccurrence} />
 	</DoubleOrangeBorderBox>
 	
