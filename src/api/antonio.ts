@@ -1,5 +1,4 @@
-import { revalidate } from "sswr";
-import { readable } from "svelte/store";
+import { readable, writable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
 import { antonioMock } from "./mock-data/antonio-mock";
 import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
@@ -41,6 +40,7 @@ const swrKeys = {
 	list: "list-antonio",
 	summary: "antonio-summary"
 };
+const refreshKey = writable({ key:"" }); // Hacky way to trigger swr refresh on key change, since sswr global mutate/revalidate doesn't work the same as swr
 export namespace antonioApi {
 	const baseUrl = `${envVars.API_BASE}/antonio`;
 	
@@ -49,11 +49,13 @@ export namespace antonioApi {
 		return (await fetch(`${baseUrl}/list-resources`, { method: 'GET' })).json();
 	}
 	export function useList(req: ListAntonioResourcesRequest, options:SWRFetchOptionsExposed={}) {
-		return useSwrFetch(swrKeys.list, list, options);
+		const resp = useSwrFetch(swrKeys.list, list, options);
+		refreshKey.subscribe(({key}) => { if(key === swrKeys.list) resp.revalidate() });
+		return resp;
 	}
 	export function refreshList() {
-		revalidate(swrKeys.list);
-		revalidate(swrKeys.summary); // Also refresh summary since summary of list
+		refreshKey.set({ key:swrKeys.list });
+		refreshKey.set({ key:swrKeys.summary }); // Also refresh summary since summary of list
 	}
 	
 	export async function getSummary(): Promise<AntonioSummaryResponse> {
@@ -61,9 +63,11 @@ export namespace antonioApi {
 		return (await fetch(`${baseUrl}/summary`, { method: 'GET' })).json();
 	}
 	export function useGetSummary() {
-		return useSwrFetch(swrKeys.summary, getSummary, { refreshInterval: readable(60_000) });
+		const resp = useSwrFetch(swrKeys.summary, getSummary, { refreshInterval: readable(60_000) });
+		refreshKey.subscribe(({key}) => { if(key === swrKeys.list) resp.revalidate() });
+		return resp;
 	}
-	export function refreshSummary() { revalidate(swrKeys.summary) }
+	export function refreshSummary() { refreshKey.set({ key:swrKeys.list }) };
 	
 	export async function vote(req: AntonioResourceVoteRequest) : Promise<AntonioResourceVoteResponse> {
 		return standardJsonPostFetch(`${baseUrl}/vote`, req);

@@ -1,5 +1,4 @@
-import { revalidate } from "sswr";
-import { get, type Readable } from "svelte/store";
+import { get, writable, type Readable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
 import { sideMissionMock } from "./mock-data/side-missions-mock";
 import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
@@ -64,6 +63,7 @@ export type SideMissionVoteRestartResponse = ErrorableResponse<{ success:true }>
 const swrKeys = {
 	list: "list-side-missions"
 };
+const refreshKey = writable({ key:"" }); // Hacky way to trigger swr refresh on key change, since sswr global mutate/revalidate doesn't work the same as swr
 export namespace sideMissionApi {
 	const baseUrl = `${envVars.API_BASE}/side-missions`;
 	
@@ -73,10 +73,11 @@ export namespace sideMissionApi {
 	}
 	export function useList(req:Readable<ListSideMissionsRequest>, options:SWRFetchOptionsExposed={}) {
 		const resp = useSwrFetch(swrKeys.list, ()=>list(req), options);
-		req.subscribe(() => resp.mutate(undefined)); // Trigger refresh if request changes
+		req.subscribe(() => resp.revalidate()); // Trigger refresh if request changes
+		refreshKey.subscribe(({key}) => { if(key === swrKeys.list) resp.revalidate() });
 		return resp;
 	}
-	export function refreshList(server:string) { revalidate(swrKeys.list) }
+	export function refreshList(server:string) { refreshKey.set({ key:swrKeys.list }) };
 	
 	export async function vote(req: SideMissionVoteRequest) : Promise<SideMissionVoteResponse> {
 		return standardJsonPostFetch(`${baseUrl}/vote`, req);

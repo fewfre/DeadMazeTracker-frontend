@@ -1,9 +1,9 @@
 <script lang="ts">
-	interface Props { center?:boolean }
-	let { center = false } : Props = $props();
+	interface Props { center?:boolean; size?:string; }
+	let { center = false, size='20px' } : Props = $props();
 </script>
 
-<div class="spinner" class:center></div>
+<div class="spinner" class:center style:--size={size}></div>
 
 <style>
 /* Featherlight stuff */
@@ -12,17 +12,17 @@
 }
 
 .spinner {
-	min-width: 20px;
-	min-height: 20px;
+	min-width: var(--size);
+	min-height: var(--size);
 }
 .spinner:before {
 	content: '';
 	display: block;
 	box-sizing: border-box;
-	width: 20px;
-	height: 20px;
+	width: var(--size);
+	height: var(--size);
 	border-radius: 50%;
-	border: 2px solid #ccc;
+	border: calc(var(--size) / 10) solid #ccc;
 	border-top-color: #333;
 	animation: spinner .6s linear infinite;
 }

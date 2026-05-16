@@ -6,6 +6,7 @@
     import CountdownTimer from "../../common/CountdownTimer.svelte";
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
+    import LoadingSpinnerForTable from "../../common/LoadingSpinnerForTable.svelte";
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
@@ -130,7 +131,7 @@
 	{/if}
 	
 	{#if !$data}
-		<p>Loading...</p>
+		<LoadingSpinnerForTable />
 	{:else}
 		<PassagesTable zones={$data.zones} handleVoteApiCall={async req => {
 			alert = null;

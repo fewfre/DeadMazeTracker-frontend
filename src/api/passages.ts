@@ -1,5 +1,5 @@
 
-import { revalidate } from "sswr";
+import { writable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
 import { passagesMock } from "./mock-data/passages-mock";
 import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
@@ -42,6 +42,7 @@ export type PassageVoteResponse = ErrorableResponse<{ success:true }>;
 const swrKeys = {
 	list: "list-passages"
 };
+const refreshKey = writable({ key:"" }); // Hacky way to trigger swr refresh on key change, since sswr global mutate/revalidate doesn't work the same as swr
 export namespace passagesApi {
 	const baseUrl = `${envVars.API_BASE}/passages`;
 	
@@ -50,9 +51,11 @@ export namespace passagesApi {
 		return (await fetch(`${baseUrl}/list-passages`, { method: 'GET' })).json();
 	}
 	export function useList(req:ListPassagesRequest, options:SWRFetchOptionsExposed={}) {
-		return useSwrFetch(swrKeys.list, list, options);
+		const resp = useSwrFetch(swrKeys.list, list, options);
+		refreshKey.subscribe(({key}) => { if(key === swrKeys.list) resp.revalidate() });
+		return resp;
 	}
-	export function refreshList() { revalidate(swrKeys.list, list) }
+	export function refreshList() { refreshKey.set({ key:swrKeys.list }) };
 	
 	export async function vote(req: PassageVoteRequest) : Promise<PassageVoteResponse> {
 		return standardJsonPostFetch(`${baseUrl}/vote`, req);

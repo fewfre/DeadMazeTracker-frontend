@@ -1,5 +1,5 @@
 
-import { revalidate } from "sswr";
+import { writable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
 import { renownMock } from "./mock-data/renown-mock";
 import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
@@ -41,6 +41,7 @@ export type RenownDogVoteResponse = ErrorableResponse<{ success:true }>;
 const swrKeys = {
 	list: "list-friends"
 };
+const refreshKey = writable({ key:"" }); // Hacky way to trigger swr refresh on key change, since sswr global mutate/revalidate doesn't work the same as swr
 export namespace renownApi {
 	const baseUrl = `${envVars.API_BASE}/renown`;
 	
@@ -49,9 +50,11 @@ export namespace renownApi {
 		return (await fetch(`${baseUrl}/list-friendships`, { method: 'GET' })).json();
 	}
 	export function useList(req:ListRenownDogRequest, options:SWRFetchOptionsExposed={}) {
-		return useSwrFetch(swrKeys.list, list, options);
+		const resp = useSwrFetch(swrKeys.list, list, options);
+		refreshKey.subscribe(({key}) => { if(key === swrKeys.list) resp.revalidate() });
+		return resp;
 	}
-	export function refreshList() { revalidate(swrKeys.list) }
+	export function refreshList() { refreshKey.set({ key:swrKeys.list }) };
 	
 	export async function vote(req: RenownDogVoteRequest) : Promise<RenownDogVoteResponse> {
 		return standardJsonPostFetch(`${baseUrl}/vote`, req);

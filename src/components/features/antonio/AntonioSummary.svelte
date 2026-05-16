@@ -7,7 +7,7 @@
 </script>
 
 <span id="antonio_summary">
-	<span class="antonio-head antonio-cell"><img src="https://projects.fewfre.com/a801/deadmaze/tracker/images/antonio.png" height="20" alt="Antonio" /></span>
+	<span class="antonio-head antonio-cell"><img src="images/antonio.png" height="20" alt="Antonio" /></span>
 	{#if $summaryData && $summaryData.valid}
 		<span class="antonio-cell">{$summaryData.num}<img src={$summaryData.icon} height="20" alt="Resource" /></span>
 		<span class="antonio-cell">{$summaryData.rep}<img src='images/reputation-20px.png' height='20' alt="Reputation" /></span>
