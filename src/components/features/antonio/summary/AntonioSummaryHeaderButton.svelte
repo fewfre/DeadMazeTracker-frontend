@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { antonioApi } from "../../../api/antonio";
+    import { antonioApi } from "../../../../api/antonio";
     import AntonioSummary from "./AntonioSummary.svelte";
 
 	const { data: summaryData } = antonioApi.useGetSummary();

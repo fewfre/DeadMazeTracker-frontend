@@ -4,7 +4,7 @@
     import { browserPoniesDisplayOnSiteBackground, browserPoniesUseTransparentSite } from "../stores/browser-ponies";
     import { nyanCatBodyClass, nyanCatEnabled } from "../stores/nyancat";
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
-    import AntonioSummary from "./features/antonio/AntonioSummary.svelte";
+    import AntonioSummary from "./features/antonio/summary/AntonioSummary.svelte";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
     import RenownLanding from "./features/renown/RenownLanding.svelte";
     import SideMissionsLanding from "./features/sidequest/SideMissionsLanding.svelte";

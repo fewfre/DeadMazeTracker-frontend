@@ -5,7 +5,7 @@
 	import CopyTextInput from "../../common/CopyTextInput.svelte";
 	import CountdownTimer from "../../common/CountdownTimer.svelte";
 	import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
-	import AntonioSummaryHeaderButton from "../../features/antonio/AntonioSummaryHeaderButton.svelte";
+	import AntonioSummaryHeaderButton from "../../features/antonio/summary/AntonioSummaryHeaderButton.svelte";
 	import NavAuthDropdown from "./dropdowns/AuthDropdown.svelte";
 	import NavLangSelectDropdown from "./dropdowns/LangSelectDropdown.svelte";
 	import SeeAlsoDropdown from "./dropdowns/SeeAlsoDropdown.svelte";
