@@ -113,7 +113,7 @@
 	content: "";
 	display:inline-block;
 	width:21px; height:21px;
-	background: url(../images/map-icon.png) no-repeat;
+	background: url(/images/map-icon.png) no-repeat;
 	background-size: 100%;
 }
 .map-link:hover {

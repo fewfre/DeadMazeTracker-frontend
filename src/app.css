@@ -1,7 +1,7 @@
 @font-face {
 	/* Used in nyancat mode */
 	font-family:SilkscreenNormal;
-	src:url(fonts/slkscr.ttf),url(fonts/slkscr.eot);
+	src:url(/fonts/slkscr.ttf),url(/fonts/slkscr.eot);
 	font-weight:400;
 	font-style:normal;
 }
@@ -34,7 +34,7 @@ html, body, #app {
 }
 body {
 	background: #003816 center top no-repeat;
-	background-image: url(../images/site-background.jpg), url(../images/site-background.jpg);
+	background-image: url(/images/site-background.jpg), url(/images/site-background.jpg);
 	background-position: calc(50% - 450px) 0%, calc(50% + 450px) 0%;
 	
 	color: #CCC;
@@ -173,11 +173,11 @@ body.nyancat * {
 }
 body.nyancat {
 	/* Source: http://blingee.com/blingee/view/131330762-nyan-cat-army */
-	background: url(../images/nyancat_bg.gif);
+	background: url(/images/nyancat_bg.gif);
 }
 body.nyancat .bodyWrapper, body.nyancat dialog {
 	/* Source: https://www.spoonflower.com/fabric/4396605-nyan-cat-fabric-background-pop-tart-fans-by-grafikat */
-	background: url(../images/nyancat_star_bg.png);
+	background: url(/images/nyancat_star_bg.png);
 	background-color: #001976;
 }
 
