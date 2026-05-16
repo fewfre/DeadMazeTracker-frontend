@@ -1,9 +1,9 @@
 <script lang="ts">
+    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth, forceChatBelow } from '../../../../stores/bool-localstorage-stores';
     import { BrowserPonies, browserPoniesEnabled, browserPoniesUseTransparentSite, initBrowserPonies, spawnPonies } from '../../../../stores/browser-ponies';
     import { nyanCatEnabled, toggleNyanCat } from '../../../../stores/nyancat';
-    import NavDropdown from './common/NavDropdown.svelte';
     import SwitchVisual from '../../../common/SwitchVisual.svelte';
-    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth, forceChatBelow } from '../../../../stores/bool-localstorage-stores';
+    import NavDropdown from './common/NavDropdown.svelte';
 </script>
 
 <NavDropdown contId='settings-dropdown' contentId='settings-dropdown-contents'>
@@ -16,8 +16,9 @@
 	<ul>
 		<li><button onclick={()=>disableChat.update(v => !v)}><SwitchVisual on={$disableChat} /> Disable Chat</button></li>
 		<li><button onclick={()=>forceChatBelow.update(v => !v)}><SwitchVisual on={$forceChatBelow} /> Force Chat to Bottom</button></li>
-		<li><button onclick={()=>disableBlur.update(v => !v)}><SwitchVisual on={$disableBlur} /> Disable Blur</button></li>
-		<li><button onclick={()=>disableMaxWidth.update(v => !v)}><SwitchVisual on={$disableMaxWidth} /> Disable Page Max Width</button></li>
+		<li data-tooltip="Removes blur on grayed out passages with ∅ symbol as it was causing some people performance issues" data-tooltip-position="left">
+			<button onclick={()=>disableBlur.update(v => !v)}><SwitchVisual on={$disableBlur} /> Disable Blur</button></li>
+		<li><button onclick={()=>disableMaxWidth.update(v => !v)}><SwitchVisual on={$disableMaxWidth} /> Use Full Screen Width</button></li>
 		<li><button onclick={()=>antonioInHeader.update(v => !v)}><SwitchVisual on={$antonioInHeader} /> Antonio in Header</button></li>
 		<!-- <li><a id="option_export_import_data">Export/Import Data</a></li> -->
 		<li><button id="setting_nyancat" onclick={toggleNyanCat}><SwitchVisual on={$nyanCatEnabled} /> Nyan {#if $nyanCatEnabled}Cat{/if}</button></li>
