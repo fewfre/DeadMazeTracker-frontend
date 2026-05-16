@@ -1,9 +1,18 @@
 @font-face {
 	/* Used in nyancat mode */
 	font-family:SilkscreenNormal;
-	src:url(/fonts/slkscr.ttf),url(/fonts/slkscr.eot);
+	src:url(/fonts/silkscreen/slkscr.ttf),url(/fonts/silkscreen/slkscr.eot);
 	font-weight:400;
 	font-style:normal;
+}
+@font-face {
+	/* Used in site header */
+	font-family:FoulFiend;
+	src:url("/fonts/foul-fiend/Foul Fiend.ttf") format('truetype'),
+	    url("/fonts/foul-fiend/Foul Fiend.otf") format('opentype');
+	font-weight:400;
+	font-style:normal;
+	size-adjust: 60%;
 }
 
 :root {
@@ -167,7 +176,7 @@ body.nyancat {
 	--tab-bg-color--hover: #58a9ff;
 	--tab-bg-color--active: #58a9ff;
 }
-body.nyancat * {
+body.nyancat *, body.nyancat #app header h1 {
 	text-transform: uppercase;
 	font-family: SilkscreenNormal, Monaco, "Courier New", Courier, monospace;
 }

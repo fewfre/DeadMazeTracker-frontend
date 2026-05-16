@@ -12,7 +12,7 @@
 	import SettingsMenu from "./dropdowns/SettingsMenu.svelte";
 
 	// Image by Tasted#8196 on Discord - https://i.imgur.com/8eQG2qB.png
-	const mainIconSrc = $derived(!$nyanCatEnabled ? "images/8eQG2qB.png" : "images/nyancat.gif");
+	const mainIconSrc = $derived(!$nyanCatEnabled ? "images/site-logo.png" : "images/nyancat.gif");
 </script>
 
 <header>
@@ -86,6 +86,7 @@
 		border-bottom: 5px solid currentColor;
 	}
 	#app-title-row h1 {
+		font-family: FoulFiend, sans-serif;
 		margin: 0;
 	}
 
