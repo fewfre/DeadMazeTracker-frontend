@@ -87,7 +87,9 @@ li {
 li > a, li > button, li > .list-action-styling {
 	all: unset;
 	flex: 1;
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 0.35em;
 	white-space: nowrap;
 	padding: 7px 9px;
 	border-radius: 4px;

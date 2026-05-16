@@ -162,6 +162,8 @@
 	font-size: 125%;
 	text-decoration: none;
 	color: #CCC;
+	white-space: nowrap;
+	overflow-x: hidden;
 	
 	background: var(--tab-bg-color, #005600);
 	border: 1px solid white;

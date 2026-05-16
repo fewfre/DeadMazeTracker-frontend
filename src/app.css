@@ -4,6 +4,7 @@
 	src:url(/fonts/silkscreen/slkscr.ttf),url(/fonts/silkscreen/slkscr.eot);
 	font-weight:400;
 	font-style:normal;
+	size-adjust: 75%;
 }
 @font-face {
 	/* Used in site header */
