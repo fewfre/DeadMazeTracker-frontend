@@ -28,9 +28,9 @@
 	
 	{#if checked}
 		{#if !autoRefreshIntervalOpen}
-			<button class="button-group-part small open-interval-toggle" class:checked onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)} role="switch" aria-checked={autoRefreshIntervalOpen}
+			<button class="button-group-part open-interval-toggle" class:checked onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)} role="switch" aria-checked={autoRefreshIntervalOpen}
 			data-tooltip="How often content is auto refreshed - click to change current auto-refresh interval">
-				{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}
+				<span class="small">{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}</span>
 			</button>
 		{:else}
 			<button class="close-input button-group-part" onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)}>
@@ -40,7 +40,7 @@
 					<path d="M16 2L16 14H14L14 2L16 2Z" fill="currentColor"/>
 				</svg>
 			</button>
-			<div class="button-group-part">
+			<div class="button-group-part" style:gap='4px'>
 				<input id="autoRefreshValue" type="number" required step="0.2" min="0.2"
 				value={(autoRefreshInterval ?? 0)/60_000}
 				onchange={(e)=>{
@@ -91,7 +91,7 @@ button.button-group-part:hover {
 	background-color:#B9B9B9;
 }
 
-.small { font-family: monospace; font-size: 10px; }
+.small { font-family: monospace; font-size: 10px; position: relative; top: 1px; }
 
 /***************************************
 * Main button part
