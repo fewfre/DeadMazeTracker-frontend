@@ -11,7 +11,7 @@
 
 <div class="refresh-cont">
 	<button id="refresh" class="button-group-part" onclick={onRefreshClick} disabled={loading}>
-		<div class="refresh-icon"><RefreshIcon size={24} /></div>
+		<div class="refresh-icon"><RefreshIcon size={20} /></div>
 		{#if loading}
 			<img src='images/loading-dots.gif' width='43' alt='Loading...' />
 		{:else}
@@ -46,7 +46,7 @@
 				</svg>
 			</button>
 			<div class="button-group-part" style:gap='4px'>
-				<input id="autoRefreshValue" type="number" required step="0.2" min="0.2"
+				<input type="number" required step="0.2" min="0.2" style:width='40px'
 				value={(autoRefreshInterval ?? 0)/60_000}
 				onchange={(e)=>{
 					const val = (e.target as HTMLInputElement).valueAsNumber;
@@ -71,6 +71,7 @@
 	
 	--refresh-bg: lightgrey;
 	--refresh-bg-hover: #B9B9B9;
+	--refresh-border-color: gray;
 }
 
 /***************************************
@@ -85,7 +86,7 @@
 	box-sizing: border-box;
 	
 	background: var(--refresh-bg);
-	border: solid 1px grey;
+	border: solid 1px var(--refresh-border-color);
 	height: 27px;
 	padding: 0 3px;
 }
@@ -97,6 +98,7 @@
 }
 button.button-group-part:hover {
 	background-color:var(--refresh-bg-hover);
+	cursor: pointer;
 }
 
 .small { font-family: monospace; font-size: 10px; position: relative; top: 1px; }
@@ -105,26 +107,28 @@ button.button-group-part:hover {
 * Main button part
 ****************************************/
 
-/* #refreshCont button { padding: 2px 12px; } */
-#autoRefreshValue { width: 40px; }
-
 /* Refresh Button */
 #refresh {
 	box-sizing: border-box;
 	position: relative;
-	padding: 0px 5px 0px 28px !important;
+	padding: 0px 5px 0px 25px !important;
 	background: var(--refresh-bg);
-	border: solid 1px grey;
+	border: solid 1px var(--refresh-border-color);
 	line-height: 25px;
 	/* border-radius: var(--border-radius); */
 	margin: 5px 0 5px 10px;
-	min-width: 86px;
+	min-width: 80px; /* We need enough room to show the loading dots */
 	font-size: 14px;
+}
+#refresh:disabled {
+	--refresh-bg: #bbb;
+	--refresh-bg-hover: #bbb;
+	cursor: not-allowed !important;
 }
 
 .refresh-icon {
 	position: absolute;
-	top:-5px;
+	top:-3.5px;
 	left:-7px;
 	
 	display: flex;
@@ -133,14 +137,14 @@ button.button-group-part:hover {
 	
 	box-sizing: border-box;
 	background: var(--refresh-bg);
-	border:solid 1px grey;
+	border:solid 1px var(--refresh-border-color);
 	border-right: 0;
-	width: 35px;
-	height: 35px;
-	border-radius: 35px;
+	width: 32px;
+	height: 32px;
+	border-radius: 12px;
 }
 .refresh-icon:after {
-	/* Create a rectangle to cover up the part of the circle border we don't want visible */
+	/* Create a rectangle to cover up the part of the refresh icon container's border we don't want visible */
 	content: "";
 	position: absolute;
 	width: 10px;
@@ -154,7 +158,7 @@ button.button-group-part:hover {
 #refresh:hover, #refresh:hover .refresh-icon, #refresh:hover .refresh-icon:after {
 	background-color:var(--refresh-bg-hover);
 }
-#refresh:hover :global(.refresh-icon svg) {
+#refresh:not(:disabled):hover :global(.refresh-icon svg) {
 	animation: refresh-rotate 1.5s linear infinite;
 }
 @keyframes refresh-rotate {

@@ -1,9 +1,9 @@
 <script lang="ts">
-	// Source: https://www.svgrepo.com/svg/533704/refresh-cw-alt-3
+	// Source: https://www.svgrepo.com/svg/391662/refresh
 	interface Props { size:number; }
 	const { size } : Props = $props();
 </script>
 
-<svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<path d="M4.06189 13C4.02104 12.6724 4 12.3387 4 12C4 7.58172 7.58172 4 12 4C14.5006 4 16.7332 5.14727 18.2002 6.94416M19.9381 11C19.979 11.3276 20 11.6613 20 12C20 16.4183 16.4183 20 12 20C9.61061 20 7.46589 18.9525 6 17.2916M9 17H6V17.2916M18.2002 4V6.94416M18.2002 6.94416V6.99993L15.2002 7M6 20V17.2916" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width={size} height={size} viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+	<path fill="currentColor" d="M600 0C308.74 0 66.009 207.555 11.499 482.812h166.553C229.37 297.756 398.603 161.719 600 161.719c121.069 0 230.474 49.195 309.668 128.613l-192.48 192.48H1200V0l-175.781 175.781C915.653 67.181 765.698 0 600 0M0 717.188V1200l175.781-175.781C284.346 1132.819 434.302 1200 600 1200c291.26 0 533.991-207.555 588.501-482.812h-166.553C970.631 902.243 801.396 1038.281 600 1038.281c-121.069 0-230.474-49.195-309.668-128.613l192.48-192.48z"/>
 </svg>
