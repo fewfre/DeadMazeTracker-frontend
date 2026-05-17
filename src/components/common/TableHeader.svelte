@@ -12,7 +12,7 @@ h3 {
 	align-items: center;
 	gap: 5px;
 	padding: 2px 10px !important;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
 	font-size: 1.5em;
 	
 	box-sizing:border-box;

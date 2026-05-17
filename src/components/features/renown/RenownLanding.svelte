@@ -10,7 +10,7 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
-    import RenownTable from "./RenownTable.svelte";
+    import RenownTable from "./RenownList.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import { friendshipVoteHistory } from "./utils/friendship-vote-history";
 	
