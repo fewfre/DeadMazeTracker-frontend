@@ -47,7 +47,7 @@
 	
 	<SiteHeader />
 	
-	<div id="main_two_column_layout">
+	<main id="main_two_column_layout">
 		<div id="main_two_column_layout_flex_column">
 		<Tabs>
 			<TabItem index={1} hash='passages'>
@@ -74,7 +74,7 @@
 		{#if !$disableChat}
 			<CBoxChat />
 		{/if}
-	</div>
+	</main>
 </div>
 <SiteFooter />
 <CookieBanner />

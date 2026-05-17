@@ -67,8 +67,8 @@
 <section>
 	<TableHeader>
 		Side Missions <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$sideMissionsAutoRefreshInterval} />
-		<div style:flex-grow=1></div>
-		<!-- <button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
+		<!-- <span style:flex-grow=1></span>
+		<button id="serverButton" onclick={() => { showServerSelectModal = true; }}>
 			<img src={`images/flags/${$sideMissionsServerStore === 'br' ? 'br_mega' : $sideMissionsServerStore}.png`} alt={$sideMissionsServerStore} width={30} />
 		</button> -->
 	</TableHeader>

@@ -1,5 +1,5 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
+    import { onDestroy, onMount } from "svelte";
 
 	// Source: https://codepen.io/brunorcunha/pen/wikEI
     let mouseX = 100;
@@ -150,7 +150,7 @@
 
 <svelte:window on:mousemove={handleMouseMove} />
 
-<div bind:this={nyanElement} id='nyanCatCursor'></div>
+<div bind:this={nyanElement} id='nyanCatCursor' aria-hidden="true"></div>
 
 <style>
 #nyanCatCursor {

@@ -106,9 +106,10 @@
 	<div class="tabs-content">
 		{#each sortedTabs as tab (tab.index)}
 			{#if activeIndex === tab.index}
-				<div class="tab-pane">
+				<article class="tab-pane">
+					<h2 style:display="none">{tab.hash}</h2>
 					{@render tab.content()?.()}
-				</div>
+				</article>
 			{/if}
 		{/each}
 	</div>

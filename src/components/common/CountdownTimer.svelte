@@ -73,8 +73,8 @@ strong {
 
 .timer-icon { font-size: 0; }
 .timer-icon.shake {
-	--shake-offset: calc(2px + (3px * var(--progress)));
-	animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite, delay-animation calc(4s - 2s * var(--progress)) linear infinite;
+	--shake-offset: calc(0.5px + (2px * var(--progress)));
+	animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) infinite, delay-animation calc(8s - 6s * var(--progress)) linear infinite;
 	animation-fill-mode: forwards;
 }
 .timer-icon.shake :global(svg .timer-knob) {

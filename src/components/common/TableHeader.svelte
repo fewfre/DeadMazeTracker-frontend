@@ -2,17 +2,18 @@
 	const { children } = $props();
 </script>
 
-<h2 class="corner-border-box" style="--c:#ccc;--w:10px;--b:2px;--r:5px">
+<h3 class="corner-border-box" style="--c:#ccc;--w:10px;--b:2px;--r:5px">
 	{@render children?.()}
-</h2>
+</h3>
 
 <style>
-h2 {
+h3 {
 	display: flex;
 	align-items: center;
 	gap: 5px;
 	padding: 2px 10px !important;
 	margin-bottom: 5px;
+	font-size: 1.5em;
 	
 	box-sizing:border-box;
 	background-color: #FFFFFF22;

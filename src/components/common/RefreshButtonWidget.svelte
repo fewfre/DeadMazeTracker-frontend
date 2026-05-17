@@ -9,17 +9,17 @@
 	const toggleAutoRefresh = () => autoRefreshInterval = !checked ? 600_000 : null;
 </script>
 
-<div class="refresh-cont">
+<span class="refresh-cont">
 	<button id="refresh" class="button-group-part" onclick={onRefreshClick} disabled={loading}>
-		<div class="refresh-icon"><RefreshIcon size={20} /></div>
+		<span class="refresh-icon"><RefreshIcon size={20} /></span>
 		{#if loading}
 			<img src='images/loading-dots.gif' width='43' alt='Loading...' />
 		{:else}
 			Refresh
 		{/if}
 	</button>
-</div>
-<div class="refresh-cont">
+</span>
+<span class="refresh-cont">
 	{#if !checked}
 		<button class="button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
 		data-tooltip="Toggle auto-refresh on - this value will be remembered across page loads">
@@ -33,9 +33,9 @@
 		data-tooltip="Click to toggle auto refresh off">
 			🛑
 		</button>
-		<div class="button-group-part">
+		<span class="button-group-part">
 			<span class="small">Auto Refresh</span>
-		</div>
+		</span>
 	{/if}
 	
 	{#if checked}
@@ -52,7 +52,7 @@
 					<path d="M16 2L16 14H14L14 2L16 2Z" fill="currentColor"/>
 				</svg>
 			</button>
-			<div class="button-group-part" style:gap='4px'>
+			<span class="button-group-part" style:gap='4px'>
 				<input type="number" required step="0.2" min="0.2" style:width='40px'
 				value={(autoRefreshInterval ?? 0)/60_000}
 				onchange={(e)=>{
@@ -61,10 +61,10 @@
 					autoRefreshInterval = Math.max(12_000, val*60_000);
 				}} />
 				<span class="small">Minutes</span>
-			</div>
+			</span>
 		{/if}
 	{/if}
-</div>
+</span>
 
 <style>
 .refresh-cont {

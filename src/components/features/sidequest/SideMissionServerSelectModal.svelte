@@ -97,12 +97,12 @@
 	<div class='button-list'>
 	{#each options as o(o.server_name)}
 		<button onclick={()=>{ onServerChange(o.server_name); showModal = false; }}>
-			<strong><big><img src='images/flags/{o.flag}.png' alt='' style='vertical-align: middle;' width='43' /> {o.name}</big></strong><hr />
-			<div>
+			<strong><img src='images/flags/{o.flag}.png' alt='' style='vertical-align: middle;' width='43' /> {o.name}</strong>
+			<span class="encompassed-server-flags">
 			{#each o.list as lang}
 				<img src='images/flags/{lang.code}.png' alt={lang.code} width='20' />
 			{/each}
-			</div>
+			</span>
 		</button>
 	{/each}
 	</div>
@@ -118,9 +118,16 @@ p {
 	justify-content: center;
 	gap: 0.5em;
 }
+.encompassed-server-flags {
+	display: block;
+	border-top: 1px solid #aaa;
+	margin-top: 2px;
+	padding-top: 2px;
+}
 button {
 	width: 300px;
 	vertical-align: top;
+	font-size: larger;
 }
 
 /* .server-button-column { float:left; }

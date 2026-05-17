@@ -108,11 +108,6 @@
 			src={chatSrc}
 			width="100%"
 			height="655"
-			allowtransparency={true}
-			frameborder="0"
-			marginheight="0"
-			marginwidth="0"
-			scrolling="auto"
 			title="Cbox Chat"
 		></iframe>
 
@@ -132,6 +127,13 @@
 		pointer-events: none; /* Needed to fix issue with it covering donate link */
 	}
 	#chat_pos > * { pointer-events: all; }
+	
+	#chat {
+		display: block;
+		overflow: auto;
+		border: none;
+		background-color: transparent;
+	}
 
 	#chat-tabs {
 		display: flex;
@@ -181,7 +183,7 @@
 	.chat-bottom {
 		width:fit-content;
 		position: relative;
-		top: -1px;
+		padding-top: 2.5px;
 	}
 	.chat-bottom-button {
 		all: unset;

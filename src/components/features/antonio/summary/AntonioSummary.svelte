@@ -6,7 +6,7 @@
 	onMount(() => { mutate(undefined); });
 </script>
 
-<span id="antonio_summary">
+<span class="antonio-summary">
 	<span class="antonio-head antonio-cell"><img src="images/antonio.png" height="20" alt="Antonio" /></span>
 	{#if $summaryData && $summaryData.valid}
 		<span class="antonio-cell">{$summaryData.num}<img src={$summaryData.icon} height="20" alt="Resource" /></span>
@@ -17,7 +17,7 @@
 </span>
 
 <style>
-#antonio_summary {
+.antonio-summary {
 	display: flex;
 	align-items: center;
 	justify-content: center;
