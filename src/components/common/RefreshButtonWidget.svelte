@@ -31,7 +31,8 @@
 	{:else}
 		<button class="stop-button button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
 		data-tooltip="Click to toggle auto refresh off">
-			🛑
+			<!-- Source: https://www.svgrepo.com/svg/151802/stop -->
+			<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="16" height="16" viewBox="0 0 473.931 473.931"><circle cx="236.966" cy="236.966" r="236.966" fill="currentColor"/><path fill="#fff" d="M338.771 324.568c0 7.846-6.361 14.207-14.215 14.207H149.345c-7.85 0-14.211-6.361-14.211-14.207V149.349c0-7.854 6.361-14.215 14.211-14.215H324.56c7.854 0 14.215 6.361 14.215 14.215v175.219z"/></svg>
 		</button>
 		<span class="button-group-part">
 			<span class="small">Auto Refresh</span>
@@ -95,7 +96,7 @@
 	background: var(--refresh-bg);
 	border: solid 1px var(--refresh-border-color);
 	height: 27px;
-	padding: 0 3px;
+	padding: 0 5px;
 	cursor: default;
 }
 .button-group-part + .button-group-part {
@@ -183,6 +184,7 @@ button.button-group-part:hover {
 ****************************************/
 
 .stop-button {
+	color: #e84849;
 	font-size: 16px;
 }
 
