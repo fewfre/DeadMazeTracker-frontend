@@ -189,7 +189,7 @@
 		align-items: center;
 		gap: 0.25em;
 		box-sizing: border-box;
-		height: 45px;
+		height: var(--footer-height);
 		transform: translateY(-1px);
 	}
 	.chat-bottom-button {

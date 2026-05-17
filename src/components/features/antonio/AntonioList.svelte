@@ -15,8 +15,6 @@
 </script>
 
 <div class='tracker-data-row-table vote-box-list'>
-<!-- <table id="tracker-table" class='tracker-data-row-table'>
-<tr> -->
 {#each resources as resource(resource.id)}
 	{@const { id } = resource}
 	<VoteBox
@@ -39,16 +37,9 @@
 		{/snippet}
 	</VoteBox>
 {/each}
-<!-- </tr>
-</table> -->
 </div>
 
 <style>
-/* #tracker-table { border-collapse:collapse; }
-#tracker-table>tbody>tr { padding:2px 0; border:2px solid #EEE; }
-#tracker-table>tbody>tr:first-of-type { border:0; }
-#tracker-table > tbody > tr:nth-of-type(2n) { background: #005500; } */
-
 .vote-box-list {
 	display: flex;
 	flex-wrap: wrap;

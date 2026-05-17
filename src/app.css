@@ -30,7 +30,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
   
+  --footer-height: 45px;
+  
   --striped-table-row-bg--secondary: #005500;
+  
   --tab-bg-color: #005600;
   --tab-bg-color--hover: darkgreen;
   --tab-bg-color--active: green;

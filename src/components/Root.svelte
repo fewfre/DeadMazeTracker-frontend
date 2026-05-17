@@ -86,7 +86,7 @@
 	outline: currentColor 2px solid;
 	
 	min-height: 100%;
-	margin: 0 auto -45px; /* equal to footer height */
+	margin: 0 auto calc(-1 * var(--footer-height));
 	
 	background: #00200c;
 	background-image:
@@ -109,7 +109,7 @@
 }
 
 :global(footer), .bodyWrapper:after {
-	height: 45px; /* ':after' must be the same height as 'footer' */
+	height: var(--footer-height);
 }
 
 #main_two_column_layout {
