@@ -4,7 +4,7 @@
     import Modal from "../../common/modal/Modal.svelte";
     import { bossTracker } from "../../features/passages/utils/boss-tracker";
     import { passagesDailyTracker } from "../../features/passages/utils/passages-daily-tracker";
-    import { sideMissionsDailyTracker } from "../../features/sidequest/utils/side-missions-daily-tracker";
+    import { sideMissionsDailyTracker } from "../../features/side-missions/utils/side-missions-daily-tracker";
 
 	let { showModal = $bindable() } = $props();
 	

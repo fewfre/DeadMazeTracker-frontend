@@ -2,8 +2,8 @@
     import { type SideMissionVoteRequest, type SideMissionZoneInfo } from "../../../api/side-missions";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
-    import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
-    import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
+    import { sideMissionsDailyTracker } from "../side-missions/utils/side-missions-daily-tracker";
+    import { sideMissionsVoteHistory } from "../side-missions/utils/side-missions-vote-history";
 	const { sideMissionsDailyTrackerStore } = sideMissionsDailyTracker;
 	const { votesHistoryStore } = sideMissionsVoteHistory;
 

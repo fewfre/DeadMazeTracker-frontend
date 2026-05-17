@@ -7,7 +7,7 @@
     import AntonioSummary from "./features/antonio/summary/AntonioSummary.svelte";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
     import RenownLanding from "./features/renown/RenownLanding.svelte";
-    import SideMissionsLanding from "./features/sidequest/SideMissionsLanding.svelte";
+    import SideMissionsLanding from "./features/side-missions/SideMissionsLanding.svelte";
     import NyanCatCursor from "./structure/NyanCatCursor.svelte";
     import SiteFooter from "./structure/SiteFooter.svelte";
     import CBoxChat from "./structure/chat/CBoxChat.svelte";

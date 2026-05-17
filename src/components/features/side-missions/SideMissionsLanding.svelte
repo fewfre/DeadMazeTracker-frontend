@@ -11,11 +11,11 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
+    import { sideMissionsDailyTracker } from "../side-missions/utils/side-missions-daily-tracker";
+    import { sideMissionsServerStore } from "../side-missions/utils/side-missions-server-store";
+    import { sideMissionsVoteHistory } from "../side-missions/utils/side-missions-vote-history";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
     import SideMissionsTable from "./SideMissionsTable.svelte";
-    import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
-    import { sideMissionsServerStore } from "./utils/side-missions-server-store";
-    import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
 	
 	const req = writable({ server:$sideMissionsServerStore });
 	$effect(() => { req.set({ server:$sideMissionsServerStore }); });
