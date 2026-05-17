@@ -16,15 +16,19 @@
 
 <style>
 footer {
+	/* height set in Root as part of the sticky footer logic */
 	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0 8px;
 	font-size: 75%;
 	color: #BBB;
 	border-top: 2px solid currentColor;
-	padding: 10px 5px 5px;
 	clear: both;
 }
 .flattr-cont {
-	float: right;
+	margin-left: auto;
 }
 .flattr-cont a {
 	color: darkgreen;
