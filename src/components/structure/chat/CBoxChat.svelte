@@ -46,8 +46,10 @@
 		const chatAside = document.getElementById("chat_aside");
 		const chat = document.getElementById("chat");
 		const chatPos = document.getElementById("chat_pos");
+		const chatTabs = document.getElementById("chat-tabs");
+		const chatBottom = document.getElementById("chat-bottom");
 
-		if (!chatAside || !chat || !chatPos) return;
+		if (!chatAside || !chat || !chatPos || !chatTabs || !chatBottom) return;
 
 		chatAside.style.width = ""; // Use default size
 
@@ -56,7 +58,7 @@
 			chat.setAttribute("height", "550");
 			chatAside.style.width = "100%";
 		} else {
-			const height = _getChatHeightOfWindowOrWrapper() - _getTopOfChat() - 40 - 25;
+			const height = _getChatHeightOfWindowOrWrapper() - _getTopOfChat() - chatTabs.clientHeight - chatBottom.clientHeight - 1/* border */;
 			chat.setAttribute("height", String(height));
 			chatPos.style.top = _getTopOfChat() + "px";
 			chatPos.style.position = "fixed";
@@ -111,7 +113,7 @@
 			title="Cbox Chat"
 		></iframe>
 
-		<div class="chat-bottom">
+		<div id="chat-bottom">
 			<button class="chat-bottom-button" data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
 			<ChatRulesModal bind:showModal={showRulesModal} />
 			<button class="chat-bottom-button" data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
@@ -180,10 +182,15 @@
 		vertical-align: middle;
 	}
 	
-	.chat-bottom {
+	#chat-bottom {
 		width:fit-content;
 		position: relative;
-		padding-top: 2.5px;
+		display: flex;
+		align-items: center;
+		gap: 0.25em;
+		box-sizing: border-box;
+		height: 45px;
+		transform: translateY(-1px);
 	}
 	.chat-bottom-button {
 		all: unset;
