@@ -89,6 +89,10 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 .side-missions-zone-row:nth-of-type(even) .vote-box-list {
 	background: #00000022;
 }
+.vote-box-list :global(.vote-box) {
+	width: 162px;
+	min-width: 162px;
+}
 
 .npc-portrait {
 	margin-top: 2px;
@@ -99,5 +103,9 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 	min-width: 50px;
 	height: 100%;
 	min-height: 54px;
+	transition: background-size 0.2s;
+}
+:global(.vote-box:hover) .npc-portrait {
+	background-size: 75px auto;
 }
 </style>
