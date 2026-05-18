@@ -91,11 +91,13 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 }
 
 .npc-portrait {
-	background-size: 50px auto;
+	margin-top: 2px;
+	background-size: 65px auto;
 	background-position: center top;
 	background-repeat: no-repeat;
-	width: 40px;
-	min-width: 40px;
-	height: 50px;
+	width: 50px;
+	min-width: 50px;
+	height: 100%;
+	min-height: 54px;
 }
 </style>

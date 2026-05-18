@@ -14,11 +14,10 @@
 <ul class="renown-friendships-list">
 {#each friendships as friend(friend.id)}
 	{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
-	<li>
+	<li class="friendship-row" class:flagged={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}>
 		<div class="main-li-heading">
 			<div class='npc-portrait' style='background-image:url({friend.portrait});'></div>
-			<button class='personal-daily' class:active={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
-				onclick={() => friendshipDailyTracker.toggleFlag(friend.id)}
+			<button class='flagged-npc-button' onclick={() => friendshipDailyTracker.toggleFlag(friend.id)}
 				aria-label='Personal friend tracker toggle' aria-pressed={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
 			></button>
 			<a href='http://deadmaze.wikia.com/wiki/{friend.name}'>{friend.name}</a>
@@ -56,10 +55,13 @@
 	display:flex; flex-direction:column; gap: 10px; margin:0; padding:0; list-style-type:none;
 	--border-radius: 10px;
 }
-.renown-friendships-list > li {
+.friendship-row {
 	margin:0; padding:0;
 	box-shadow: 0 0 5px #FFFFFF44;
 	border-radius: var(--border-radius);
+}
+.friendship-row.flagged {
+	opacity: 0.35;
 }
 
 .main-li-heading {
@@ -86,20 +88,21 @@
 	margin-left: 8px;
 }
 	
-.personal-daily {
+.flagged-npc-button {
 	all: unset;
 	position: absolute;
 	top:0; right:0;
 	padding: 2px;
 	line-height: 1;
-	color:#999;
-	background: #FFFFFF11;
-	border: 1px solid #ff535344;
+	color:#AAA;
+	background: #FFFFFF22;
+	border: 1px solid #999;
 	border-bottom-left-radius: 5px;
 	border-top-right-radius: var(--border-radius);
 }
-.personal-daily.active { color: white; background: red; }
-.personal-daily:before { content:"⚐"; }
+.flagged-npc-button:hover { filter: brightness(120%); transform: scale(1.1); transform-origin: top right; }
+.flagged .flagged-npc-button { color: white; background: var(--flagged-item-color); }
+.flagged-npc-button:before { content:"⚐"; }
 
 .vote-box-list {
 	display: flex; flex-wrap: wrap;

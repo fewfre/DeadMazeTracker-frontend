@@ -53,8 +53,8 @@
 				title={passage.name}
 				subtitle={passage.altName}
 				active={goodPassage}
-				grayOut={passage.openOneRoundAgo}
-				lightlyGrayOut={passage.openTwoRoundsAgo}
+				grayOut={passage.openOneRoundAgo && passage.votesUp <= 0}
+				lightlyGrayOut={passage.openTwoRoundsAgo && passage.votesUp <= 0}
 				broken={passage.broken}
 				flagged={$passageDailyTrackerFlags.idsFlagged[id]}
 				actions={[

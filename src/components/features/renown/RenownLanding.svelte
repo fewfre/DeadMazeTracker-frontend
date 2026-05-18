@@ -34,7 +34,7 @@
 		<strong>
 			Personal Daily Tracker
 			<span id="personalDailyReset" style="float:right;">
-				<button onclick={() => friendshipDailyTracker.resetTracker()}>Reset <span style="color:red;">⚐</span>s</button>
+				<button onclick={() => friendshipDailyTracker.resetTracker()}>Reset <span style:color='var(--flagged-item-color)'>⚐</span>s</button>
 			</span>
 		</strong>
 		<p>
@@ -110,7 +110,7 @@
 	width:275px;
 	padding:2px 3px;
 	margin-left: 5px;
-	border:2px solid rgba(255,0,0,0.7);
+	border:2px solid var(--flagged-item-color);
 }
 #personalDailyResetDesc strong:after {
 	content:"";

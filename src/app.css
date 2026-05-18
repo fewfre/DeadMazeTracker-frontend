@@ -37,6 +37,8 @@
   --tab-bg-color: #005600;
   --tab-bg-color--hover: darkgreen;
   --tab-bg-color--active: green;
+  
+  --flagged-item-color: #5d06ff;
 }
 
 * {

@@ -35,48 +35,48 @@
 </script>
 
 <div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged }]}>
-	{#if addonLeft}
-		<div class='addon-left'>
-			{@render addonLeft()}
+	<div class="vote-inner">
+		{#if addonLeft}
+			<div class='addon-left'>{@render addonLeft()}</div>
+		{/if}
+		<div class='vote-title-and-votes'>
+			<div class='vote-title'>
+				{title}
+				{#if subtitle}
+					<small style='display:block; line-height: 1.1;'><i>({subtitle})</i></small>
+				{/if}
+			</div>
+			
+			
+			{@render voteButtons?.()}
 		</div>
-	{/if}
-	<div class='vote-contents vote-title-and-votes'>
-		<div class='vote-title'>
-			{title}
-			{#if subtitle}
-				<small style='display:block; line-height: 1.1;'><i>({subtitle})</i></small>
-			{/if}
-		</div>
-		
-		
-		{@render voteButtons?.()}
 	</div>
 	{#if actions.length}
 		<div class='action-tray'>
 			{#each actions as action, i}
 				{#if action.type==='flag'}
-					<button class='action personal-daily' onclick={action.onclick}>⚐</button>
+					<button class='action flag-action btn-action' onclick={action.onclick}>⚐</button>
 				{:else if action.type==='map'}
-					<a class='action action-map-icon' href={action.link}
+					<a class='action action-map-icon btn-action' href={action.link}
 						onclick={(e) => { e.preventDefault(); media = { type:action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image", url:e.currentTarget['href'] }; }}
 					>
 						<img src='images/map-icon.png' width="16" alt="Map icon" />
 					</a>
 				{:else if action.type==='youtube'}
-					<a class='action' href={`https://www.youtube.com/embed/${action.videoId}?rel=0&autoplay=1`}
+					<a class='action btn-action' href={`https://www.youtube.com/embed/${action.videoId}?rel=0&autoplay=1`}
 					onclick={(e) => { e.preventDefault(); media = { type:'iframe', url:e.currentTarget['href'] }; }}
 					
 					data-featherlight-iframe-frameborder='0' data-featherlight-iframe-allow='autoplay; encrypted-media' data-featherlight-iframe-allowfullscreen='true' data-featherlight-iframe-style='display:block;border:none;height:85vh;width:85vw;max-width:1024px;max-height:560px;'>
 						<YoutubeIcon size={16} />
 					</a>
 				{:else if action.type==='info'}
-					<span class='action disabled info' title={action.tooltip}><InfoIcon size={16} /></span>
+					<span class='action info-action' title={action.tooltip}><InfoIcon size={16} /></span>
 				{:else if action.type==='blank'}
-					<span class='action disabled'></span>
+					<span class='action'></span>
 				{/if}
 			{/each}
-			{#if actions.length == 1}
-				<span class='action disabled'></span>
+			{#if actions.length == 1 /* We never want an action taking the whole height, so add an empty one at the end if only 1 was passed in */}
+				<span class='action'></span>
 			{/if}
 		</div>
 	{/if}
@@ -85,82 +85,90 @@
 
 <style>
 .vote-box {
+	--border-radius: 5px;
+	--action-tray-border-color: grey;
+	--action-tray-border-color-left: var(--action-tray-border-color);
+	
+	position: relative;
 	display:flex;
+	box-sizing: border-box;
 	min-width:170px;
 	width:170px;
 	max-width: 170px;
 	min-height: 50px;
-	
 	margin:2px 3px 2px 3px;
-	color:#222;
-	border:1px solid purple;
-	background:#F8F8F8;
-	position: relative;
-	vertical-align: bottom;
-	text-align:center;
-	background-clip: padding-box;/*https://stackoverflow.com/a/16337203/1411473*/
-	border-radius: 5px;
-	border-left:solid 5px purple;
-
-	overflow:hidden;
-	box-sizing: border-box;
 	
-	&.active { background-color:#A0FFA0; border-color:#3f933f; }
-	&.best { box-shadow: 0 0 10px 2px lightgreen; }
-	&.best.active { background-color: #50FF50; }
-
-	/* &.flagged .vote-contents { box-shadow: inset 0 0 5px 3px orangered; } */
-	&.flagged { box-shadow: inset 0 0 5px 3px orangered; }
-	& .personal-daily { color:#666; }
-	& .info { color:#666; }
-	&.flagged .personal-daily { color: white; background: red; }
-	.personal-daily:focus { outline: 2px solid black; }
+	text-align:center;
+	color:#222;
+	background:#F8F8F8;
+	border:1px solid purple;
+	border-left-width: 5px;
+	border-radius: var(--border-radius);
 }
-.vote-box .vote-contents {
-	position:relative;
+.vote-box .vote-inner {
 	flex:1;
 	display: flex;
-	/* flex-direction: column;
-	justify-content: end; */
-	max-width:calc(100% - 19px);/* 100% - action tray width + border */
-	padding: 2px 0;
+	overflow: hidden;
 }
 .addon-left {
-	padding: 2px 0;
+	position:relative;
 }
 .vote-box .vote-title-and-votes {
+	position: relative;
+	flex:1;
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
-	flex:1;
+	padding: 2px 0;
 }
 .vote-box .vote-title { /*width:144px;*/ overflow: hidden; white-space: nowrap; margin: auto 0; }
 
 .vote-box.gray-out {
 	border-color:grey;
-	filter: brightness(65%);
+	filter: brightness(80%);
 	
-	.vote-contents { /*opacity: 0.45;*/ filter: blur(0.65px); }
-	:global(.no-blur) & .vote-contents { filter: none; }
-	.vote-contents:before { content:'∅'; position:absolute; bottom:0; left:6px; }
-	.vote-contents:after { content:'∅'; position:absolute; bottom:0; right:6px; }
+	.vote-inner { filter: blur(0.65px); box-shadow: inset 0 0 6px 2px #5e3660aa; }
+	
+	/* .vote-inner {filter: blur(0.65px); }
+	:global(.no-blur) & .vote-inner { filter: none; } */
+	/* :global(body:not(.no-blur)) & .vote-inner { filter: brightness(65%), blur(0.65px); } */
+	
+	.vote-title-and-votes:before { content:'∅'; position:absolute; bottom:0; left:6px; }
+	.vote-title-and-votes:after { content:'∅'; position:absolute; bottom:0; right:6px; }
 }
-
 .vote-box.lightly-gray-out { opacity:0.9; }
 
 .vote-box.broken { opacity:1; filter: invert(75%); border-color:aqua; }
-.vote-box.broken:hover .action.disabled { background:black; color:white; }
+.vote-box.broken:hover .action:not(.btn-action) { background:black; color:white; }
 
-.vote-box.active { opacity:1; }
-.vote-box.active .vote-contents { filter: none; }
+.vote-box.active {
+	background-color:#A0FFA0;
+	border-color:#3f933f;
+	opacity:1;
+	
+	&.best { background-color: #50FF50; }
+	.vote-title-and-votes { filter: none; }
+}
+.vote-box.best { box-shadow: 0 0 10px 2px lightgreen; }
+
+.vote-box.flagged {
+	border-color: var(--flagged-item-color);
+	opacity: 0.35;
+	filter: none;
+	
+	--action-tray-border-color-left: var(--flagged-item-color);
+	.vote-inner { box-shadow: inset 0 0 5px 1px var(--flagged-item-color); filter: none; }
+}
 
 /**** Action Tray ****/
 
 .action-tray {
 	display: flex;
 	flex-direction: column;
-	/* background:#EEE; */
-	border-left:1px solid grey;
+	align-items: stretch;
+	min-width:18px;
+	width:18px;
+	border-left:1px solid var(--action-tray-border-color-left);
 }
 .action {
 	all: unset;
@@ -169,23 +177,28 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	
-	cursor: pointer;
-	filter:brightness(90%);
 
-	width:18px;
 	min-height:18px;
 	box-sizing: border-box;
-	border-bottom:1px solid grey;
-	/* background:#EEE; */
+	border-bottom:1px solid var(--action-tray-border-color);
 	background:rgba(200,200,200,0.5);
 	line-height:1;
 	
-	&:last-child { border-bottom:0; }
+	&:first-child { border-top-right-radius: var(--border-radius); }
+	&:last-child { border-bottom:0; border-bottom-right-radius: var(--border-radius); }
 	
-	&.disabled {
-		cursor: default;
-		filter: none;
+	&.btn-action {
+		cursor: pointer;
+		filter:brightness(90%);
 	}
+	&.btn-action:hover {
+		filter:brightness(80%);
+	}
+	
+	&.flag-action { color:#666; }
+	&.info-action { color:#666; }
+	&.flag-action:focus { outline: 2px solid var(--flagged-item-color); }
+	.flagged &.flag-action { color: white; background: var(--flagged-item-color); }
+	.flagged &.flag-action:focus { outline: 2px solid white; }
 }
 </style>
