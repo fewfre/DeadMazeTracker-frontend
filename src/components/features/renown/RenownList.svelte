@@ -11,7 +11,7 @@
 	const { friendships, handleVoteApiCall }:Props = $props();
 </script>
 
-<ul class="main-list">
+<ul class="renown-friendships-list">
 {#each friendships as friend(friend.id)}
 	{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
 	<li>
@@ -53,11 +53,15 @@
 </ul>
 
 <style>
-.main-list {
+.renown-friendships-list {
 	display:flex; flex-direction:column; gap: 10px; margin:0; padding:0; list-style-type:none;
 	--border-radius: 10px;
 }
-.main-list > li { margin:0; padding:0; box-shadow: 0 0 5px #FFFFFF44; border-radius: var(--border-radius); }
+.renown-friendships-list > li {
+	margin:0; padding:0;
+	box-shadow: 0 0 5px #FFFFFF44;
+	border-radius: var(--border-radius);
+}
 
 .main-li-heading {
 	position: relative;

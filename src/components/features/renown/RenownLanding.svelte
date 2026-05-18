@@ -10,7 +10,7 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
-    import RenownTable from "./RenownList.svelte";
+    import RenownList from "./RenownList.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
     import { friendshipVoteHistory } from "./utils/friendship-vote-history";
 	
@@ -68,7 +68,7 @@
 	{#if !$data}
 		<LoadingSpinnerForTable />
 	{:else}
-		<RenownTable friendships={$data.friendships} handleVoteApiCall={async req => {
+		<RenownList friendships={$data.friendships} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;
 			

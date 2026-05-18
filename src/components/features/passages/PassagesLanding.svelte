@@ -10,7 +10,7 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
-    import PassagesTable from "./PassagesTable.svelte";
+    import PassagesList from "./PassagesList.svelte";
     import { bossTracker } from "./utils/boss-tracker";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
@@ -133,7 +133,7 @@
 	{#if !$data}
 		<LoadingSpinnerForTable />
 	{:else}
-		<PassagesTable zones={$data.zones} handleVoteApiCall={async req => {
+		<PassagesList zones={$data.zones} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;
 			

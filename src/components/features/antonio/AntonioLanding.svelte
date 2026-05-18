@@ -9,7 +9,7 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
-    import AntonioTable from "./AntonioList.svelte";
+    import AntonioList from "./AntonioList.svelte";
     import { antonioVoteHistory } from "./utils/antonio-vote-history";
 
 	const { data, error:listAntonioError, revalidate, isFetching, mutate } = antonioApi.useList({}, { refreshInterval: antonioAutoRefreshInterval });
@@ -43,7 +43,7 @@
 	{#if !$data}
 		<LoadingSpinnerForTable />
 	{:else}
-		<AntonioTable resources={$data.resources} handleVoteApiCall={async req => {
+		<AntonioList resources={$data.resources} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;
 			

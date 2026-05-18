@@ -14,7 +14,7 @@
 	function getResourceName(name:string) { return $getI18n(`resource.${name}` as any, name); }
 </script>
 
-<div class='tracker-data-row-table vote-box-list'>
+<div class='vote-box-list'>
 {#each resources as resource(resource.id)}
 	{@const { id } = resource}
 	<VoteBox

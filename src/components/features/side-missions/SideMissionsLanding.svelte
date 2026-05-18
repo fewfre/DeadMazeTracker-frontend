@@ -15,7 +15,7 @@
     import { sideMissionsServerStore } from "../side-missions/utils/side-missions-server-store";
     import { sideMissionsVoteHistory } from "../side-missions/utils/side-missions-vote-history";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
-    import SideMissionsTable from "./SideMissionsTable.svelte";
+    import SideMissionsList from "./SideMissionsList.svelte";
 	
 	const req = writable({ server:$sideMissionsServerStore });
 	$effect(() => { req.set({ server:$sideMissionsServerStore }); });
@@ -81,7 +81,7 @@
 		<LoadingSpinnerForTable />
 	{:else}
 		<!-- <SideMissionRestartControl restartData={$data?.restartTracker} /> -->
-		<SideMissionsTable zones={$data?.zones} handleVoteApiCall={async req => {
+		<SideMissionsList zones={$data?.zones} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;
 			
