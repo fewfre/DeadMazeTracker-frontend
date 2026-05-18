@@ -65,8 +65,7 @@
 				{#snippet voteButtons()}
 					<VoteButtons upVotes={passage.votesUp} downVotes={passage.votesDown} active={$votesHistoryStore.votes[id]}
 						disableUpvote={aPassageInZoneHasUpvote !== false && aPassageInZoneHasUpvote !== id}
-						onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
-						onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
+						onVoteClicked={(upvote, undo)=>handleVoteApiCall({ id, upvote, undo })}
 					/>
 				{/snippet}
 			</VoteBox>

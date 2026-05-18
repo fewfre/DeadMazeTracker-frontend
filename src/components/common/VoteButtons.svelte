@@ -1,23 +1,21 @@
 <script lang="ts">
 	interface Props {
-		upVotes:number, onUpVoteClicked:()=>void, disableUpvote?:boolean,
-		downVotes:number, onDownVoteClicked:()=>void
-		active?: "up"|"down"|undefined,
+		upVotes:number, disableUpvote?:boolean, downVotes:number, active?: "up"|"down"|undefined,
+		onVoteClicked:(upvote:boolean, undo?:boolean)=>void
 	}
 	let {
-		upVotes=0, onUpVoteClicked, disableUpvote,
-		downVotes=0, onDownVoteClicked,
-		active
+		upVotes=0, disableUpvote, downVotes=0, active,
+		onVoteClicked
 	} : Props = $props();
 	
 	const upClicked = () => {
 		// upVotes += (active === 'up' ? -1 : 1);
-		onUpVoteClicked();
+		onVoteClicked(true, active === 'up');
 	}
 	
 	const downClicked = () => {
 		// downVotes += (active === 'down' ? -1 : 1);
-		onDownVoteClicked();
+		onVoteClicked(false, active === 'down');
 	}
 </script>
 

@@ -41,8 +41,7 @@
 				{#snippet voteButtons()}
 					<VoteButtons upVotes={loc.votesUp} downVotes={loc.votesDown} active={$votesHistoryStore.votes[id]}
 						disableUpvote={aLocationInFriendshipHasUpvote !== false && aLocationInFriendshipHasUpvote !== id}
-						onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
-						onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
+						onVoteClicked={(upvote, undo)=>handleVoteApiCall({ id, upvote, undo })}
 					/>
 				{/snippet}
 			</VoteBox>

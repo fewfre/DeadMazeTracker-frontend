@@ -39,8 +39,7 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 			>
 				{#snippet voteButtons()}
 					<VoteButtons upVotes={mission.votesUp} downVotes={mission.votesDown} active={$votesHistoryStore.votes[id]}
-						onUpVoteClicked={()=>handleVoteApiCall({ id, upvote:true, undo:$votesHistoryStore.votes[id] === 'up' })}
-						onDownVoteClicked={()=>handleVoteApiCall({ id, upvote:false, undo:$votesHistoryStore.votes[id] === 'down' })}
+						onVoteClicked={(upvote, undo)=>handleVoteApiCall({ id, upvote, undo })}
 					/>
 				{/snippet}
 
