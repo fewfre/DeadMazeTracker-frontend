@@ -82,12 +82,24 @@
 	--border-radius: 10px;
 }
 .passages-zone-row {
+	position: relative;
 	display: flex;
 	align-items: stretch;
 	min-height: 65.5px;
 	margin:0; padding:0;
-	box-shadow: 0 0 5px #FFFFFF44;
+	box-shadow: 0 0 5px #FFFFFF16;
 	border-radius: var(--border-radius);
+	
+	&:not(:last-child):after {
+		content: "";
+		position: absolute;
+		display: block;
+		width: calc(100% - (var(--border-radius) * 2));
+		height: 1px;
+		bottom: -6px;
+		left: var(--border-radius);
+		background: #FFFFFF55;
+	}
 }
 
 .zone-info {
