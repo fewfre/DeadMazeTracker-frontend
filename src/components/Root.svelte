@@ -90,7 +90,7 @@
 	
   --dot:#bfc7d1; /* adjust tint */
   background: #00200c;
-  background-image: url(images/content-bg.svg);
+  background-image: url(/images/content-bg.svg);
   background-repeat: repeat;
   background-position: 0 -45px;
 }
