@@ -112,7 +112,7 @@
 			<p>
 				<b class="instr">Marking complete:</b>
 				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">boss</a> image next to zone names on the table below to track them
-				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
+				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." position="left" />.
 			</p>
 			<p>
 				<b class="instr">Finding Bosses:</b>
