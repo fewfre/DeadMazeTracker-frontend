@@ -127,6 +127,7 @@
 
 .tabs-header {
 	display: flex;
+	justify-content: stretch;
 	gap: 0;
 	border-bottom: 1px solid white;
 }
@@ -158,13 +159,12 @@
 	cursor: pointer;
 	
 	height: 45px;
-	padding: 10px 2px;
+	padding: 10px 4px;
 	margin: 0 3px;
 	font-size: 125%;
 	text-decoration: none;
 	color: #CCC;
 	white-space: nowrap;
-	overflow-x: hidden;
 	
 	background: var(--tab-bg-color, #005600);
 	border: 1px solid white;
