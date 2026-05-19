@@ -97,7 +97,7 @@
 	gap: 0.5em;
 	width: 175px;
 	padding: 0 8px;
-	background: var(--striped-table-row-bg--secondary, #005500);
+	background: var(--table-list-heading-bg, #005500);
 	border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 .zone-info-name-cont {
@@ -105,6 +105,9 @@
 	flex-direction: column;
 	justify-content: center;
 	gap: 5px;
+}
+.passages-zone-row:nth-of-type(even) .zone-info {
+	background: var(--table-list-heading-bg-even, darkgreen);
 }
 
 .vote-box-list {

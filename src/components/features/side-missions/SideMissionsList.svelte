@@ -74,8 +74,12 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 	gap: 0.5em;
 	width: 175px;
 	padding: 0 8px;
-	background: var(--striped-table-row-bg--secondary, #005500);
+	background: var(--table-list-heading-bg, #005500);
 	border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+.side-missions-zone-row:nth-of-type(even) .zone-info {
+	background: #00000022;
+	background: var(--table-list-heading-bg-even, darkgreen);
 }
 
 .vote-box-list {

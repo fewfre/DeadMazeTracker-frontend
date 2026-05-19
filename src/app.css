@@ -32,7 +32,8 @@
   
   --footer-height: 45px;
   
-  --striped-table-row-bg--secondary: #005500;
+  --table-list-heading-bg: #004200; /* --table-list-heading-bg: #005500; */
+  --table-list-heading-bg-even: #005400; /* --table-list-heading-bg-even: darkgreen; */
   
   --tab-bg-color: #005600;
   --tab-bg-color--hover: darkgreen;
@@ -177,7 +178,8 @@ b.instr { font-size: 110%; text-decoration: underline; }
 * Nyan Cat
 ********************************/
 body.nyancat {
-	--striped-table-row-bg--secondary: #215e9e;
+	--table-list-heading-bg: #215e9e;
+	--table-list-heading-bg-even: #215e9e;
 	--tab-bg-color: #215e9e;
 	--tab-bg-color--hover: #58a9ff;
 	--tab-bg-color--active: #58a9ff;
