@@ -22,20 +22,14 @@
 
 	let activeTabIndex = $state(0);
 	let chatSrc = $derived(tabs[activeTabIndex].href);
-
-	function handleTabClick(index: number) {
-		activeTabIndex = index;
-	}
+	
+	let displayBottomOfPage = $state($forceChatBelow);
+	
+	let chatPlacementPlaceholder:HTMLElement, chatAside:HTMLElement, chatIframe:HTMLIFrameElement, chatTabsElem:HTMLElement, chatBottomElem:HTMLElement;
 
 	/////////////////////////////////////
 	// Chat height / resize logic
 	/////////////////////////////////////
-	function _getTopOfChat() {
-		const chatAside = document.getElementById("chat_aside");
-		if (!chatAside) return 0;
-		return Math.max(0, chatAside.getBoundingClientRect().top);
-	}
-
 	function _getChatHeightOfWindowOrWrapper() {
 		const bodyWrapper = document.querySelector(".bodyWrapper");
 		if (!bodyWrapper) return window.innerHeight;
@@ -43,26 +37,15 @@
 	}
 
 	function _resizeChat() {
-		const chatAside = document.getElementById("chat_aside");
-		const chat = document.getElementById("chat");
-		const chatPos = document.getElementById("chat_pos");
-		const chatTabs = document.getElementById("chat-tabs");
-		const chatBottom = document.getElementById("chat-bottom");
+		// Placeholder used as it remains a consistent size and thus we know where it ends up in the flow is the source of truth
+		displayBottomOfPage = chatPlacementPlaceholder.offsetTop > 200;
+		if(displayBottomOfPage) return;
 
-		if (!chatAside || !chat || !chatPos || !chatTabs || !chatBottom) return;
-
-		chatAside.style.width = ""; // Use default size
-
-		if ($forceChatBelow || chatAside.getBoundingClientRect().top > 200) {
-			chatPos.style.position = "static";
-			chat.setAttribute("height", "550");
-			chatAside.style.width = "100%";
-		} else {
-			const height = _getChatHeightOfWindowOrWrapper() - _getTopOfChat() - chatTabs.clientHeight - chatBottom.clientHeight - 1/* border */;
-			chat.setAttribute("height", String(height));
-			chatPos.style.top = _getTopOfChat() + "px";
-			chatPos.style.position = "fixed";
-		}
+		const boundingRect = chatPlacementPlaceholder.getBoundingClientRect(), topOfChat = Math.max(0, boundingRect.top);
+		const height = _getChatHeightOfWindowOrWrapper() - topOfChat - chatTabsElem.clientHeight - chatBottomElem.clientHeight - 1/* border */;
+		chatIframe.setAttribute("height", height.toString());
+		chatAside.style.top = `${topOfChat}px`;
+		chatAside.style.left = `${boundingRect.left}px`;
 	}
 
 	$effect(() => {
@@ -73,64 +56,81 @@
 	onMount(() => {
 		_resizeChat();
 		setTimeout(_resizeChat, 10); // Chrome seems to need a slight delay to avoid the "top" being set a few pixels too low
-
+		
+		// We need to use a resize observer on main since data loading in can cause a change in the layout without any direct user input like those from a resize/scroll event
+		const resizeObserver = new ResizeObserver(() => { _resizeChat(); });
+		resizeObserver.observe(document.querySelector("main")!);
+		
 		window.addEventListener("resize", _resizeChat);
 		window.addEventListener("scroll", _resizeChat);
 
 		return () => {
 			window.removeEventListener("resize", _resizeChat);
 			window.removeEventListener("scroll", _resizeChat);
+			resizeObserver.unobserve(document.querySelector("main")!);
 		};
 	});
 </script>
 
-<aside id="chat_aside">
-	<div id="chat_pos">
-		<div id="chat-tabs">
-			{#each tabs as tab, i}
-				<a
-					href={tab.href}
-					class="chat-tab-link"
-					class:active={activeTabIndex === i}
-					onclick={(e) => {
-						e.preventDefault();
-						handleTabClick(i);
-					}}
-				>
-					{#if !tab.img}
-						{tab.label}
-					{:else}
-						<img src={tab.img} alt={tab.label} />
-					{/if}
-				</a>
-			{/each}
-		</div>
-		<iframe
-			id="chat"
-			src={chatSrc}
-			width="100%"
-			height="655"
-			title="Cbox Chat"
-		></iframe>
+<div id="chat-aside-placement-placeholder" class:force-bottom={$forceChatBelow} bind:this={chatPlacementPlaceholder} aria-hidden="true"></div>
+<aside id="chat-aside" class:display-bottom-of-page={displayBottomOfPage} bind:this={chatAside}>
+	<div id="chat-tabs" bind:this={chatTabsElem}>
+		{#each tabs as tab, i}
+			<a
+				href={tab.href}
+				class="chat-tab-link"
+				class:active={activeTabIndex === i}
+				onclick={(e) => {
+					e.preventDefault();
+					activeTabIndex = i;
+				}}
+			>
+				{#if !tab.img}
+					{tab.label}
+				{:else}
+					<img src={tab.img} alt={tab.label} />
+				{/if}
+			</a>
+		{/each}
+	</div>
+	<iframe
+		id="chat-iframe"
+		bind:this={chatIframe}
+		src={chatSrc}
+		width="100%"
+		height="655"
+		title="Cbox Chat"
+	></iframe>
 
-		<div id="chat-bottom">
-			<button class="chat-bottom-button" data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
-			<ChatRulesModal bind:showModal={showRulesModal} />
-			<button class="chat-bottom-button" data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
-			<ChatFiltersModal bind:showModal={showFiltersModal} />
-		</div>
+	<div id="chat-bottom" bind:this={chatBottomElem}>
+		<button class="chat-bottom-button" data-featherlight="#chat_rules" onclick={() => (showRulesModal = true)}>Chat Rules</button>
+		<ChatRulesModal bind:showModal={showRulesModal} />
+		<button class="chat-bottom-button" data-featherlight="#chat_filters" onclick={() => (showFiltersModal = true)}>Text Filters</button>
+		<ChatFiltersModal bind:showModal={showFiltersModal} />
 	</div>
 </aside>
 
 <style>
-	#chat_pos {
+	#chat-aside-placement-placeholder { width:300px; /* We need it to have the sidebar width since we use it to check wether there is enough space for the chat since we can check if it's been pushed down or not */ }
+	#chat-aside-placement-placeholder.force-bottom { width:100%; }
+	#chat-aside {
 		position: fixed;
-		width: inherit;
+		min-width: 300px;
+		width: 300px;
 		pointer-events: none; /* Needed to fix issue with it covering donate link */
+		& > * { pointer-events: all; } /* But we still want children to be clickable */
 	}
-	#chat_pos > * { pointer-events: all; }
+	#chat-aside.display-bottom-of-page {
+		position: static;
+		width: 100% !important;
+		#chat-iframe {
+			min-height: 300px;
+			height: calc(100vh - 200px) !important;
+			max-height: 550px;
+		}
+	}
 	
-	#chat {
+	#chat-iframe {
 		display: block;
 		overflow: auto;
 		border: none;

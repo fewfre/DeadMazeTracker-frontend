@@ -118,7 +118,6 @@
 	flex: 1;
 }
 #main_two_column_layout :global(aside) {
-	width: 300px;
 	padding-left: 5px;
 	margin-left: auto;
 }
