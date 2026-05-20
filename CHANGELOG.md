@@ -15,6 +15,7 @@
 	- Tweaked padding on various header elements to look nicer, including removing a bunch of extra padding on the right side
 	- Styled the "Log in" button to fit the theme / be the same height/passing as other navigation elements (was using default browser button look before)
 	- Moved boss reset countdown to passages page (more info below)
+	- "Time Until Zone Reset" changed to "Zone Loot Reset" for clarity and to add distinction from secret passage/side mission resets
 	- Re-added share link where boss reset countdown was (since it was empty)
 - Countdowns now have a timer icon in front - the knob of the timer will rotate as the time gets closer to finishing, once a timer has <= 20% left then it will slowly change color from yellow->red and shake with increasing intensity as it approaches 0%
 - Chat:
@@ -38,6 +39,7 @@
 	- Fixed a bug causing boss reset timer to be off by a day
 	- Bosses marked as complete on the passages table now auto reset instead of having to clear them manually
 - Secret Passages:
+	- Change "Time Until Reset" to "Passages Rotate" for clarity in relation to the zone reset and the boss reset
 	- Page description condensed a bit for simplicity and to make room for bosses column
 	- Table converted into a list (purely to make it look nicer)
 	- Grayed out passages has their designed tweaked slightly to be a little less in-your-face since they do sometimes end up being correct (especially if someone trolled and an incorrect one was votes last round)
@@ -55,6 +57,10 @@
 	- Table converted to sections (purely to make it look nicer) - I choose sections instead of the rows like the other pages due to the large amounts of locations each option has which benefits from having the whole width to play with
 - Antonio:
 	- Icons are now rendered in their default size instead of scaled to the same size, so some icons should look a little crisper
+	- Tweaked the design slightly of the antonio button when it's in the header (when  the setting is on) to be a little more stylized (green border) and is aligned bettered with the other header navigation items
+Misc:
+	- Added a new background image for the site content (some faint lightly color dots and round-capped lines); it should be more subtle and and much less predictable pattern
+	- I made sure to port over nyan cat mode and MLP mode since those are totes super duper important, no cap, for-realz, 67
 
 ### Technical:
 - Summary
