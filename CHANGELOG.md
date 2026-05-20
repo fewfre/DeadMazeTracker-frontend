@@ -59,7 +59,7 @@
 	- Icons are now rendered in their default size instead of scaled to the same size, so some icons should look a little crisper
 	- Tweaked the design slightly of the antonio button when it's in the header (when  the setting is on) to be a little more stylized (green border) and is aligned bettered with the other header navigation items
 Misc:
-	- Added a new background image for the site content (some faint lightly color dots and round-capped lines); it should be more subtle and and much less predictable pattern
+	- Added a new background image for the site content (some faint lightly colored dots and round-capped lines); it should be more subtle and and much less predictable pattern
 	- I made sure to port over nyan cat mode and MLP mode since those are totes super duper important, no cap, for-realz, 67
 		- Decreased scale of nyancat font so it's less disruptive to layout
 
