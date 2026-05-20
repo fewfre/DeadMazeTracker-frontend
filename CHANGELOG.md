@@ -61,6 +61,7 @@
 Misc:
 	- Added a new background image for the site content (some faint lightly color dots and round-capped lines); it should be more subtle and and much less predictable pattern
 	- I made sure to port over nyan cat mode and MLP mode since those are totes super duper important, no cap, for-realz, 67
+		- Decreased scale of nyancat font so it's less disruptive to layout
 
 ### Technical:
 - Summary

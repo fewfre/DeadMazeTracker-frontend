@@ -30,7 +30,7 @@
 	
 	<button id="loginButton" onclick={handleLogin}>Log in</button>
 	
-	<details style="margin-top:20px;">
+	<details style:margin-top="20px">
 		<summary>Privacy Policy / Security Stuff</summary>
 		<p>
 			For anyone has security concerns, the login system uses a 3rd party system, <a href="https://auth0.com/">auth0</a>;

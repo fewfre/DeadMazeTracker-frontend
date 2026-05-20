@@ -5,8 +5,8 @@
 </script>
 <footer>
 	Code by
-	<img src="https://www.gravatar.com/avatar/351491aa6b0f5ee6ef19e015c71442f9.jpg?s=14" alt="" style="vertical-align: middle;" />
-	<!-- <script>document.write('<img src="https://fewfre.com/images/avatar.jpg?tag=dm_sp&ref='+encodeURIComponent(document.referrer)+'" height="14" style="vertical-align: middle;" />');</script> -->
+	<img src="https://www.gravatar.com/avatar/351491aa6b0f5ee6ef19e015c71442f9.jpg?s=14" alt="" />
+	<!-- <script>document.write('<img src="https://fewfre.com/images/avatar.jpg?tag=dm_sp&ref='+encodeURIComponent(document.referrer)+'" height="14" />');</script> -->
 	Fewfre using Svelte, PHP, and MySQL.
 	<small>(<a href="logs/">tracker logs</a>)</small>
 	<small>(<a id="export_import_toggle" role="presentation" onclick={(e) => { e.preventDefault(); showExportImportModal = true; }}>export / import data</a>)</small>

@@ -39,7 +39,7 @@
 		<div id='personalDailyResetDesc'>
 			<strong>
 				Personal Daily Tracker
-				<span id="personalDailyReset" style="float:right;">
+				<span id="personalDailyReset" style:float="right">
 					<button onclick={() => sideMissionsDailyTracker.resetTracker()}>Reset <span style:color='var(--flagged-item-color)'>⚐</span>s</button>
 				</span>
 			</strong>

@@ -37,7 +37,7 @@
 				<div id='personalDailyResetDesc'>
 					<strong>
 						Personal SP Log
-						<span id="personalDailyReset" style="float:right;">
+						<span id="personalDailyReset" style:float="right">
 							<button onclick={() => passagesDailyTracker.resetTracker()}>Reset <span style:color='var(--flagged-item-color)'>⚐</span>s</button>
 						</span>
 					</strong>
@@ -99,7 +99,7 @@
 			<div id='personalBossResetDesc'>
 				<strong>
 					Personal Boss Log
-					<span id="personalBossReset" style="float:right;">
+					<span id="personalBossReset" style:float="right">
 						<button onclick={() => bossTracker.resetTracker()}>Manual Reset</button>
 					</span>
 				</strong>
