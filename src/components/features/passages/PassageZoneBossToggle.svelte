@@ -13,8 +13,9 @@
 <button
 	aria-label="Toggle boss for zone: {zone} (currently: {bossChecked ? "ON" : "OFF" })"
 	class={['personal-boss', { 'boss-voted': bossChecked }]}
-	style='background-image:url({bossImage});'
+	style:background-image='url({bossImage})'
 	onclick={() => bossTracker.toggleFlag(zone)}
+	title="Mark boss as killed for the week (personal use, not sent to server)"
 ></button>
 
 <style>
@@ -30,7 +31,7 @@
 	height: var(--height);
 	border-left: solid 1px gold;
 	border-top: solid 1px gold;
-	opacity:0.35;
+	opacity:0.5;
 	cursor: pointer;
 }
 .personal-boss:hover { opacity:0.75; --height: 30px; }
