@@ -60,10 +60,10 @@ export namespace passagesNotificationManagement {
 	
 	export function sendNotificationForPassages(passageNames: string|string[]) {
 		if(!get(passagesNotificationsEnabled)) return;
+		passageNames = Array.isArray(passageNames) ? passageNames : [passageNames];
 		sendNotification({
 			title: "Passage Update",
-			body: Array.isArray(passageNames) ? `Passages likely open: ${passageNames.join(", ")}` : `Passage likely open: ${passageNames}`,
-			autoClose: true
+			body: passageNames.length > 1 ? `Passages likely open: ${passageNames.join(", ")}` : `Passage likely open: ${passageNames}`
 		});
 	}
 }

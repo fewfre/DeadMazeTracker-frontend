@@ -15,17 +15,12 @@ export async function requestNotificationPermissionIfNeeded() {
 interface SendNotificationProps {
 	title: string;
 	body: string;
-	autoClose?: boolean;
 }
-export function sendNotification({ title, body, autoClose }: SendNotificationProps) {
+export function sendNotification({ title, body }: SendNotificationProps) {
 	if (!hasUserEnabledNotifications()) return;
 
 	try {
-		const notification = new Notification(title, { body });
-
-		if(autoClose) {
-			setTimeout(() => notification.close(), 5000);
-		}
+		new Notification(title, { body, icon: "images/site-logo.png" });
 	} catch {
 		// Ignore notification failures in unsupported environments or if the user revokes permission.
 	}
