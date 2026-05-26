@@ -2,6 +2,7 @@
     import { type SideMissionVoteRequest, type SideMissionZoneInfo } from "../../../api/side-missions";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
+    import ZoneRowBackground from "../../common/ZoneRowBackground.svelte";
     import { sideMissionsDailyTracker } from "./utils/side-missions-daily-tracker";
     import { sideMissionsVoteHistory } from "./utils/side-missions-vote-history";
 	const { sideMissionsDailyTrackerStore } = sideMissionsDailyTracker;
@@ -14,6 +15,7 @@
 <ul class="side-missions-zone-list">
 {#each zones as zone(zone.id)}
 	<li class="side-missions-zone-row">
+		<ZoneRowBackground zoneId={zone.id} />
 		<div class="zone-info">
 			<img src='{zone.icon}' width='35' alt='{zone.name}' />
 			<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
@@ -59,6 +61,7 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 	--border-radius: 10px;
 }
 .side-missions-zone-row {
+	position: relative;
 	display: flex;
 	align-items: stretch;
 	min-height: 65.5px;

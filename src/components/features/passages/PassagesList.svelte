@@ -3,6 +3,7 @@
     import ImageModal from "../../common/modal/ImageModal.svelte";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
+    import ZoneRowBackground from "../../common/ZoneRowBackground.svelte";
     import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesNotificationManagement } from "./utils/passages-notification-management";
@@ -26,6 +27,7 @@
 {#each zones as zone(zone.id)}
 	{@const aPassageInZoneHasUpvote = zone.passages.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
 	<li class="passages-zone-row">
+		<ZoneRowBackground zoneId={zone.id} />
 		<div class="zone-info">
 			<img src='{zone.icon}' width='35' alt='{zone.name}' />
 			<div class="zone-info-name-cont">
