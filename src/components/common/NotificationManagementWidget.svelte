@@ -22,7 +22,7 @@
 </script>
 
 {#if browserSupportsNotifications()}
-<div class="notification-widget-cont" data-tooltip="Click to enable notifications for this page. You will be notified when something below you don't have mark finished (flagged) obtains a positive vote total, indicating it is likely available.">
+<div class="notification-widget-cont" data-tooltip={!enabled ? "Click to enable notifications for this page. You will be notified when something below you don't have mark finished (flagged) obtains a positive vote total, indicating it is likely available." : "Click to toggle notifications off"}>
 	<button class="button-group-part" onclick={handleEnableClick}>
 		<NotificationMessageIcon size={20} />
 		{#if enabled}
