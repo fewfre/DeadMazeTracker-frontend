@@ -5,9 +5,11 @@
     import VoteButtons from "../../common/VoteButtons.svelte";
     import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
+    import { passagesNotificationManagement } from "./utils/passages-notification-management";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
 	const { passageDailyTrackerFlags } = passagesDailyTracker;
 	const { votesHistoryStore } = passagesVoteHistory;
+	const { passagesNotificationsManagementStore, passagesNotificationsEnabled } = passagesNotificationManagement;
 	
 	interface Props { zones:PassageZoneInfo[]; handleVoteApiCall:(req:PassageVoteRequest) => void }
 	const { zones, handleVoteApiCall }:Props = $props();
@@ -59,6 +61,7 @@
 				flagged={$passageDailyTrackerFlags.idsFlagged[id]}
 				actions={[
 					{ type:"flag", onclick:()=>{ passagesDailyTracker.toggleFlag(id) } },
+					...($passagesNotificationsEnabled ? [{ type:"notification" as const, enabled:$passagesNotificationsManagementStore.selectedIds.includes(id), onclick:()=>{ passagesNotificationManagement.togglePassageId(id) } }] : []),
 					!!tooltip ? { type:'info', tooltip:tooltip } : { type:'blank' },
 				]}
 			>

@@ -7,19 +7,25 @@
     import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
     import InfoIconTooltip from "../../common/InfoIconTooltip.svelte";
     import LoadingSpinnerForTable from "../../common/LoadingSpinnerForTable.svelte";
+    import NotificationManagementWidget from "../../common/NotificationManagementWidget.svelte";
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import PassagesList from "./PassagesList.svelte";
     import { bossTracker } from "./utils/boss-tracker";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
+    import { passagesNotificationManagement } from "./utils/passages-notification-management";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
+	const { passagesNotificationsManagementStore } = passagesNotificationManagement;
 	
 	const { data, error:listPassagesError, revalidate, isFetching, mutate } = passagesApi.useList({}, { refreshInterval: passagesAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
 	$effect(() => { alert = $listPassagesError ? { type:'danger', message:$listPassagesError.message } : null; });
+	$effect(() => {
+		passagesNotificationManagement.detectChangesToPassageVotes( $data?.zones.flatMap(z=>z.passages) );
+	});
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
@@ -124,6 +130,9 @@
 <section>
 	<TableHeader>
 		Locations <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$passagesAutoRefreshInterval} />
+		{#if $passagesAutoRefreshInterval !== null}
+			<NotificationManagementWidget enabled={$passagesNotificationsManagementStore.enabled} onEnableToggled={() => { passagesNotificationsManagementStore.update(obj => ({ ...obj, enabled:!obj.enabled })); }} />
+		{/if}
 	</TableHeader>
 	
 	{#if alert}

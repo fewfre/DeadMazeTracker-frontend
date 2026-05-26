@@ -1,11 +1,13 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
     import InfoIcon from "../../assets/InfoIcon.svelte";
+    import NotificationMessageIcon from "../../assets/NotificationMessageIcon.svg.svelte";
     import YoutubeIcon from "../../assets/YoutubeIcon.svelte";
     import MediaModal from "./modal/MediaModal.svelte";
 
 	type ActionProps =
 	| { type: 'flag', onclick:()=>void }
+	| { type: 'notification', enabled:boolean, onclick:()=>void }
 	| { type: 'map', link:string; }
 	| { type: 'youtube', videoId:string }
 	| { type: 'info', tooltip:string }
@@ -47,7 +49,6 @@
 				{/if}
 			</div>
 			
-			
 			{@render voteButtons?.()}
 		</div>
 	</div>
@@ -56,6 +57,8 @@
 			{#each actions as action, i}
 				{#if action.type==='flag'}
 					<button class='action flag-action btn-action' onclick={action.onclick}>⚐</button>
+				{:else if action.type==='notification'}
+					<button class='action notification-action btn-action' class:notification-on={action.enabled} onclick={action.onclick} title="Trigger browser notifications when this votes change from neutral to positive (will not fire when flag is used to mark it as done)"><NotificationMessageIcon size={16} /></button>
 				{:else if action.type==='map'}
 					<a class='action action-map-icon btn-action' href={action.link}
 						onclick={(e) => { e.preventDefault(); media = { type:action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image", url:e.currentTarget['href'] }; }}
@@ -200,5 +203,13 @@
 	&.flag-action:focus { outline: 2px solid var(--flagged-item-color); }
 	.flagged &.flag-action { color: white; background: var(--flagged-item-color); }
 	.flagged &.flag-action:focus { outline: 2px solid white; }
+
+	&.notification-action { color:#666; }
+	&.notification-on {
+		color: black;
+		background:rgba(200,200,200,0.25);
+		:global(path) { filter: drop-shadow(0 0 2px #00FF0099); }
+	}
+	&.notification-on:focus { outline: 2px solid black; }
 }
 </style>

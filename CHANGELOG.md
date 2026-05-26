@@ -1,3 +1,7 @@
+## 25 May 2026
+- Added optional browser notification option to passages, which shows up when auto refresh is enabled
+
+
 ## 19 May 2026
 - Initial version of new UI
 

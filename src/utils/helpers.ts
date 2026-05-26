@@ -1,5 +1,6 @@
 
 export const padStart = (str:string|number, max: number=2) => str.toString().padStart(max, "0");
+export const uniq = <T>(arr:T[]) => Array.from(new Set(arr));
 
 export function copyToClipboard(value:string) {
 	if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
