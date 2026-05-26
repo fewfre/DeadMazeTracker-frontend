@@ -3,6 +3,7 @@
     import InfoIcon from "../../assets/InfoIcon.svelte";
     import NotificationMessageIcon from "../../assets/NotificationMessageIcon.svg.svelte";
     import YoutubeIcon from "../../assets/YoutubeIcon.svelte";
+    import { disableBlur } from "../../stores/bool-localstorage-stores";
     import MediaModal from "./modal/MediaModal.svelte";
 
 	type ActionProps =
@@ -36,7 +37,7 @@
 	let media : { type:"image" | "iframe"; url:string; } | null = $state(null)
 </script>
 
-<div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged }]}>
+<div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged, 'no-blur':$disableBlur }]}>
 	<div class="vote-inner">
 		{#if addonLeft}
 			<div class='addon-left'>{@render addonLeft()}</div>
@@ -131,10 +132,7 @@
 	filter: brightness(80%);
 	
 	.vote-inner { filter: blur(0.65px); box-shadow: inset 0 0 6px 2px #5e3660aa; }
-	
-	/* .vote-inner {filter: blur(0.65px); }
-	:global(.no-blur) & .vote-inner { filter: none; } */
-	/* :global(body:not(.no-blur)) & .vote-inner { filter: brightness(65%), blur(0.65px); } */
+	&.no-blur .vote-inner { filter: none; }
 	
 	.vote-title-and-votes:before { content:'∅'; position:absolute; bottom:0; left:6px; }
 	.vote-title-and-votes:after { content:'∅'; position:absolute; bottom:0; right:6px; }

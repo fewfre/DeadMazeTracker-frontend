@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getI18n } from "../i18n/i18n";
-    import { antonioInHeader, disableBlur, disableChat, disableMaxWidth } from "../stores/bool-localstorage-stores";
+    import { antonioInHeader, disableChat, disableMaxWidth } from "../stores/bool-localstorage-stores";
     import { browserPoniesDisplayOnSiteBackground, browserPoniesUseTransparentSite } from "../stores/browser-ponies";
     import { nyanCatBodyClass, nyanCatEnabled } from "../stores/nyancat";
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
@@ -26,7 +26,6 @@
 	}
 	
 	const disableMaxWidthBodyClass = createBodyClassToggle("no-max-width");
-	const disableBlurClass = createBodyClassToggle("no-blur");
 	const nyanCatBodyClassToggle = createBodyClassToggle(nyanCatBodyClass);
 	const mlpInBackgroundClass = createBodyClassToggle("mlp-in-background");
 	const mlpMakeSiteSeeThroughClass = createBodyClassToggle("mlp-make-site-see-through");
@@ -34,7 +33,6 @@
 
 <svelte:body
 	use:disableMaxWidthBodyClass={$disableMaxWidth}
-	use:disableBlurClass={$disableBlur}
 	use:nyanCatBodyClassToggle={$nyanCatEnabled}
 	use:mlpInBackgroundClass={$browserPoniesDisplayOnSiteBackground}
 	use:mlpMakeSiteSeeThroughClass={$browserPoniesUseTransparentSite}
