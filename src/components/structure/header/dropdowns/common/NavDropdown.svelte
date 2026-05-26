@@ -28,7 +28,10 @@
 	margin: 0;
 	z-index: 1;
 }
-.nav-dropdown:hover .dropdown-content, .nav-dropdown:has(:global(button):focus) .dropdown-content { /* Display the dropdown on hover */
+.nav-dropdown:hover .dropdown-content { /* Display the dropdown on hover */
+	display:block; /* Bring back on-screen when needed */
+}
+.nav-dropdown:has(:global(button):focus) .dropdown-content { /* Also on focus (done on separate selector so that it doesn't break hover on older browser that don't support :has) */
 	display:block; /* Bring back on-screen when needed */
 }
 </style>

@@ -1,5 +1,6 @@
 ## 25 May 2026
 - Added optional browser notification option to passages, which shows up when auto refresh is enabled
+- Fixed issue causing dropdowns not to work on FF-ESR 115
 
 
 ## 19 May 2026
