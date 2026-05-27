@@ -3,15 +3,15 @@
 	
 	const background = [
 		null,
-		{ src:'/images/zone-row-backgrounds/zone-1-sac.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-2-bay.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-3-rosa.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-4-college.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-5-mall.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-6-walker.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-7-museum.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-8-highway.webp' },
-		{ src:'/images/zone-row-backgrounds/zone-9-mesa.webp' },
+		{ src:'images/zone-row-backgrounds/zone-1-sac.webp' },
+		{ src:'images/zone-row-backgrounds/zone-2-bay.webp' },
+		{ src:'images/zone-row-backgrounds/zone-3-rosa.webp' },
+		{ src:'images/zone-row-backgrounds/zone-4-college.webp' },
+		{ src:'images/zone-row-backgrounds/zone-5-mall.webp' },
+		{ src:'images/zone-row-backgrounds/zone-6-walker.webp' },
+		{ src:'images/zone-row-backgrounds/zone-7-museum.webp' },
+		{ src:'images/zone-row-backgrounds/zone-8-highway.webp' },
+		{ src:'images/zone-row-backgrounds/zone-9-mesa.webp' },
 	][zoneId];
 </script>
 

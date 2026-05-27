@@ -1,7 +1,9 @@
+## 27 May 2026
+- Added background image to the rows for secret passages / side missions that correspond to each individual zone (images are the in-game illustrations shown during loading, cropped and scaled to show specific parts of interested in the limited space)
+
 ## 25 May 2026
 - Added optional browser notification option to passages, which shows up when auto refresh is enabled
 - Fixed issue causing dropdowns not to work on FF-ESR 115
-
 
 ## 19 May 2026
 - Initial version of new UI
