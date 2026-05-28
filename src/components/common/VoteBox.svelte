@@ -57,7 +57,7 @@
 		<div class='action-tray'>
 			{#each actions as action, i}
 				{#if action.type==='flag'}
-					<button class='action flag-action btn-action' onclick={action.onclick}>⚐</button>
+					<button class='action flag-action btn-action' onclick={action.onclick} title="Mark as done until reset">⚐</button>
 				{:else if action.type==='notification'}
 					<button class='action notification-action btn-action' class:notification-on={action.enabled} onclick={action.onclick} title="Trigger browser notifications when this votes change from neutral to positive (will not fire when flag is used to mark it as done)"><NotificationMessageIcon size={16} /></button>
 				{:else if action.type==='map'}
