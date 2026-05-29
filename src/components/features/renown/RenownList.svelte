@@ -1,5 +1,7 @@
 <script lang="ts">
     import type { FriendshipInfo, RenownDogVoteRequest } from "../../../api/renown";
+    import { getI18n } from "../../../i18n/i18n";
+    import { zoneTypeMap } from "../../../utils/zone-helpers";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import { friendshipDailyTracker } from "./utils/friendship-daily-tracker";
@@ -26,10 +28,12 @@
 		<div class='friends vote-box-list'>
 		{#each friend.locations as loc(loc.id)}
 			{@const { id } = loc}
+			{@const zone = zoneTypeMap[loc.zoneId] ?? { name: "", icon: "" }}
 			{@const goodPassage = loc.votesUp - loc.votesDown > 0}
 			
 			<VoteBox
 				title={loc.name}
+				subtitle={$getI18n(`zone.${zone.nameShort}` as any, zone.nameShort) ?? ''}
 				active={goodPassage}
 				best={loc.isBest}
 				actions={[
@@ -42,6 +46,12 @@
 						disableUpvote={aLocationInFriendshipHasUpvote !== false && aLocationInFriendshipHasUpvote !== id}
 						onVoteClicked={(upvote, undo)=>handleVoteApiCall({ id, upvote, undo })}
 					/>
+				{/snippet}
+
+				{#snippet addonLeft()}
+					<div class="zone-icon-cont">
+						<img src={zone.icon ?? ''} width="30" alt="{loc.name} zone icon" />
+					</div>
 				{/snippet}
 			</VoteBox>
 		{/each}
@@ -110,8 +120,10 @@
 	background: #00000066;
 	border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
-.vote-box-list :global(.vote-box) {
-	width: 155px;
-	min-width: 155px;
+
+.zone-icon-cont {
+	display: flex; align-items: center; justify-content: center;
+	height: 100%;
+	padding: 0 2px 0 4px;
 }
 </style>

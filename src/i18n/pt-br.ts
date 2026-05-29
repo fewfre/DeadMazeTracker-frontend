@@ -7,12 +7,15 @@ export const ptBrI18n = {
   "chat_tab.trade": "Troca",
   
   "zone.Sacramento Suburbs" : "Subúrbios de Sacramento",
+  "zone.Sacramento"         : "Sacramento",
   "zone.Bodega Bay"         : "Baía da Bodega",
   "zone.Santa Rosa"         : "Santa Rosa",
   "zone.Mazon College"      : "Universidade Mazon",
+  "zone.College"            : "Universidade",
   "zone.Sunset Mall"        : "Shopping Sunset",
   "zone.Walker River"       : "Rio do Andarilho",
   "zone.Jurassic Museum"    : "Museu Jurássico",
+  "zone.Museum"             : "Museu",
   "zone.Highway 99"         : "Rodovia 99",
   "zone.Blue Mesa"          : "Blue Mesa",
   

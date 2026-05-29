@@ -1,6 +1,7 @@
 
 import { writable } from "svelte/store";
 import { envVars } from "../utils/env-vars";
+import type { ZoneId } from "../utils/zone-helpers";
 import { renownMock } from "./mock-data/renown-mock";
 import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFetchOptionsExposed } from "./utils/api-helpers";
 
@@ -10,6 +11,7 @@ import { standardJsonPostFetch, useSwrFetch, type ErrorableResponse, type SWRFet
 export interface FriendshipLocationInfo {
   id: number;
   name: string;
+  zoneId: ZoneId;
   map: string;
   video: string;
   votesUp: number;

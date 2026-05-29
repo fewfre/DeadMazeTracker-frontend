@@ -96,9 +96,9 @@
 	position: relative;
 	display:flex;
 	box-sizing: border-box;
-	min-width:170px;
-	width:170px;
-	max-width: 170px;
+	min-width: var(--vote-box-width, 170px);
+	width: var(--vote-box-width, 170px);
+	max-width: var(--vote-box-width, 170px);
 	min-height: 50px;
 	margin:2px 3px 2px 3px;
 	
@@ -124,6 +124,7 @@
 	flex-direction: column;
 	justify-content: end;
 	padding: 2px 0;
+	overflow: hidden;
 }
 .vote-box .vote-title { /*width:144px;*/ overflow: hidden; white-space: nowrap; margin: auto 0; }
 

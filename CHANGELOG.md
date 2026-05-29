@@ -1,6 +1,12 @@
 ## 29 May 2026
-- [pt-br] Zone names now translated and UI tweaked to auto resize for longer zone names
+- [pt-br] Zone names now translated and UI tweaked for passages/side missions to auto resize for longer zone names
 - [pt-br] Passage names are now translate-able; only a handful translated for now
+- [fix] Lang selector icon now changes as expected
+- Doggy / renown vote boxes revamped:
+	- Locations now sorted by zone (by unlock order)
+	- Zone icon now displayed next to vote box
+	- Zone icon displayed below "quest" name as subtext instead of on same line - this is now also translated as per above
+	- Database updated to remove zone name from the "quest" name, since it's now displayed separately
 
 ## 27 May 2026
 - Added background image to the rows for secret passages / side missions that correspond to each individual zone (images are the in-game illustrations shown during loading, cropped and scaled to show specific parts of interested in the limited space)
