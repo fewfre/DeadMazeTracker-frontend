@@ -16,9 +16,8 @@ export const siteLang = createLocalStorageStringStore("lang", getDefaultSupporte
 export const getI18n = writable<(key:keyof typeof ptBrI18n, en:string)=>string>((key, en)=>en);
 siteLang.subscribe(lang => {
 	if(langMap.has(lang)) {
-		getI18n.set((key, en) => langMap.get(lang)![key] ?? en);
+		getI18n.set((key, en) => langMap.get(lang)![key] || en);
 	} else {
 		getI18n.set((key, en)=>en);
 	}
-	
 });

@@ -32,8 +32,8 @@
 			{@const goodPassage = loc.votesUp - loc.votesDown > 0}
 			
 			<VoteBox
-				title={loc.name}
-				subtitle={$getI18n(`zone.${zone.nameShort}` as any, zone.nameShort) ?? ''}
+				title={$getI18n(`friend_quest.${loc.name}` as any, loc.name)}
+				subtitle={$getI18n(`zone.${zone.nameShort}` as any, zone.nameShort)}
 				active={goodPassage}
 				best={loc.isBest}
 				actions={[

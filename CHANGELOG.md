@@ -3,10 +3,11 @@
 - [pt-br] Passage names are now translate-able; only a handful translated for now
 - [fix] Lang selector icon now changes as expected
 - Doggy / renown vote boxes revamped:
-	- Locations now sorted by zone (by unlock order)
+	- Locations now sorted by zone (by unlock order) then by id
 	- Zone icon now displayed next to vote box
 	- Zone icon displayed below "quest" name as subtext instead of on same line - this is now also translated as per above
 	- Database updated to remove zone name from the "quest" name, since it's now displayed separately
+	- "quest" name is now translatable
 - [fix] Downvoting a secret passage or friendship quest will no longer disable all upvotes, just the one for that passage/quest
 
 ## 27 May 2026

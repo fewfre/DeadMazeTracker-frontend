@@ -1,10 +1,14 @@
 export const ptBrI18n = {
-  "tab.secretPassages": "Passagens secretas",
-  "tab.sideMissions": "Missões secundárias",
-  "tab.doggy": "Catioros",
+  "tab.secretPassages": "Passagens secretas", // Secret Passages
+  "tab.sideMissions": "Missões secundárias", // Side Missions
+  "tab.doggy": "Catioros", // Doggy
   
-  "chat_tab.general": "Geral",
-  "chat_tab.trade": "Troca",
+  "chat_tab.general": "Geral", // General
+  "chat_tab.trade": "Troca", // Trade
+  
+  ///////////////////////////////////
+  // Zones
+  ///////////////////////////////////
   
   "zone.Sacramento Suburbs" : "Subúrbios de Sacramento",
   "zone.Sacramento"         : "Sacramento",
@@ -18,6 +22,10 @@ export const ptBrI18n = {
   "zone.Museum"             : "Museu",
   "zone.Highway 99"         : "Rodovia 99",
   "zone.Blue Mesa"          : "Blue Mesa",
+  
+  ///////////////////////////////////
+  // Passages
+  ///////////////////////////////////
   
   // Sacramento Suburbs
   "passage.Terrace Garden" : "",
@@ -57,7 +65,40 @@ export const ptBrI18n = {
   "passage.Mineshaft's Depths" : "Mina Coppercreek",
   "passage.Shooting Range"     : "Campo de tiro",
   "passage.Torture Chamber"    : "",
-	
+  
+  ///////////////////////////////////
+  // Friendship Quests
+  ///////////////////////////////////
+
+  // Sacramento Suburbs
+  "friend_quest.Car"            : "",
+  // Bodega Bay
+  "friend_quest.Campfire"       : "",
+  // Santa Rosa
+  "friend_quest.Sylvie's House" : "",
+  "friend_quest.Train"          : "",
+  // Mazon College
+  "friend_quest.Fix Toy"        : "",
+  // Sunset Mall
+  "friend_quest.Bath (Pool)"    : "",
+  "friend_quest.Golf Balls"     : "",
+  // Walker River
+  "friend_quest.Find Plush"     : "",
+  "friend_quest.Dig Holes"      : "",
+  "friend_quest.Puddles"        : "",
+  // Jurassic Museum
+  "friend_quest.Statue"         : "",
+  "friend_quest.Bones"          : "",
+  // Highway 99
+  "friend_quest.Road"           : "",
+  "friend_quest.Prison"         : "",
+  "friend_quest.Feed"           : "",
+  "friend_quest.Tanguy"         : "",
+  
+  ///////////////////////////////////
+  // Resources
+  ///////////////////////////////////
+  
   "resource.Scrap metal": "Sucata",
   "resource.Wood": "Madeira",
   "resource.Tools": "Ferramentas",
