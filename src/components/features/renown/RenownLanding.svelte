@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { renownApi } from "../../../api/renown";
+    import { getI18n } from "../../../i18n/i18n";
     import { renownAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import CountdownTimer from "../../common/CountdownTimer.svelte";
@@ -26,7 +27,7 @@
 
 <section>
 	<DoubleOrangeBorderBox>
-		<CountdownTimer label="Time Until Reset" occurrence={friendshipVoteHistory.resetOccurrence} />
+		<CountdownTimer label={$getI18n("countdown.genericReset", "Time Until Reset")} occurrence={friendshipVoteHistory.resetOccurrence} />
 	</DoubleOrangeBorderBox>
 	
 	<div id="personalTrackerDescCont">

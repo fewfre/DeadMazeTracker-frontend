@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { antonioApi } from "../../../api/antonio";
+    import { getI18n } from "../../../i18n/i18n";
     import { antonioAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import CountdownTimer from "../../common/CountdownTimer.svelte";
@@ -23,7 +24,7 @@
 </script>
 <section>
 	<DoubleOrangeBorderBox>
-		<CountdownTimer label="Time Until Reset" occurrence={antonioVoteHistory.resetOccurrence} />
+		<CountdownTimer label={$getI18n("countdown.genericReset", "Time Until Reset")} occurrence={antonioVoteHistory.resetOccurrence} />
 	</DoubleOrangeBorderBox>
 	
 	<p>

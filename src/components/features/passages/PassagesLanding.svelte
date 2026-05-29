@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { passagesApi } from "../../../api/passages";
+    import { getI18n } from "../../../i18n/i18n";
     import { passagesAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import CountdownTimer from "../../common/CountdownTimer.svelte";
@@ -33,8 +34,8 @@
 
 <section>
 	<DoubleOrangeBorderBox>
-		<CountdownTimer label="Passages Rotate" occurrence={passagesVoteHistory.resetOccurrence} />
-		<CountdownTimer label="Boss Reset" occurrence={bossTracker.resetOccurrence} />
+		<CountdownTimer label={$getI18n("countdown.passagesRotate", "Passages Rotate")} occurrence={passagesVoteHistory.resetOccurrence} />
+		<CountdownTimer label={$getI18n("countdown.bossReset", "Boss Reset")} occurrence={bossTracker.resetOccurrence} />
 	</DoubleOrangeBorderBox>
 	
 	<div class="two-column-layout">

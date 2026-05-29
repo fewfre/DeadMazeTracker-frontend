@@ -1,15 +1,16 @@
 <script lang="ts">
-	import { antonioInHeader } from "../../../stores/bool-localstorage-stores";
-	import { nyanCatEnabled } from "../../../stores/nyancat";
-	import { envVars } from "../../../utils/env-vars";
-	import CopyTextInput from "../../common/CopyTextInput.svelte";
-	import CountdownTimer from "../../common/CountdownTimer.svelte";
-	import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
-	import AntonioSummaryHeaderButton from "../../features/antonio/summary/AntonioSummaryHeaderButton.svelte";
-	import NavAuthDropdown from "./dropdowns/AuthDropdown.svelte";
-	import NavLangSelectDropdown from "./dropdowns/LangSelectDropdown.svelte";
-	import SeeAlsoDropdown from "./dropdowns/SeeAlsoDropdown.svelte";
-	import SettingsMenu from "./dropdowns/SettingsMenu.svelte";
+    import { getI18n } from "../../../i18n/i18n";
+    import { antonioInHeader } from "../../../stores/bool-localstorage-stores";
+    import { nyanCatEnabled } from "../../../stores/nyancat";
+    import { envVars } from "../../../utils/env-vars";
+    import CopyTextInput from "../../common/CopyTextInput.svelte";
+    import CountdownTimer from "../../common/CountdownTimer.svelte";
+    import DoubleOrangeBorderBox from "../../common/DoubleOrangeBorderBox.svelte";
+    import AntonioSummaryHeaderButton from "../../features/antonio/summary/AntonioSummaryHeaderButton.svelte";
+    import NavAuthDropdown from "./dropdowns/AuthDropdown.svelte";
+    import NavLangSelectDropdown from "./dropdowns/LangSelectDropdown.svelte";
+    import SeeAlsoDropdown from "./dropdowns/SeeAlsoDropdown.svelte";
+    import SettingsMenu from "./dropdowns/SettingsMenu.svelte";
 
 	// Image by Tasted#8196 on Discord - https://i.imgur.com/8eQG2qB.png
 	const mainIconSrc = $derived(!$nyanCatEnabled ? "images/site-logo.png" : "images/nyancat.gif");
@@ -19,7 +20,7 @@
 	<img id="app-logo" src={mainIconSrc} height="90" alt="Site Logo" />
 	<div id="app-title-row">
 		{#if !$nyanCatEnabled}
-			<h1>Dead Maze Tracker</h1>
+			<h1>{$getI18n("app.title", "Dead Maze Tracker")}</h1>
 		{:else}
 			<h1>
 				NYAN NYAN NYAN
@@ -51,7 +52,7 @@
 
 	<div id="subheader">
 		<DoubleOrangeBorderBox mb={0}>
-			<CountdownTimer label="Zone Loot Reset" occurrence={{ frequency: "daily", hour: 5 }} />
+			<CountdownTimer label={$getI18n("countdown.zoneLootReset", "Zone Loot Reset")} occurrence={{ frequency: "daily", hour: 5 }} />
 		</DoubleOrangeBorderBox>
 		<CopyTextInput label="Share" value="https://fewfre.com/dmtracker" width="300px" />
 	</div>

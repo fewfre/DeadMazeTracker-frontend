@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
     import { sideMissionApi } from "../../../api/side-missions";
+    import { getI18n } from "../../../i18n/i18n";
     import { sideMissionsAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import CountdownTimer from "../../common/CountdownTimer.svelte";
@@ -32,7 +33,7 @@
 </script>
 <section>
 	<DoubleOrangeBorderBox>
-		<CountdownTimer label="Time Until Reset" occurrence={sideMissionsVoteHistory.resetOccurrence} />
+		<CountdownTimer label={$getI18n("countdown.genericReset", "Time Until Reset")} occurrence={sideMissionsVoteHistory.resetOccurrence} />
 	</DoubleOrangeBorderBox>
 	
 	<div id="personalTrackerDescCont">

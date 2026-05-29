@@ -1,10 +1,20 @@
 export const ptBrI18n = {
+  "app.title": "", // Dead Maze Tracker
+  "user.login": "", // Log in
+  "user.logout": "", // Log out
+  
+  "chat_tab.general": "Geral", // General
+  "chat_tab.trade": "Troca", // Trade
+  "chat_tab.boss": "", // Boss
+	
   "tab.secretPassages": "Passagens secretas", // Secret Passages
   "tab.sideMissions": "Missões secundárias", // Side Missions
   "tab.doggy": "Catioros", // Doggy
   
-  "chat_tab.general": "Geral", // General
-  "chat_tab.trade": "Troca", // Trade
+  "countdown.zoneLootReset": "", // Zone Loot Reset:
+  "countdown.passagesRotate": "", // Passages Rotate:
+  "countdown.bossReset": "", // Boss Reset:
+  "countdown.genericReset": "", // Time Until Reset
   
   "refresh.refresh": "", // Refresh
   "refresh.auto-refresh-enable": "", // Enable Auto Refresh

@@ -1,4 +1,5 @@
 <script>
+    import { getI18n } from "../../../../i18n/i18n";
     import { isAuthenticated, isLoginModalOpen, logout, user } from "../../auth/auth0-helpers";
     import LoginModal from "../../auth/LoginModal.svelte";
     import NavDropdown from "./common/NavDropdown.svelte";
@@ -6,7 +7,7 @@
 	
 </script>
 {#if !$isAuthenticated || !$user}
-	<button id="login-btn" onclick={() => $isLoginModalOpen = true}>Log in</button>
+	<button id="login-btn" onclick={() => $isLoginModalOpen = true}>{$getI18n("user.login", "Log in")}</button>
 	<LoginModal />
 {:else}
 	<NavDropdown contId='user-dropdown' contentId='user-dropdown-content'>
@@ -17,7 +18,7 @@
 			</button>
 		{/snippet}
 		<ul>
-			<NavMenuListItem><button id="btn-logout" onclick={()=>{ logout() }}>Log out</button></NavMenuListItem>
+			<NavMenuListItem><button id="btn-logout" onclick={()=>{ logout() }}>{$getI18n("user.logout", "Log out")}</button></NavMenuListItem>
 		</ul>
 	</NavDropdown>
 {/if}

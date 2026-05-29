@@ -13,7 +13,7 @@
 	const tabs = $derived([
 		{ href: cboxBase, label: $getI18n("chat_tab.general", "General") },
 		{ href: `${cboxBase}&tid=5&tkey=17ccf67c30d09bf7`, label: $getI18n("chat_tab.trade", "Trade") },
-		{ href: `${cboxBase}&tid=6&tkey=30ae46fac3de7f81`, label: "Boss" },
+		{ href: `${cboxBase}&tid=6&tkey=30ae46fac3de7f81`, label: $getI18n("chat_tab.boss", "Boss") },
 		{ href: `${cboxBase}&tid=2&tkey=892b3205d36a083c`, label: "🇬🇧", img: "images/flags/en.png" },
 		{ href: `${cboxBase}&tid=3&tkey=b5c130c9c339148b`, label: "🇪🇸", img: "images/flags/es.png" },
 		{ href: `${cboxBase}&tid=4&tkey=feb06400f051a730`, label: "🇧🇷", img: "images/flags/br.png" },
