@@ -1,3 +1,7 @@
+## 29 May 2026
+- [pt-br] Zone names now translated and UI tweaked to auto resize for longer zone names
+- [pt-br] Passage names are now translate-able; only a handful translated for now
+
 ## 27 May 2026
 - Added background image to the rows for secret passages / side missions that correspond to each individual zone (images are the in-game illustrations shown during loading, cropped and scaled to show specific parts of interested in the limited space)
 
