@@ -67,7 +67,7 @@
 		return () => {
 			window.removeEventListener("resize", _resizeChat);
 			window.removeEventListener("scroll", _resizeChat);
-			resizeObserver.unobserve(document.querySelector("main")!);
+			if(document.querySelector("main")) resizeObserver.unobserve(document.querySelector("main")!);
 		};
 	});
 </script>
