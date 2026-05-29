@@ -26,7 +26,7 @@
 
 <ul class="passages-zone-list">
 {#each zones as zone(zone.id)}
-	{@const aPassageInZoneHasUpvote = zone.passages.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
+	{@const aPassageInZoneHasUpvote = zone.passages.find(({id}) => $votesHistoryStore.votes[id] === 'up')?.id ?? false}
 	<li class="passages-zone-row">
 		<ZoneRowBackground zoneId={zone.id} />
 		<div class="zone-info">

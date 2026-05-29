@@ -7,6 +7,7 @@
 	- Zone icon now displayed next to vote box
 	- Zone icon displayed below "quest" name as subtext instead of on same line - this is now also translated as per above
 	- Database updated to remove zone name from the "quest" name, since it's now displayed separately
+- [fix] Downvoting a secret passage or friendship quest will no longer disable all upvotes, just the one for that passage/quest
 
 ## 27 May 2026
 - Added background image to the rows for secret passages / side missions that correspond to each individual zone (images are the in-game illustrations shown during loading, cropped and scaled to show specific parts of interested in the limited space)

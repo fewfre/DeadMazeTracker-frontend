@@ -15,7 +15,7 @@
 
 <ul class="renown-friendships-list">
 {#each friendships as friend(friend.id)}
-	{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id])?.id ?? false}
+	{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id] === 'up')?.id ?? false}
 	<li class="friendship-row" class:flagged={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}>
 		<div class="main-li-heading">
 			<div class='npc-portrait' style='background-image:url({friend.portrait});'></div>
