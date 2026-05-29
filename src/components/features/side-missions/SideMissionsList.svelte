@@ -1,5 +1,6 @@
 <script lang="ts">
     import { type SideMissionVoteRequest, type SideMissionZoneInfo } from "../../../api/side-missions";
+    import { getI18n } from "../../../i18n/i18n";
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import ZoneRowBackground from "../../common/ZoneRowBackground.svelte";
@@ -17,8 +18,8 @@
 	<li class="side-missions-zone-row">
 		<ZoneRowBackground zoneId={zone.id} />
 		<div class="zone-info">
-			<img src='{zone.icon}' width='35' alt='{zone.name}' />
-			<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{zone.name}</a>
+			<img src='{zone.icon}' width='35' alt={$getI18n(`zone.${zone.name}` as any, zone.name)} />
+			<a href='http://deadmaze.wikia.com/wiki/{zone.name}'>{$getI18n(`zone.${zone.name}` as any, zone.name)}</a>
 		</div>
 		<div class='vote-box-list'>
 		{#each zone.missions as mission(mission.id)}
@@ -57,15 +58,23 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 
 <style>
 .side-missions-zone-list {
-	display:flex; flex-direction:column; gap: 10px; margin:0; padding:0; list-style-type:none;
+	display:grid;
+	grid-template-columns: minmax(175px, max-content) minmax(0, 1fr);
+	gap: 10px;
+	margin:0;
+	padding:0;
+	list-style-type:none;
 	--border-radius: 10px;
 }
 .side-missions-zone-row {
 	position: relative;
-	display: flex;
+	display:grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
 	align-items: stretch;
 	min-height: 65.5px;
-	margin:0; padding:0;
+	margin:0;
+	padding:0;
 	box-shadow: 0 0 5px #FFFFFF44;
 	border-radius: var(--border-radius);
 }
@@ -75,7 +84,7 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
-	width: 175px;
+	min-width: 175px;
 	padding: 0 8px;
 	background: var(--table-list-heading-bg, #005500);
 	border-radius: var(--border-radius) 0 0 var(--border-radius);

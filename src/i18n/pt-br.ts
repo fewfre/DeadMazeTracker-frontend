@@ -5,6 +5,55 @@ export const ptBrI18n = {
   
   "chat_tab.general": "Geral",
   "chat_tab.trade": "Troca",
+  
+  "zone.Sacramento Suburbs" : "Subúrbios de Sacramento",
+  "zone.Bodega Bay"         : "Baía da Bodega",
+  "zone.Santa Rosa"         : "Santa Rosa",
+  "zone.Mazon College"      : "Universidade Mazon",
+  "zone.Sunset Mall"        : "Shopping Sunset",
+  "zone.Walker River"       : "Rio do Andarilho",
+  "zone.Jurassic Museum"    : "Museu Jurássico",
+  "zone.Highway 99"         : "Rodovia 99",
+  "zone.Blue Mesa"          : "Blue Mesa",
+  
+  // Sacramento Suburbs
+  "passage.Terrace Garden" : "",
+  "passage.Valley Station" : "Estação",
+  "passage.Delta-9 Lab"    : "Laboratório Delta-9",
+  // Bodega Bay
+  "passage.Farm"       : "",
+  "passage.Beach"      : "",
+  "passage.Lumberyard" : "Floresta de exploração",
+  // Santa Rosa
+  "passage.Graveyard"           : "",
+  "passage.Car Dealership"      : "",
+  "passage.Interesting Company" : "",
+  // Mazon College
+  "passage.Football Stadium"        : "Estádio de futebol",
+  "passage.Sporting Goods"          : "",
+  "passage.Elisa Boston (Upstairs)" : "",
+  // Sunset Mall
+  "passage.Supermarket Freezer" : "",
+  "passage.Hotel Suites"        : "",
+  "passage.Strip Club"          : "",
+  "passage.Laser Game"          : "",
+  // Walker River
+  "passage.Wrecking Yard"     : "",
+  "passage.Cliffside Railway" : "",
+  // Jurassic Museum
+  "passage.Excavation Site"      : "",
+  "passage.Oasis Diner"          : "",
+  "passage.Auction Center"       : "",
+  "passage.Observation Division" : "",
+  // Highway 99
+  "passage.Plateau Garage" : "",
+  "passage.Roadblock"      : "",
+  "passage.Death Row"      : "",
+  "passage.Prison Boiler"  : "",
+  // Blue Mesa
+  "passage.Mineshaft's Depths" : "Mina Coppercreek",
+  "passage.Shooting Range"     : "Campo de tiro",
+  "passage.Torture Chamber"    : "",
 	
   "resource.Scrap metal": "Sucata",
   "resource.Wood": "Madeira",
