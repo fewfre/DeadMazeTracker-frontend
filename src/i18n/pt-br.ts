@@ -6,6 +6,11 @@ export const ptBrI18n = {
   "chat_tab.general": "Geral", // General
   "chat_tab.trade": "Troca", // Trade
   
+  "refresh.refresh": "", // Refresh
+  "refresh.auto-refresh-enable": "", // Enable Auto Refresh
+  "refresh.auto-refresh": "", // Auto Refresh
+  "refresh.rate": "", // Rate
+  
   ///////////////////////////////////
   // Zones
   ///////////////////////////////////

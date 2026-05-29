@@ -1,5 +1,6 @@
 <script lang="ts">
     import RefreshIcon from "../../assets/RefreshIcon.svelte";
+    import { getI18n } from "../../i18n/i18n";
 
 	interface Props { onRefreshClick:()=>void; autoRefreshInterval:number|null; loading?:boolean; }
 	let { onRefreshClick, autoRefreshInterval=$bindable(), loading } : Props = $props();
@@ -15,7 +16,7 @@
 		{#if loading}
 			<img src='images/loading-dots.gif' width='43' alt='Loading...' />
 		{:else}
-			Refresh
+			{$getI18n("refresh.refresh", "Refresh")}
 		{/if}
 	</button>
 </span>
@@ -24,9 +25,8 @@
 		<button class="button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
 		data-tooltip="Toggle auto-refresh on - this value will be remembered across page loads">
 			<!-- ⏲ -->
-			 
 			 <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="-2 0 30 30"><path fill-rule="evenodd" d="M14 14.18V9a1 1 0 1 0-2 0v5.18A3 3 0 0 0 13 20a3 3 0 0 0 1-5.82M13 28a11 11 0 1 1 0-22 11 11 0 0 1 0 22m.99-23.95L14 4V2h4a1 1 0 1 0 0-2H8a1 1 0 1 0 0 2h4v2l.01.05a13 13 0 1 0 1.98 0"/></svg>
-				<span class="small">Enable Auto Refresh</span>
+				<span class="small">{$getI18n("refresh.auto-refresh-enable", "Enable Auto Refresh")}</span>
 		</button>
 	{:else}
 		<button class="stop-button button-group-part" class:checked onclick={toggleAutoRefresh} role="switch" aria-checked={checked}
@@ -35,7 +35,7 @@
 			<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="16" height="16" viewBox="0 0 473.931 473.931"><circle cx="236.966" cy="236.966" r="236.966" fill="currentColor"/><path fill="#fff" d="M338.771 324.568c0 7.846-6.361 14.207-14.215 14.207H149.345c-7.85 0-14.211-6.361-14.211-14.207V149.349c0-7.854 6.361-14.215 14.211-14.215H324.56c7.854 0 14.215 6.361 14.215 14.215v175.219z"/></svg>
 		</button>
 		<span class="button-group-part">
-			<span class="small">Auto Refresh</span>
+			<span class="small">{$getI18n("refresh.auto-refresh", "Auto Refresh")}</span>
 		</span>
 	{/if}
 	
@@ -43,7 +43,7 @@
 		{#if !autoRefreshIntervalOpen}
 			<button class="button-group-part open-interval-toggle" class:checked onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)} role="switch" aria-checked={autoRefreshIntervalOpen}
 			data-tooltip="How often content is auto refreshed - click to change current auto-refresh interval">
-				<span class="small">Rate:&thinsp;{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}</span>
+				<span class="small">{$getI18n("refresh.rate", "Rate")}:&thinsp;{(autoRefreshInterval ?? 0) < 60_000 ? `${(autoRefreshInterval ?? 0) / 1000}s` : `${(autoRefreshInterval ?? 0) / 60_000}m`}</span>
 			</button>
 		{:else}
 			<button class="close-input button-group-part" onclick={()=>(autoRefreshIntervalOpen = !autoRefreshIntervalOpen)}>
