@@ -7,7 +7,7 @@
 		{ code:"en", name:"English", flag:"images/flags/en.png" },
 		{ code:"pt-br", name:"Português do Brasil", flag:"images/flags/br.png" },
 	];
-	const curLangData = langList.find(l=>l.code === $siteLang) ?? langList[0];
+	const curLangData = $derived(langList.find(l=>l.code === $siteLang) ?? langList[0]);
 </script>
 
 <NavDropdown contId='lang-select-dropdown' contentId='nav-lang-dropdown-content'>
