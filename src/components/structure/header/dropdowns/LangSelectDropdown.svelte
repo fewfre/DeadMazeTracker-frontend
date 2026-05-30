@@ -6,6 +6,7 @@
 	const langList = [
 		{ code:"en", name:"English", flag:"images/flags/en.png" },
 		{ code:"pt-br", name:"Português do Brasil", flag:"images/flags/br.png" },
+		{ code:"es", name:"Español", flag:"images/flags/es.png" },
 	];
 	const curLangData = $derived(langList.find(l=>l.code === $siteLang) ?? langList[0]);
 </script>
