@@ -138,16 +138,13 @@
 .vote-box-list {
 	flex: 1;
 	display: flex;
-	flex-wrap: nowrap; /* We don't want it wrapping for SPs */
+	flex-wrap: wrap;
 	padding: 2px 8px;
 	background: #00000066;
 	border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 .passages-zone-row:nth-of-type(even) .vote-box-list {
 	background: #00000022;
-}
-@media (max-width:1000px) {
-	.vote-box-list { flex-wrap: wrap; }
 }
 
 .map-link {
