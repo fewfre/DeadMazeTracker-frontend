@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { writable } from "svelte/store";
-    import { sideMissionApi } from "../../../api/side-missions";
+    import { sideMissionApi, type ListSideMissionsResponse } from "../../../api/side-missions";
     import { getI18n } from "../../../i18n/i18n";
     import { sideMissionsAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
@@ -17,11 +17,17 @@
     import { sideMissionsVoteHistory } from "../side-missions/utils/side-missions-vote-history";
     import SideMissionServerSelectModal from "./SideMissionServerSelectModal.svelte";
     import SideMissionsList from "./SideMissionsList.svelte";
+    import SideMissionRestartControl from "./restart-control/SideMissionRestartControl.svelte";
 	
 	const req = writable({ server:$sideMissionsServerStore });
 	$effect(() => { req.set({ server:$sideMissionsServerStore }); });
 	const { data, error:listSideMissionsError, revalidate, isFetching, mutate } = sideMissionApi.useList(req, { refreshInterval: sideMissionsAutoRefreshInterval });
 	const onRefreshClick = () => revalidate();
+	const mutateWithCb = $derived((cb:(oldData:ListSideMissionsResponse) => ListSideMissionsResponse, options:{ revalidate:boolean }) => {
+		if (!$data) return;
+		const nextData = cb($data);
+		mutate(nextData, options);
+	});
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
 	$effect(() => { alert = $listSideMissionsError ? { type:'danger', message:$listSideMissionsError.message } : null; });
@@ -81,7 +87,7 @@
 	{#if !$data}
 		<LoadingSpinnerForTable />
 	{:else}
-		<!-- <SideMissionRestartControl restartData={$data?.restartTracker} /> -->
+		<SideMissionRestartControl restartData={$data?.restartTracker} setAlert={newAlert => { alert = newAlert; }} triggerRefresh={onRefreshClick} mutateWithCb={mutateWithCb} />
 		<SideMissionsList zones={$data?.zones} handleVoteApiCall={async req => {
 			alert = null;
 			if(await cancelEarlyIfNotAuthenticated()) return;

@@ -10,6 +10,7 @@
 	- "quest" name is now translatable
 - [fix] Downvoting a secret passage or friendship quest will no longer disable all upvotes, just the one for that passage/quest
 - Secret passages now always wrap when not enough room instead of extending off screen
+- Side missions server restart control re-added by request; it now only requires 10 votes instead of 15
 
 ## 27 May 2026
 - Added background image to the rows for secret passages / side missions that correspond to each individual zone (images are the in-game illustrations shown during loading, cropped and scaled to show specific parts of interested in the limited space)
