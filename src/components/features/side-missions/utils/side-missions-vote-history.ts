@@ -36,6 +36,10 @@ export namespace serverRestartVoteHistory {
 	export function resetIfResetCountNewer(newResetCount:number) {
 		if(!newResetCount) return; // Don't reset if newResetCount is 0 or undefined, since that means we don't have a valid reset count / server hasn't sent us a reset count yet
 		const oldResetCount = get(voteHistoryStore).resetCount;
+		if(oldResetCount === 0) {
+			voteHistoryStore.update(data => ({ ...data, resetCount:newResetCount }));
+			return; // Don't reset if we don't have a previous reset count to compare to, since that means this is likely the first time we're getting a reset count from the server
+		}
 		if(newResetCount > oldResetCount) {
 			voteHistoryStore.set({ vote:undefined, resetCount:newResetCount });
 			sideMissionsVoteHistory.reset();
