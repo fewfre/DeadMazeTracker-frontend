@@ -37,7 +37,8 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 				flagged={$sideMissionsDailyTrackerStore.idsFlagged[id]}
 				actions={[
 					{ type:"flag", onclick:()=>{ sideMissionsDailyTracker.toggleFlag(id) } },
-					{ type:"map", link:mission.npcMap }
+					{ type:"map", link:mission.npcMap },
+					{ type:"wiki", url:`https://deadmaze.fandom.com/wiki/Template:ViewSideMissionFromUrl#${mission.npcName}`, width:1020, height:500 },
 				]}
 			>
 				{#snippet voteButtons()}

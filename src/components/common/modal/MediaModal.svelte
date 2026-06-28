@@ -3,7 +3,7 @@
     import Modal from "./Modal.svelte";
 
 	type MediaType = "image" | "iframe";
-	interface Props { media:{ type: MediaType; url: string } | null }
+	interface Props { media:{ type: MediaType; url: string, width?: number, height?: number } | null }
 	let { media = $bindable() } : Props = $props();
 	
 	let showModal = $state(false);
@@ -32,7 +32,7 @@
 		<!-- We always want the image to show even when not loaded to prompt the loading -->
 		<img src={media.url} alt="" onload={() => { loaded = true; }} />
 	{:else if media.type === 'iframe'}
-		<iframe src={media.url} title="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+		<iframe src={media.url} title="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style:width={media.width ? `${media.width}px` : undefined} style:height={media.height ? `${media.height}px` : undefined}></iframe>
 	{/if}
 {/if}
 </Modal>

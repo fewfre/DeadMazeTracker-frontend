@@ -2,6 +2,7 @@
     import type { Snippet } from "svelte";
     import InfoIcon from "../../assets/InfoIcon.svelte";
     import NotificationMessageIcon from "../../assets/NotificationMessageIcon.svg.svelte";
+    import WikipediaW from "../../assets/WikipediaW.svelte";
     import YoutubeIcon from "../../assets/YoutubeIcon.svelte";
     import { disableBlur } from "../../stores/bool-localstorage-stores";
     import MediaModal from "./modal/MediaModal.svelte";
@@ -11,6 +12,7 @@
 	| { type: 'notification', enabled:boolean, onclick:()=>void }
 	| { type: 'map', link:string; }
 	| { type: 'youtube', videoId:string }
+	| { type: 'wiki', url:string, width?:number, height?:number }
 	| { type: 'info', tooltip:string }
 	| { type: 'blank' }
 	
@@ -34,7 +36,7 @@
 		title, subtitle, voteButtons, addonLeft, actions = [],
 	} : Props = $props();
 	
-	let media : { type:"image" | "iframe"; url:string; } | null = $state(null)
+	let media : { type:"image" | "iframe"; url:string; width?:number; height?:number } | null = $state(null)
 </script>
 
 <div class={['vote-box', { active, best, 'gray-out':grayOut, 'lightly-gray-out':lightlyGrayOut, broken, flagged, 'no-blur':$disableBlur }]}>
@@ -72,6 +74,12 @@
 					
 					data-featherlight-iframe-frameborder='0' data-featherlight-iframe-allow='autoplay; encrypted-media' data-featherlight-iframe-allowfullscreen='true' data-featherlight-iframe-style='display:block;border:none;height:85vh;width:85vw;max-width:1024px;max-height:560px;'>
 						<YoutubeIcon size={16} />
+					</a>
+				{:else if action.type==='wiki'}
+					<a class='action btn-action' href={action.url}
+						onclick={(e) => { e.preventDefault(); media = { type:'iframe', url:e.currentTarget['href'], width:action.width, height:action.height }; }}
+					>
+						<WikipediaW size={16} />
 					</a>
 				{:else if action.type==='info'}
 					<span class='action info-action' title={action.tooltip}><InfoIcon size={16} /></span>
