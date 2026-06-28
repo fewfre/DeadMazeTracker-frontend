@@ -46,6 +46,7 @@
 		<div class='vote-box-list'>
 		{#each zone.passages as passage(passage.id)}
 			{@const { id } = passage}
+			{@const altName = $getI18n(`passage.${passage.altName}` as any, passage.altName || "-")}
 			
 			{@const goodPassage = passage.votesUp - passage.votesDown > 0}
 			{@const tooltip = [
@@ -56,7 +57,7 @@
 			].filter(s=>!!s)[0]}
 			<VoteBox
 				title={$getI18n(`passage.${passage.name}` as any, passage.name) || passage.name}
-				subtitle={$getI18n(`passage.${passage.altName}` as any, passage.altName) || passage.altName}
+				subtitle={altName !== "-" ? altName : passage.altName}
 				active={goodPassage}
 				grayOut={passage.openOneRoundAgo && passage.votesUp <= 0}
 				lightlyGrayOut={passage.openTwoRoundsAgo && passage.votesUp <= 0}
@@ -84,9 +85,10 @@
 
 <style>
 .passages-zone-list {
+	--info-width: 175px;
 	display:grid;
-	grid-template-columns: minmax(175px, max-content) minmax(0, 1fr);
-	gap: 10px;
+	grid-template-columns: minmax(var(--info-width), max-content) minmax(0, 1fr);
+	gap: 10px 0;
 	margin:0;
 	padding:0;
 	list-style-type:none;
@@ -120,7 +122,7 @@
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
-	min-width: 175px;
+	min-width: var(--info-width);
 	padding: 0 8px;
 	background: var(--table-list-heading-bg, #005500);
 	border-radius: var(--border-radius) 0 0 var(--border-radius);

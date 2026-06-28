@@ -59,9 +59,10 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 
 <style>
 .side-missions-zone-list {
+	--info-width: 175px;
 	display:grid;
-	grid-template-columns: minmax(175px, max-content) minmax(0, 1fr);
-	gap: 10px;
+	grid-template-columns: minmax(var(--info-width), max-content) minmax(0, 1fr);
+	gap: 10px 0;
 	margin:0;
 	padding:0;
 	list-style-type:none;
@@ -85,7 +86,7 @@ $map = !empty($mission["npc_map"]) ? " <a href='{$mission["npc_map"]}' class='ac
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
-	min-width: 175px;
+	min-width: var(--info-width);
 	padding: 0 8px;
 	background: var(--table-list-heading-bg, #005500);
 	border-radius: var(--border-radius) 0 0 var(--border-radius);
