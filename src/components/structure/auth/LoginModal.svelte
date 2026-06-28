@@ -1,14 +1,20 @@
 <script lang="ts">
+    import AlertBox from "../../common/AlertBox.svelte";
     import Modal from "../../common/modal/Modal.svelte";
-    import { isLoginModalOpen, login } from "./auth0-helpers";
+    import { isLoginModalOpen, login, loginMessage } from "./auth0-helpers";
 
 	interface Props { showModal:boolean; }
 	// let { showModal = $bindable() } : Props = $props();
-	
+
 	const handleLogin = () => login();
 </script>
 
 <Modal bind:showModal={$isLoginModalOpen}>
+	{#if $loginMessage}
+		<AlertBox type="warning" onClose={() => loginMessage.set(null)}>
+			{$loginMessage}
+		</AlertBox>
+	{/if}
 	<p>
 		Due to a friendly neighborhood troll (👋 I see you there), I've added a bit of a login system.
 		It's annoying, but hopefully less annoying than not having it.

@@ -29,20 +29,50 @@ export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:S
 	};
 }
 
-export const getHeadersForJsonPostWithAuth = async () => ({
+export const getHeadersForJsonPostWithAuth = async (forceRefresh = false) => ({
 	'Content-Type': 'application/json',
 	'Accept': 'application/json',
-	[envVars.API_AUTH_HEADER]: `Bearer ${await getToken()}`
+	[envVars.API_AUTH_HEADER]: `Bearer ${await getToken(forceRefresh)}`
 })
 
 export type ErrorableResponse<T> = T | { error:string };
 
-export const standardJsonPostFetch = async <Req extends {}, Res>(url:string, req:Req) : Promise<Res> => {
-	return (await fetch(url, {
-		method: 'POST',
-		headers: await getHeadersForJsonPostWithAuth(),
-		body: JSON.stringify(req)
-	})).json();
+const parseJsonResponse = async (resp: Response): Promise<{ resp: Response; json: {}; text: string }> => {
+	try {
+		const json = await resp.json();
+		return { resp, json, text: '' };
+	} catch {
+		const text = await resp.text();
+		return { resp, json: { error: text || 'Invalid JSON response from server' }, text };
+	}
+};
+
+const extractErrorMessage = (data: unknown, text: string, status: number) => {
+	if (data && typeof data === 'object' && !Array.isArray(data)) {
+		const errorData = data as Record<string, unknown>;
+		if (typeof errorData.error === 'string') return errorData.error;
+		if (typeof errorData.message === 'string') return errorData.message;
+	}
+	return text || `HTTP ${status}`;
+};
+
+export const standardJsonPostFetch = async <Req extends {}, Res>(url:string, req:Req) : Promise<ErrorableResponse<Res>> => {
+	const makeRequest = async (forceRefresh: boolean) => {
+		const headers = await getHeadersForJsonPostWithAuth(forceRefresh);
+		return await fetch(url, { method: 'POST', headers, body: JSON.stringify(req) }).then(parseJsonResponse);
+	};
+
+	let { resp, json, text } = await makeRequest(false);
+
+	if (resp.ok) { return json as Res;}
+
+	if (resp.status === 401) {
+		({ resp, json, text } = await makeRequest(true));
+		if (resp.ok) { return json as Res; }
+	}
+
+	const errMsg = extractErrorMessage(json, text, resp.status);
+	return { error: String(errMsg) };
 };
 
 export type SWRFetcher<D = any> = (...props: any[]) => Promise<D> | D;

@@ -1,6 +1,6 @@
 import { createAuth0Client, type Auth0Client, type User } from '@auth0/auth0-spa-js';
-import { envVars } from '../../../utils/env-vars';
 import { get, writable } from "svelte/store";
+import { envVars } from '../../../utils/env-vars';
 
 // Code based on https://auth0.com/docs/quickstart/spa/svelte (added 2026, but also some code from old js cdn version carried over)
 
@@ -10,6 +10,7 @@ export const auth0Client = writable<Auth0Client | null>(null);
 export const isAuthenticated = writable(false);
 export const user = writable<User|null>(null);
 export const isLoginModalOpen = writable(false);
+export const loginMessage = writable<string | null>(null);
 
 initializeAuth();
 
@@ -54,6 +55,7 @@ export async function initializeAuth() {
  * Starts the authentication flow
  */
 export async function login(targetUrl?:string) {
+	loginMessage.set(null);
 	try {
 		console.log("Logging in", targetUrl);
 		await get(auth0Client)?.loginWithRedirect({
@@ -99,17 +101,24 @@ export async function logout() {
   }
 };
 
-export async function getToken(): Promise<string | null> {
+export async function getToken(forceRefresh = false): Promise<string | null> {
 	const client = get(auth0Client);
 	if (!client) return null;
 
 	try {
+		if (forceRefresh) {
+			await client.checkSession();
+		}
 		return await client.getTokenSilently({ authorizationParams:{ audience: envVars.AUTH0_AUDIENCE } });
 	} catch (err: any) {
-		if (err.error === 'login_required') {
+		if (err?.error === 'login_required') {
+			loginMessage.set('Your session needs to be refreshed. Please log in again to continue.');
+			isLoginModalOpen.set(true);
+		} else {
+			loginMessage.set('We could not refresh your session automatically. Please log in again to continue.');
 			isLoginModalOpen.set(true);
 		}
-		console.error(err)
+		console.error('getToken error', err)
 		return null;
 	}
 }
@@ -119,6 +128,7 @@ export async function cancelEarlyIfNotAuthenticated() {
 	if(authenticated) {
 		return false;
 	} else {
+		loginMessage.set('You must be logged in to perform this action.');
 		isLoginModalOpen.set(true);
 		return true;
 	}
