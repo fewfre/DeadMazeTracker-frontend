@@ -44,6 +44,8 @@
 				</span>
 			</strong>
 			<p>
+				Click the ⚐ icons below to mark bosses completed for the week
+				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." />.
 				Boss tracking auto-resets 0:00 UTC on Thursdays.
 			</p>
 		</div>
@@ -57,12 +59,12 @@
 		</p>
 		<p>
 			<b class="instr">Finding Bosses:</b>
-			The best way to work together to get boss sightings is to join the <code>/chat boss</code> in-game chat.
+			The best way to collaborate with others is to join the <code>/chat boss</code> in-game chat.
 		</p>
 		<p>
 			<b class="instr">Quick Voting:</b>
-			You may notice this page doesn't utilize the up/down vote system; due to the fast paced nature of bosses I decided to let let a single person mark boss progress, as otherwise it might be to late.
-			This does however open it up to abuse a bit more, but I have some weekly limits on voting so it shouldn't be too bad. I apologize for any notification spam you may experience.
+			You may notice this page doesn't utilize the up/down vote system; due to the fast paced nature of bosses, a single person marking boss progress is somewhat required, as otherwise it might be to late.
+			This does however open it up to abuse a bit more, but there are some weekly limits on voting so it shouldn't be too bad. Apologizes for any notification spam you may experience.
 		</p>
 		
 		{#if !$bossesNotificationsManagementStore.enabled}
@@ -112,6 +114,6 @@
 	width:275px;
 	padding:2px 3px;
 	margin-top: 2px;
-	border:2px solid rgba(255,255,0,0.7);
+	border:2px solid var(--flagged-item-color);
 }
 </style>
