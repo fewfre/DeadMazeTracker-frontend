@@ -59,9 +59,9 @@
 		<div class='action-tray'>
 			{#each actions as action, i}
 				{#if action.type==='flag'}
-					<button class='action flag-action btn-action' onclick={action.onclick} title="Mark as done until reset">⚐</button>
+					<button class='action flag-action btn-action' onclick={action.onclick} title={flagged ? "Unmark as done" : "Mark as done until reset"}>⚐</button>
 				{:else if action.type==='notification'}
-					<button class='action notification-action btn-action' class:notification-on={action.enabled} onclick={action.onclick} title="Trigger browser notifications when this votes change from neutral to positive (will not fire when flag is used to mark it as done)"><NotificationMessageIcon size={16} /></button>
+					<button class='action notification-action btn-action' class:notification-on={action.enabled} onclick={action.onclick} title={action.enabled ? "Disable browser notifications for this item" : "Trigger browser notifications when this votes change from neutral to positive (will not fire when flag is used to mark it as done)"}><NotificationMessageIcon size={16} /></button>
 				{:else if action.type==='map'}
 					<a class='action action-map-icon btn-action' href={action.link}
 						onclick={(e) => { e.preventDefault(); media = { type:action.link.indexOf("//fewfre.com/dmmap") > -1 ? "iframe" : "image", url:e.currentTarget['href'] }; }}

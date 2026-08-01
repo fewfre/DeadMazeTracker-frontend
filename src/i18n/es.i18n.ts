@@ -1,4 +1,6 @@
-export const esI18n = {
+import type { enI18n } from "./_en.i18n";
+
+export const esI18n : Partial<typeof enI18n> = {
   "app.title": "", // Dead Maze Tracker
   "user.login": "", // Log in
   "user.logout": "", // Log out
@@ -10,10 +12,11 @@ export const esI18n = {
   "tab.secretPassages": "Pasajes secretos", // Secret Passages
   "tab.sideMissions": "Misiones secundarias", // Side Missions
   "tab.doggy": "Perrito", // Doggy
+  "tab.bosses": "", // Boss
   
-  "countdown.zoneLootReset": "", // Zone Loot Reset:
-  "countdown.passagesRotate": "", // Passages Rotate:
-  "countdown.bossReset": "", // Boss Reset:
+  "countdown.zoneLootReset": "", // Zone Loot Reset
+  "countdown.passagesRotate": "", // Passages Rotate
+  "countdown.bossReset": "", // Boss Reset
   "countdown.genericReset": "", // Time Until Reset
   
   "refresh.refresh": "", // Refresh
@@ -80,6 +83,17 @@ export const esI18n = {
   "passage.Mineshaft's Depths" : "",
   "passage.Shooting Range"     : "",
   "passage.Torture Chamber"    : "",
+  
+  ///////////////////////////////////
+  // Bosses
+  ///////////////////////////////////
+  
+  "boss.catapult"  : "Catapulta", // Catapult
+  "boss.puker"     : "Vomitador", // Puker
+  "boss.crawler"   : "Reptadores", // Crawler
+  "boss.avenger"   : "", // Avenger
+  "boss.unstable"   : "Inestable", // Unstable
+  "boss.protector"   : "Protector", // Protector
   
   ///////////////////////////////////
   // Friendship Quests

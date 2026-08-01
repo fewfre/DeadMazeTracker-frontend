@@ -2,7 +2,7 @@
     import { copyToClipboard } from "../../../utils/helpers";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
     import Modal from "../../common/modal/Modal.svelte";
-    import { bossTracker } from "../../features/passages/utils/boss-tracker";
+    import { bossTracker } from "../../features/bosses/utils/boss-tracker";
     import { passagesDailyTracker } from "../../features/passages/utils/passages-daily-tracker";
     import { sideMissionsDailyTracker } from "../../features/side-missions/utils/side-missions-daily-tracker";
 

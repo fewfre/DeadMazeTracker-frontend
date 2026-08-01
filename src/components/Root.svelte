@@ -5,6 +5,7 @@
     import { nyanCatBodyClass, nyanCatEnabled } from "../stores/nyancat";
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
     import AntonioSummary from "./features/antonio/summary/AntonioSummary.svelte";
+    import BossesLanding from "./features/bosses/BossesLanding.svelte";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
     import RenownLanding from "./features/renown/RenownLanding.svelte";
     import SideMissionsLanding from "./features/side-missions/SideMissionsLanding.svelte";
@@ -56,13 +57,17 @@
 				{#snippet titleSnippet()}<img src='images/tabicon-compass.png' height="20" alt="" />&nbsp;{$getI18n("tab.sideMissions", "Side Missions")}{/snippet}
 				<SideMissionsLanding />
 			</TabItem>
-			<TabItem index={3} hash='renown'>
+			<TabItem index={3} hash='bosses'>
+				{#snippet titleSnippet()}<img src='images/like-a-boss.png' height="20" alt="" />&nbsp;{$getI18n("tab.bosses", "Bosses")}{/snippet}
+				<BossesLanding />
+			</TabItem>
+			<TabItem index={4} hash='renown'>
 				{#snippet titleSnippet()}
 					<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;{$getI18n("tab.doggy", "Doggy")}
 				{/snippet}
 				<RenownLanding />
 			</TabItem>
-			<TabItem index={4} hash='antonio'>
+			<TabItem index={5} hash='antonio'>
 				{#snippet titleSnippet()}{#if !$antonioInHeader}<AntonioSummary />{/if}{/snippet}
 				<AntonioLanding />
 			</TabItem>

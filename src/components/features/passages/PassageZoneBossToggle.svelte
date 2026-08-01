@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { bossTracker } from "./utils/boss-tracker";
+    import { bossTracker } from "../bosses/utils/boss-tracker";
 	const { bossTrackerStore } = bossTracker;
 
 	interface Props {

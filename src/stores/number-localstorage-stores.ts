@@ -14,3 +14,4 @@ export const antonioAutoRefreshInterval = createLocalStorageNumberStore("antonio
 export const passagesAutoRefreshInterval = createLocalStorageNumberStore("passages-refresh-interval");
 export const renownAutoRefreshInterval = createLocalStorageNumberStore("renown-refresh-interval");
 export const sideMissionsAutoRefreshInterval = createLocalStorageNumberStore("side-missions-refresh-interval");
+export const bossesAutoRefreshInterval = createLocalStorageNumberStore("bosses-refresh-interval");

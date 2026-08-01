@@ -12,8 +12,8 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
+    import { bossTracker } from "../bosses/utils/boss-tracker";
     import PassagesList from "./PassagesList.svelte";
-    import { bossTracker } from "./utils/boss-tracker";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesNotificationManagement } from "./utils/passages-notification-management";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
@@ -60,7 +60,7 @@
 				<b class="instr">Page's Purpose:</b>
 				This is a community tracker for which passages are currently open.
 				If a passage is open click ✔, if closed click ✘.
-				Table is automatically cleared every hour, and requires the community to update it. Don't make false reports!
+				Votes are automatically reset every hour, and requires the community to update it. Don't make false reports!
 			</p>
 			<!--
 				The purpose of this page is to let people mark what passages are currently open or closed.
@@ -95,7 +95,7 @@
 			-->
 			
 			<p>
-				<b class="instr">Table:</b>
+				<b class="instr">List:</b>
 				A <b>green background</b> shows a passage with a positive vote total
 				<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
 				&bull;
@@ -118,7 +118,7 @@
 			
 			<p>
 				<b class="instr">Marking complete:</b>
-				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">boss</a> image next to zone names on the table below to track them
+				Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">boss</a> image next to zone names on the list below to track them
 				<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." position="left" />.
 			</p>
 			<p>

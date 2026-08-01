@@ -1,8 +1,11 @@
 import { writable } from "svelte/store";
 import { createLocalStorageStringStore } from "../stores/string-localstorage-stores";
+import { enI18n } from "./_en.i18n";
 import { esI18n } from "./es.i18n";
-import { ptBrI18n } from "./pt-br";
+import { ptBrI18n } from "./pt-br.i18n";
 import { trI18n } from "./tr.i18n";
+
+type I18nKey = keyof typeof enI18n;
 
 export const langList = [
 	{ code:"en", name:"English", flag:"images/flags/en.png" },
@@ -12,6 +15,7 @@ export const langList = [
 ];
 
 const langDataMap = new Map(Object.entries({
+	"en": enI18n,
 	"pt-br": ptBrI18n,
 	"es": esI18n,
 	'tr': trI18n,
@@ -26,11 +30,11 @@ function getDefaultSupportedLang() {
 }
 export const siteLang = createLocalStorageStringStore("lang", getDefaultSupportedLang());
 
-export const getI18n = writable<(key:keyof typeof ptBrI18n, en:string)=>string>((key, en)=>en);
+export const getI18n = writable<(key:I18nKey, backupEn?:string)=>string>((key, backupEn)=>backupEn || key);
 siteLang.subscribe(lang => {
-	if(langDataMap.has(lang)) {
-		getI18n.set((key, en) => langDataMap.get(lang)![key] || en);
+	if(langDataMap.has(lang) && lang !== "en") {
+		getI18n.set((key, backupEn) => (langDataMap.get(lang) as any)[key] || enI18n[key] || backupEn || key);
 	} else {
-		getI18n.set((key, en)=>en);
+		getI18n.set((key, backupEn) => enI18n[key] || backupEn || key);
 	}
 });

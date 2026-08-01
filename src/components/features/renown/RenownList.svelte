@@ -18,12 +18,17 @@
 	{@const aLocationInFriendshipHasUpvote = friend.locations.find(({id}) => $votesHistoryStore.votes[id] === 'up')?.id ?? false}
 	<li class="friendship-row" class:flagged={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}>
 		<div class="main-li-heading">
-			<div class='npc-portrait' style='background-image:url({friend.portrait});'></div>
-			<button class='flagged-npc-button' onclick={() => friendshipDailyTracker.toggleFlag(friend.id)}
-				aria-label='Personal friend tracker toggle' aria-pressed={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
-			></button>
-			<a href='http://deadmaze.wikia.com/wiki/{friend.name}'>{friend.name}</a>
-			<small class='points'>{friend.points}</small>
+			<div class='friendship-heading-left'>
+				<div class='npc-portrait' style='background-image:url({friend.portrait});'></div>
+				<a href='http://deadmaze.wikia.com/wiki/{friend.name}'>{friend.name}</a>
+				<small class='points'>{friend.points}</small>
+			</div>
+			<div class='friendship-heading-actions'>
+				<button class='flagged-npc-button' onclick={() => friendshipDailyTracker.toggleFlag(friend.id)}
+					aria-label='Personal friend tracker toggle' aria-pressed={$friendshipDailyTrackerFlags.idsFlagged[friend.id]}
+					data-tooltip={$friendshipDailyTrackerFlags.idsFlagged[friend.id] ? "Unmark friendship as done" : "Mark friendship as done until next reset"}
+				>⚐</button>
+			</div>
 		</div>
 		<div class='friends vote-box-list'>
 		{#each friend.locations as loc(loc.id)}
@@ -75,13 +80,25 @@
 }
 
 .main-li-heading {
-	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.75em;
+	padding: 0 4px 0 8px;
+	background: var(--table-list-heading-bg, #005500);
+	border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.friendship-heading-left {
 	display: flex;
 	align-items: center;
 	gap: 0.5em;
-	padding: 0 8px;
-	background: var(--table-list-heading-bg, #005500);
-	border-radius: var(--border-radius) var(--border-radius) 0 0;
+	min-width: 0;
+}
+
+.friendship-heading-actions {
+	display: flex;
+	align-items: center;
 }
 
 .npc-portrait {
@@ -100,19 +117,20 @@
 	
 .flagged-npc-button {
 	all: unset;
-	position: absolute;
-	top:0; right:0;
-	padding: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
 	line-height: 1;
-	color:#AAA;
+	color: #AAA;
 	background: #FFFFFF22;
 	border: 1px solid #999;
-	border-bottom-left-radius: 5px;
-	border-top-right-radius: var(--border-radius);
+	border-radius: 8px;
+	cursor: pointer;
 }
-.flagged-npc-button:hover { filter: brightness(120%); transform: scale(1.1); transform-origin: top right; }
+.flagged-npc-button:hover { filter: brightness(120%); transform: scale(1.05); }
 .flagged .flagged-npc-button { color: white; background: var(--flagged-item-color); }
-.flagged-npc-button:before { content:"⚐"; }
 
 .vote-box-list {
 	display: flex; flex-wrap: wrap;

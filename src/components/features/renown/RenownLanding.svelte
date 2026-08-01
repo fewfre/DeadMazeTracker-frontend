@@ -49,12 +49,12 @@
 		<b class="instr">Page's Purpose:</b> Lets community keep track of available <a href="https://deadmaze.fandom.com/wiki/Renown" class="underlined-link"><img src="images/tabicon-survivor-notes.png" alt="" style:vertical-align='middle' /> renown</a> friendship locations.
 	</p>
 	<p>
-		<b class="instr">How it Works:</b> If a location is available click ✔, if not then click ✘. Table is cleared every day, and requires the community to update it. Don't make false reports!
+		<b class="instr">How it Works:</b> If a location is available click ✔, if not then click ✘. Votes are reset every day, and requires the community to update it. Don't make false reports!
 	</p>
 	<p>
-		<b class="instr">Table:</b>
+		<b class="instr">List:</b>
 		A <b>green background</b> shows a location with a positive vote total.
-		<InfoIconTooltip tooltip="A positive vote total being one or more postive votes than negative votes (positive-negative >= 1)" />
+		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
 	</p>
 </section>
 <section>

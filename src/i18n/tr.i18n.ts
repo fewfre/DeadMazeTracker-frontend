@@ -1,4 +1,6 @@
-export const trI18n = {
+import type { enI18n } from "./_en.i18n";
+
+export const trI18n : Partial<typeof enI18n> = {
   "app.title": "", // Dead Maze Tracker
   "user.login": "", // Log in
   "user.logout": "", // Log out
@@ -10,10 +12,11 @@ export const trI18n = {
   "tab.secretPassages": "Gizli geçitler", // Secret Passages
   "tab.sideMissions": "Yan görevler", // Side Missions
   "tab.doggy": "Doggy", // Doggy
+  "tab.bosses": "", // Boss
   
-  "countdown.zoneLootReset": "", // Zone Loot Reset:
-  "countdown.passagesRotate": "", // Passages Rotate:
-  "countdown.bossReset": "", // Boss Reset:
+  "countdown.zoneLootReset": "", // Zone Loot Reset
+  "countdown.passagesRotate": "", // Passages Rotate
+  "countdown.bossReset": "", // Boss Reset
   "countdown.genericReset": "", // Time Until Reset
   
   "refresh.refresh": "", // Refresh
@@ -80,6 +83,17 @@ export const trI18n = {
   "passage.Mineshaft's Depths" : "",
   "passage.Shooting Range"     : "",
   "passage.Torture Chamber"    : "",
+  
+  ///////////////////////////////////
+  // Bosses
+  ///////////////////////////////////
+  
+  "boss.catapult"  : "Fırlatan", // Catapult
+  "boss.puker"     : "Kusan", // Puker
+  "boss.crawler"   : "Sürünen", // Crawler
+  "boss.avenger"   : "", // Avenger
+  "boss.unstable"   : "Dengesiz", // Unstable
+  "boss.protector"   : "Koruyucu", // Protector
   
   ///////////////////////////////////
   // Friendship Quests

@@ -61,11 +61,11 @@
 		<b class="instr">Page's Purpose:</b> Lets community keep track of available <a href="https://deadmaze.fandom.com/wiki/Side_mission" class="underlined-link">side missions</a> (&lt; link has basics and locations).
 	</p>
 		<b class="instr">How it Works:</b> If a mission is available click ✔, if not then click ✘.
-		Table is cleared every day, and requires the community to update it. Don't make false reports!
+		Votes are reset every day, and requires the community to update it. Don't make false reports!
 	<p>
 	</p>
 	<p>
-		<b class="instr">Table:</b>
+		<b class="instr">List:</b>
 		Select your server from the list, and only report sighting on that server. &bull;
 		A <b>green background</b> shows a side mission with a positive vote total
 		<InfoIconTooltip tooltip="A positive vote total being one or more positive votes than negative votes (positive-negative >= 1)" />
