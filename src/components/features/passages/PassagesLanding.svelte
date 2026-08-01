@@ -13,19 +13,17 @@
     import TableHeader from "../../common/TableHeader.svelte";
     import { cancelEarlyIfNotAuthenticated } from "../../structure/auth/auth0-helpers";
     import PassagesList from "./PassagesList.svelte";
+    import { getPassagesListContext } from "./utils/passages-context";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesNotificationManagement } from "./utils/passages-notification-management";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
 	const { passagesNotificationsManagementStore } = passagesNotificationManagement;
 	
-	const { data, error:listPassagesError, revalidate, isFetching, mutate } = passagesApi.useList({}, { refreshInterval: passagesAutoRefreshInterval });
+	const { data, error:listPassagesError, revalidate, isFetching, mutate } = getPassagesListContext();
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
 	$effect(() => { alert = $listPassagesError ? { type:'danger', message:$listPassagesError.message } : null; });
-	$effect(() => {
-		passagesNotificationManagement.detectChangesToPassageVotes( $data?.zones.flatMap(z=>z.passages) );
-	});
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });

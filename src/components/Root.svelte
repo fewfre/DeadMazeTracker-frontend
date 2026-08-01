@@ -6,7 +6,10 @@
     import AntonioLanding from "./features/antonio/AntonioLanding.svelte";
     import AntonioSummary from "./features/antonio/summary/AntonioSummary.svelte";
     import BossesLanding from "./features/bosses/BossesLanding.svelte";
+    import BossesTabItemAlertIcon from "./features/bosses/BossesTabItemAlertIcon.svelte";
+    import { useSetBossesListContext } from "./features/bosses/utils/boss-context";
     import PassagesLanding from "./features/passages/PassagesLanding.svelte";
+    import { useSetPassagesListContext } from "./features/passages/utils/passages-context";
     import RenownLanding from "./features/renown/RenownLanding.svelte";
     import SideMissionsLanding from "./features/side-missions/SideMissionsLanding.svelte";
     import NyanCatCursor from "./structure/NyanCatCursor.svelte";
@@ -16,6 +19,10 @@
     import SiteHeader from "./structure/header/SiteHeader.svelte";
     import TabItem from "./structure/tabs/TabItem.svelte";
     import Tabs from "./structure/tabs/Tabs.svelte";
+	
+	// Stored in a context so notifications are properly sent on any page + alert icon on tab button (for bosses)
+	useSetPassagesListContext();
+	useSetBossesListContext();
 	
 	function createBodyClassToggle(className:string) {
 		return function bodyClass(node: HTMLElement, enabled: boolean) {
@@ -58,13 +65,13 @@
 				<SideMissionsLanding />
 			</TabItem>
 			<TabItem index={3} hash='bosses'>
-				{#snippet titleSnippet()}<img src='images/like-a-boss.png' height="20" alt="" />&nbsp;{$getI18n("tab.bosses", "Bosses")}{/snippet}
+				{#snippet titleSnippet()}
+					<img src='images/like-a-boss.png' height="20" alt="" />&nbsp;{$getI18n("tab.bosses", "Bosses")}&nbsp;<BossesTabItemAlertIcon />
+				{/snippet}
 				<BossesLanding />
 			</TabItem>
 			<TabItem index={4} hash='renown'>
-				{#snippet titleSnippet()}
-					<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;{$getI18n("tab.doggy", "Doggy")}
-				{/snippet}
+				{#snippet titleSnippet()}<img src='images/tabicon-dog.png' height="20" alt="" />&nbsp;{$getI18n("tab.doggy", "Doggy")}{/snippet}
 				<RenownLanding />
 			</TabItem>
 			<TabItem index={5} hash='antonio'>

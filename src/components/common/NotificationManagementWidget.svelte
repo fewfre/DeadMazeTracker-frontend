@@ -31,7 +31,7 @@
 	</button>
 	{#if enabled}
 		<div class="button-group-part">
-			<InfoIconTooltip tooltip="For notifications to work, you most have the page/tab open in the background, have auto refresh & this notification toggle enabled, enabled notifications below for your desired passages, and have notifications enabled in your browser for this site. Items marked done (flagged) won't send a notification." />
+			<InfoIconTooltip tooltip="For notifications to work, you most have this website open in the background, have auto refresh & this notification toggle enabled, enabled notifications below for each thing you want enabled, and have notifications enabled in your browser for this site (browser will prompt you). Items marked done (flagged) won't send a notification." />
 		</div>
 	{/if}
 </div>

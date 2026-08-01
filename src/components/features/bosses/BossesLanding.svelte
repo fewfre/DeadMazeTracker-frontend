@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { bossesApi } from "../../../api/bosses";
+    import NotificationMessageIcon from "../../../assets/NotificationMessageIcon.svg.svelte";
     import { getI18n } from "../../../i18n/i18n";
     import { bossesAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import AlertBox, { type AlertType } from "../../common/AlertBox.svelte";
@@ -12,18 +13,16 @@
     import RefreshButtonWidget from "../../common/RefreshButtonWidget.svelte";
     import TableHeader from "../../common/TableHeader.svelte";
     import BossesList from "./BossesList.svelte";
+    import { getBossesListContext } from "./utils/boss-context";
     import { bossTracker } from "./utils/boss-tracker";
     import { bossesNotificationManagement } from "./utils/bosses-notification-management";
     const { bossesNotificationsManagementStore } = bossesNotificationManagement;
 	
-	const { data, error:listBossesError, revalidate, isFetching, mutate } = bossesApi.useList({}, { refreshInterval: bossesAutoRefreshInterval });
+	const { data, error:listBossesError, revalidate, isFetching, mutate } = getBossesListContext();
 	const onRefreshClick = () => revalidate();
 	
 	let alert : { type:AlertType, message: string, dismissible?:boolean } | null = $state(null);
 	$effect(() => { alert = $listBossesError ? { type:'danger', message:$listBossesError.message } : null; });
-	$effect(() => {
-		bossesNotificationManagement.detectChangesToBossActiveLocations($data?.bosses);
-	});
 	
 	// We want a refresh to trigger whenever the landing page is opened to avoid stale data
 	onMount(() => { onRefreshClick(); });
@@ -68,7 +67,7 @@
 		</p>
 		
 		{#if !$bossesNotificationsManagementStore.enabled}
-			<AlertBox type='info'>It is highly advised to enable auto refresh and then the browser notifications option if you want to use this page to get timely updates.</AlertBox>
+			<AlertBox type='info'>It is highly advised to enable auto refresh below, and then enable the browser notifications option next to it (<span style:display="inline-flex" style:vertical-align="middle"><NotificationMessageIcon size={20} /></span>) if you want to use this page to get timely updates.</AlertBox>
 		{/if}
 	</div>
 </section>
