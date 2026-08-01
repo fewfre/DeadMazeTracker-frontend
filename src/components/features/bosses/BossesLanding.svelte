@@ -50,11 +50,10 @@
 		</div>
 		</div>
 		
-		<p>A detailed fan guide on learning bosses, how to find them, and how to prepare for them can be found <a href="https://docs.google.com/document/d/1VFrCxCe101MpvY0ZOE__aeC1JVAie9yMYHxK7YCLS1U/edit" target="_blank" class="underlined-link">here</a>.</p>
+		<p>A detailed fan guide on learning <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">bosses</a>, how to find them, and how to prepare for them can be found <a href="https://docs.google.com/document/d/1VFrCxCe101MpvY0ZOE__aeC1JVAie9yMYHxK7YCLS1U/edit" target="_blank" class="underlined-link">here</a>. Also thanks to this guide for the updated maps used on this page.</p>
 		<p>
 			<b class="instr">Marking complete:</b>
-			Click the <a href="https://deadmaze.fandom.com/wiki/Boss" target="_blank" class="underlined-link">boss</a> image next to zone names on the list below to track them
-			<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." position="left" />.
+			Click the flag button in the top right corner on the entries below to mark as done<InfoIconTooltip tooltip="This is for YOUR personal use; this info is not sent to the server or shared with others." position="left" />.
 		</p>
 		<p>
 			<b class="instr">Finding Bosses:</b>
@@ -73,7 +72,7 @@
 </section>
 <section>
 	<TableHeader>
-		Locations <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$bossesAutoRefreshInterval} />
+		Locations <RefreshButtonWidget loading={$isFetching} onRefreshClick={onRefreshClick} bind:autoRefreshInterval={$bossesAutoRefreshInterval} defaultInterval={60_000} />
 		{#if $bossesAutoRefreshInterval !== null}
 			<NotificationManagementWidget enabled={$bossesNotificationsManagementStore.enabled} onEnableToggled={() => { bossesNotificationsManagementStore.update(obj => ({ ...obj, enabled:!obj.enabled })); }} />
 		{/if}

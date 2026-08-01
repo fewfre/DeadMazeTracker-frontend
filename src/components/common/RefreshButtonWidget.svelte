@@ -2,12 +2,12 @@
     import RefreshIcon from "../../assets/RefreshIcon.svelte";
     import { getI18n } from "../../i18n/i18n";
 
-	interface Props { onRefreshClick:()=>void; autoRefreshInterval:number|null; loading?:boolean; }
-	let { onRefreshClick, autoRefreshInterval=$bindable(), loading } : Props = $props();
+	interface Props { onRefreshClick:()=>void; autoRefreshInterval:number|null; loading?:boolean; defaultInterval?:number; }
+	let { onRefreshClick, autoRefreshInterval=$bindable(), loading, defaultInterval=600_000 } : Props = $props();
 	let checked = $derived(!!autoRefreshInterval);
 	let autoRefreshIntervalOpen = $state(false);
 	
-	const toggleAutoRefresh = () => autoRefreshInterval = !checked ? 600_000 : null;
+	const toggleAutoRefresh = () => autoRefreshInterval = !checked ? defaultInterval : null;
 </script>
 
 <span class="refresh-cont">

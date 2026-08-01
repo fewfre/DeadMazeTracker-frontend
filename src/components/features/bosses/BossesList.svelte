@@ -60,13 +60,11 @@
 					<div class="boss-name">{$getI18n(boss.name as any)}</div>
 					<div class="boss-zone-name">
 						<img class="zone-name-icon" src={zoneTypeMap[boss.zoneId].icon} alt="{zoneTypeMap[boss.zoneId].nameShort} icon" />
-						{zoneTypeMap[boss.zoneId].nameShort}
-					</div>
-					<!-- {#if zone.mapLink}
-						<a href='{zone.mapLink}' class='map-link' onclick={(e)=>{ e.preventDefault(); mapModalImage = zone.mapLink; }}>
-							<span class="map-link-inner"><img src='images/map-icon.png' width='21' height='21' alt='' /> Map</span>
+						{zoneTypeMap[boss.zoneId].name}
+						<a href='{boss.bossMap}' class='map-link' onclick={(e)=>{ e.preventDefault(); mapModalImage = boss.bossMap; }}>
+							<span class="map-link-inner"><img src='images/map-icon.png' width='16' height='16' alt='' /> Map</span>
 						</a>
-					{/if} -->
+					</div>
 				</div>
 				<div class="boss-last-killed">Last reported killed: <span class="boss-last-killed-date">{formatLocalDate(boss.lastKilled)}</span></div>
 			</div>
@@ -232,6 +230,33 @@
 	font-size: 0.85rem;
 	opacity: 0.9;
 	white-space: nowrap;
+}
+
+.map-link {
+	display: flex;
+	align-items: center;
+	width: fit-content;
+	padding: 0 4px 0 2px;
+	margin-left: 6px;
+	font-size: 12px;
+	background: rgba(0,0,0,0.1);
+	border: outset 1px lightgreen;
+	border-radius: 4px;
+	
+	.map-link-inner {
+		display: flex;
+		align-items: center;
+	}
+	
+	&:hover {
+		border-style: inset;
+		text-decoration: none;
+		background: rgba(0,0,0,0.15);
+		
+		.map-link-inner {
+			transform: scale(0.95);
+		}
+	}
 }
 
 .boss-last-killed {

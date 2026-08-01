@@ -16,6 +16,7 @@ export interface BossInfo {
   zoneId: ZoneId;
   name: string;
   bossImage: string;
+  bossMap: string;
   lastKilled: string;
   activeLocationId: number | null;
   locations: BossLocationInfo[];
