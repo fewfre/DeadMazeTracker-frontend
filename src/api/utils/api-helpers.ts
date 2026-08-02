@@ -1,11 +1,12 @@
 import { useSWR } from "sswr";
 import { writable, type Readable } from "svelte/store";
-import { getToken } from "../../components/structure/auth/auth0-helpers";
+import { getToken, isLoginModalOpen, loginMessage, logout } from "../../components/structure/auth/auth0-helpers";
 import { envVars } from "../../utils/env-vars";
 import { useSvelteInterval } from "../../utils/hooks";
 
 export type SWRFetchOptions<T> = Partial<Omit<SWROptions<T>, 'fetcher'> & { refreshInterval?:Readable<number|null|undefined> }>;
 export type SWRFetchOptionsExposed<T=any> = Pick<SWRFetchOptions<T>, 'refreshInterval'>;
+
 export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:SWRFetchOptions<T>) => {
   let isFetching = writable(false);
   let intervalId: NodeJS.Timeout | null = null;
@@ -15,7 +16,16 @@ export const useSwrFetch = <T,>(key:string, fetcher:() => Promise<T>, options?:S
     fetcher: async () => {
       isFetching.set(true);
       try {
-        return await fetcher();
+        const result = await fetcher();
+        if (isJwtErrorPayload(result)) {
+          handleJwtAuthFailure();
+        }
+        return result;
+      } catch (err) {
+        if (isJwtErrorMessage(err instanceof Error ? err.message : String(err))) {
+          handleJwtAuthFailure();
+        }
+        throw err;
       } finally {
         isFetching.set(false);
       }
@@ -72,6 +82,9 @@ export const standardJsonPostFetch = async <Req extends {}, Res>(url:string, req
 	}
 
 	const errMsg = extractErrorMessage(json, text, resp.status);
+	if (isJwtErrorMessage(errMsg)) {
+		handleJwtAuthFailure();
+	}
 	return { error: String(errMsg) };
 };
 
@@ -150,3 +163,26 @@ export interface SWROptions<D = any> {
     //  */
     // revalidateFunction: SWRRevalidateFunction<D> | undefined;
 }
+
+//#region JWT error handling
+
+const JWT_ERROR_SNIPPET = "the jwt string must contain two dots";
+
+const isJwtErrorMessage = (message: unknown) => {
+  if (typeof message !== 'string') return false;
+  return message.toLowerCase().includes(JWT_ERROR_SNIPPET);
+};
+
+const isJwtErrorPayload = (payload: unknown) => {
+  if (!payload || typeof payload !== 'object') return false;
+  const record = payload as Record<string, unknown>;
+  if (typeof record.error === 'string' && isJwtErrorMessage(record.error)) return true;
+  if (typeof record.message === 'string' && isJwtErrorMessage(record.message)) return true;
+  return false;
+};
+
+const handleJwtAuthFailure = () => {
+  loginMessage.set('Your session is no longer valid. Please log in again to continue.');
+  isLoginModalOpen.set(true);
+  void logout();
+};
