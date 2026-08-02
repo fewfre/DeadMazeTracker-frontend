@@ -5,6 +5,7 @@
     import VoteBox from "../../common/VoteBox.svelte";
     import VoteButtons from "../../common/VoteButtons.svelte";
     import ZoneRowBackground from "../../common/ZoneRowBackground.svelte";
+    import PassageZoneBossToggle from "./PassageZoneBossToggle.svelte";
     import { passagesDailyTracker } from "./utils/passages-daily-tracker";
     import { passagesNotificationManagement } from "./utils/passages-notification-management";
     import { passagesVoteHistory } from "./utils/passages-vote-history";
@@ -14,6 +15,11 @@
 	
 	interface Props { zones:PassageZoneInfo[]; handleVoteApiCall:(req:PassageVoteRequest) => void }
 	const { zones, handleVoteApiCall }:Props = $props();
+	
+	// interface Props {
+	// 	passagesPromise: Promise<ListPassagesResponse>;
+	// }
+	// let { passagesPromise } : Props = $props();
 	
 	let mapModalImage:string|null = $state(null);
 </script>
@@ -33,6 +39,9 @@
 					</a>
 				{/if}
 			</div>
+			{#if zone.bossImage}
+				<PassageZoneBossToggle bossImage={zone.bossImage} zone={zone.id} />
+			{/if}
 		</div>
 		<div class='vote-box-list'>
 		{#each zone.passages as passage(passage.id)}
