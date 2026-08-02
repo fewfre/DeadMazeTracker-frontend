@@ -65,8 +65,8 @@
 			This does however open it up to abuse a bit more, but there are some weekly limits on voting so it shouldn't be too bad. Apologizes for any notification spam you may experience.
 		</p>
 		
-		{#if !$bossesNotificationsManagementStore.enabled}
-			<AlertBox type='info'>It is highly advised to enable auto refresh below, and then enable the browser notifications option next to it (<span style:display="inline-flex" style:vertical-align="middle"><NotificationMessageIcon size={20} /></span>) if you want to use this page to get timely updates.</AlertBox>
+		{#if $bossesAutoRefreshInterval === null}
+			<AlertBox type='info'>It is highly advised to enable auto refresh below (the will also enabled a red alert pill on the tab above when there's an active boss). Then for even timelier updates you can also enable the browser notifications option next to it (<span style:display="inline-flex" style:vertical-align="middle"><NotificationMessageIcon size={20} /></span>).</AlertBox>
 		{/if}
 	</div>
 </section>
