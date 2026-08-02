@@ -19,6 +19,7 @@ export interface BossInfo {
   bossMap: string;
   lastKilled: string;
   activeLocationId: number | null;
+  activeReportedOn: string | null;
   locations: BossLocationInfo[];
 }
 

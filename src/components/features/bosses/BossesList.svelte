@@ -16,9 +16,9 @@
 	function isLocationASecretPassage(locationName:string) {
 		return locationName.includes('passage.');
 	}
-
-	function formatLocalDate(value:string|number|null|undefined) {
-		if (value === null || value === undefined || value === '') return '';
+	
+	function parseDate(value:string|number|null|undefined) {
+		if (value === null || value === undefined || value === '') return null;
 		let date: Date;
 		if (typeof value === 'number') {
 			date = new Date(value * 1000);
@@ -29,13 +29,30 @@
 			}
 			date = new Date(parsed);
 		}
-		if (Number.isNaN(date.valueOf())) return String(value);
+		if (Number.isNaN(date.valueOf())) return null;
+		
+		return date;
+	}
+
+	function formatLocalDate(value:Parameters<typeof parseDate>[0]) {
+		const date = parseDate(value);
+		if (date === null) return String(value ?? '');
 		return new Intl.DateTimeFormat(undefined, {
 			month: 'short',
 			day: 'numeric',
 			hour: 'numeric',
 			minute: '2-digit',
 		}).format(date);
+	}
+
+	function getActiveReportAgeColor(value:Parameters<typeof parseDate>[0]) {
+		const date = parseDate(value);
+		if (date === null) return '';
+
+		const ageMinutes = (Date.now() - date.getTime()) / (1000 * 60);
+		if (ageMinutes < 5) return 'fresh';
+		if (ageMinutes < 10) return 'warning';
+		return 'stale';
 	}
 	
 	let mapModalImage:string|null = $state(null);
@@ -108,7 +125,7 @@
 			<div class="boss-content-cell boss-active-location-alert">
 				<ZoneRowBackground zoneId={boss.zoneId} />
 				<div class="boss-active-location-text">
-					<span class="boss-active-label">Active boss location</span>
+					<span class="boss-active-label">Active: <span class={[ "active-report", getActiveReportAgeColor(boss.activeReportedOn) ]}>{boss.activeReportedOn ? formatLocalDate(boss.activeReportedOn) : 'Unknown'}</span></span>
 					<span class="boss-active-location-name">
 						{#if activeLocation && isLocationASecretPassage(activeLocation.name)}
 							<img class="secret-passage-icon" src="images/tabicon-sp-crate.png" alt="Secret passage" width="16" />
@@ -397,6 +414,18 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.active-report.fresh {
+	color: #a1ffa1;
+}
+
+.active-report.warning {
+	color: #ffe779;
+}
+
+.active-report.stale {
+	color: #ffb7b7;
 }
 .boss-active-location-actions {
 	display: flex;
