@@ -34,21 +34,13 @@
 		return date;
 	}
 
-	function formatLocalDate(value:Parameters<typeof parseDate>[0]) {
-		const date = parseDate(value);
-		if (date === null) return String(value ?? '');
-		return new Intl.DateTimeFormat(undefined, {
-			month: 'short',
-			day: 'numeric',
-			hour: 'numeric',
-			minute: '2-digit',
-		}).format(date);
+	function formatLocalDate(date:Date|null) {
+		if (date === null) return '';
+		return new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(date);//month: 'short', day: 'numeric', 
 	}
 
-	function getActiveReportAgeColor(value:Parameters<typeof parseDate>[0]) {
-		const date = parseDate(value);
+	function getActiveReportAgeColor(date:Date|null) {
 		if (date === null) return '';
-
 		const ageMinutes = (Date.now() - date.getTime()) / (1000 * 60);
 		if (ageMinutes < 5) return 'fresh';
 		if (ageMinutes < 10) return 'warning';
@@ -67,6 +59,7 @@
 
 <ul class="bosses-list">
 {#each bosses as boss(boss.id)}
+	{@const activeLocation = bossesNotificationManagement.getBossActiveLocation(boss)}
 	<li class="boss-row" class:flagged={$bossTrackerStore.idsFlagged[boss.id]}>
 		<div class="boss-left-cell" class:is-crawler={boss.name === 'boss.crawler'}>
 			<img src={boss.bossImage} width='35' alt={$getI18n(boss.name as any)} />
@@ -83,7 +76,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="boss-last-killed">Last reported killed: <span class="boss-last-killed-date">{formatLocalDate(boss.lastKilled)}</span></div>
+				<div class="boss-last-killed">Last reported killed: <span class="boss-last-killed-date">{formatLocalDate(parseDate(boss.lastKilled)) || boss.lastKilled}</span></div>
 			</div>
 			<div class="boss-header-actions">
 				{#if $bossesNotificationsEnabled}
@@ -103,7 +96,7 @@
 				>⚐</button>
 			</div>
 		</div>
-		{#if !boss.activeLocationId}
+		{#if !activeLocation}
 			<div class='boss-content-cell vote-box-list'>
 			<ZoneRowBackground zoneId={boss.zoneId} />
 			{#each boss.locations as location(location.id)}
@@ -121,11 +114,10 @@
 			{/each}
 			</div>
 		{:else}
-			{@const activeLocation = boss.locations.find(l => l.id === boss.activeLocationId)}
 			<div class="boss-content-cell boss-active-location-alert">
 				<ZoneRowBackground zoneId={boss.zoneId} />
 				<div class="boss-active-location-text">
-					<span class="boss-active-label">Active: <span class={[ "active-report", getActiveReportAgeColor(boss.activeReportedOn) ]}>{boss.activeReportedOn ? formatLocalDate(boss.activeReportedOn) : 'Unknown'}</span></span>
+					<span class="boss-active-label">Reported at: <span class={[ "active-report", getActiveReportAgeColor(activeLocation?.activeReportedOn ?? null) ]}>{boss.activeReportedOn ? formatLocalDate(activeLocation?.activeReportedOn ?? null) || boss.activeReportedOn : 'Unknown'}</span></span>
 					<span class="boss-active-location-name">
 						{#if activeLocation && isLocationASecretPassage(activeLocation.name)}
 							<img class="secret-passage-icon" src="images/tabicon-sp-crate.png" alt="Secret passage" width="16" />

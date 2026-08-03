@@ -64,6 +64,10 @@
 			You may notice this page doesn't utilize the up/down vote system; due to the fast paced nature of bosses, a single person marking boss progress is somewhat required, as otherwise it might be to late.
 			This does however open it up to abuse a bit more, but there are some weekly limits on voting so it shouldn't be too bad. Apologizes for any notification spam you may experience.
 		</p>
+		<p>
+			<b class="instr">Stale:</b>
+			If a boss is reported as active and no one marks it as killed/incorrect after {bossesNotificationManagement.SECONDS_ACTIVE_LOCATION_IS_CONSIDERED_ACTIVE / 60} minutes, it will be considered stale and hidden from the active list.
+		</p>
 		
 		{#if $bossesAutoRefreshInterval === null}
 			<AlertBox type='info'>It is highly advised to enable auto refresh below (the will also enabled a red alert pill on the tab above when there's an active boss). Then for even timelier updates you can also enable the browser notifications option next to it (<span style:display="inline-flex" style:vertical-align="middle"><NotificationMessageIcon size={20} /></span>).</AlertBox>

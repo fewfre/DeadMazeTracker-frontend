@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { bossesAutoRefreshInterval } from "../../../stores/number-localstorage-stores";
     import { getBossesListContext } from "./utils/boss-context";
+    import { bossesNotificationManagement } from "./utils/bosses-notification-management";
 
     const { data, revalidate } = getBossesListContext();
     const onRefreshClick = () => revalidate();
@@ -9,7 +10,7 @@
     // We want a refresh to trigger whenever the landing page is opened to avoid stale data
     onMount(() => { onRefreshClick(); });
 
-    let activeBossCount = $derived($data?.bosses.filter((b) => b.activeLocationId).length ?? 0);
+    let activeBossCount = $derived($data?.bosses.filter((b) => bossesNotificationManagement.getBossActiveLocation(b)).length ?? 0);
     let shouldShowBadge = $derived(activeBossCount > 0 && $data !== undefined && $bossesAutoRefreshInterval !== null);
 </script>
 

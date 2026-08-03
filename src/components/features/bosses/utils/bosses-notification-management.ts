@@ -3,6 +3,7 @@ import type { BossInfo } from "../../../../api/bosses";
 import { getI18n } from "../../../../i18n/i18n";
 import { createLocalStorageBasicJsonStore } from "../../../../stores/localstorage-stores";
 import { bossesAutoRefreshInterval } from "../../../../stores/number-localstorage-stores";
+import { parseDate, secondsSince } from "../../../../utils/date-helpers";
 import { sendNotification } from "../../../../utils/notification-utils";
 import { bossTracker } from "./boss-tracker";
 
@@ -70,13 +71,23 @@ export namespace bossesNotificationManagement {
 			return acc;
 		}, {});
 	}
+	
+	export const SECONDS_ACTIVE_LOCATION_IS_CONSIDERED_ACTIVE = 20 * 60; // 20 minutes in seconds
+	export function getBossActiveLocation(boss: BossInfo) {
+		if (boss.activeLocationId === null || boss.activeReportedOn === null) return null;
+		const parsedActiveReportedOn = parseDate(boss.activeReportedOn);
+		if (!parsedActiveReportedOn) return null;
+		if (secondsSince(parsedActiveReportedOn) > SECONDS_ACTIVE_LOCATION_IS_CONSIDERED_ACTIVE) return null; // If the active report is older than 20 minutes, don't show it as active
+		const activeLocation = boss.locations.find(l => l.id === boss.activeLocationId);
+		return activeLocation ? { ...activeLocation, activeReportedOn: parsedActiveReportedOn } : null;
+	}
 
 	export function sendNotificationForBosses(bosses: BossInfo[]) {
 		if (!get(bossesNotificationsEnabled)) return;
 		const i18n = get(getI18n);
 		const bossNames = bosses.map(boss => {
 			const bossName = i18n(boss.name as any, boss.name);
-			const activeLocation = boss.locations.find(location => location.id === boss.activeLocationId);
+			const activeLocation = getBossActiveLocation(boss);
 			const locationName = activeLocation ? i18n(activeLocation.name as any, activeLocation.name) : null;
 			return locationName ? `${bossName} at ${locationName}` : bossName;
 		});
