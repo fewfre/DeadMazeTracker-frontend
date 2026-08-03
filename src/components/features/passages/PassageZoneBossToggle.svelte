@@ -7,14 +7,15 @@
 		zone: number;
 	}
 	let { bossImage, zone } : Props = $props();
-	const bossChecked = $derived($bossTrackerStore.idsFlagged[zone]);
+	const bossId = $derived(zone === 5 ? 4 : zone === 6 ? 5 : zone === 8 ? 6 : zone);
+	const bossChecked = $derived($bossTrackerStore.idsFlagged[bossId]);
 </script>
 
 <button
 	aria-label="Toggle boss for zone: {zone} (currently: {bossChecked ? "ON" : "OFF" })"
 	class={['personal-boss', { 'boss-voted': bossChecked }]}
 	style:background-image='url({bossImage})'
-	onclick={() => bossTracker.toggleFlag(zone)}
+	onclick={() => bossTracker.toggleFlag(bossId)}
 	title="Mark boss as killed for the week (personal use, not sent to server)"
 ></button>
 
