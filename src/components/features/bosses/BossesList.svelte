@@ -60,6 +60,7 @@
 <ul class="bosses-list">
 {#each bosses as boss(boss.id)}
 	{@const activeLocation = bossesNotificationManagement.getBossActiveLocation(boss)}
+	{@const zone = zoneTypeMap[boss.zoneId]}
 	<li class="boss-row" class:flagged={$bossTrackerStore.idsFlagged[boss.id]}>
 		<div class="boss-left-cell" class:is-crawler={boss.name === 'boss.crawler'}>
 			<img src={boss.bossImage} width='35' alt={$getI18n(boss.name as any)} />
@@ -69,8 +70,8 @@
 				<div class="boss-title-container">
 					<div class="boss-name">{$getI18n(boss.name as any)}</div>
 					<div class="boss-zone-name">
-						<img class="zone-name-icon" src={zoneTypeMap[boss.zoneId].icon} alt="{zoneTypeMap[boss.zoneId].nameShort} icon" />
-						{zoneTypeMap[boss.zoneId].name}
+						<img class="zone-name-icon" src={zone.icon} alt="{zone.nameShort} icon" />
+						{$getI18n(`zone.${zone.name}` as any, zone.name)}
 						<a href='{boss.bossMap}' class='map-link' onclick={(e)=>{ e.preventDefault(); mapModalImage = boss.bossMap; }}>
 							<span class="map-link-inner"><img src='images/map-icon.png' width='16' height='16' alt='' /> Map</span>
 						</a>
